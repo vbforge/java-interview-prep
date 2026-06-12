@@ -1,0 +1,540 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vbforge / java-interview-prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0e1a;
+  --bg2:#0f1629;
+  --bg3:#141d35;
+  --bg4:#1a2540;
+  --border:#1e2d50;
+  --border2:#243460;
+  --text:#e2e8f4;
+  --text2:#8899bb;
+  --text3:#4a5a7a;
+  --cyan:#00d9ff;
+  --cyan2:#00b8d9;
+  --cyan-dim:rgba(0,217,255,0.08);
+  --cyan-dim2:rgba(0,217,255,0.15);
+  --green:#22c55e;
+  --green-dim:rgba(34,197,94,0.08);
+  --amber:#f59e0b;
+  --amber-dim:rgba(245,158,11,0.08);
+  --red:#ef4444;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Inter',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;min-height:100vh}
+
+/* ── LAYOUT ── */
+.page{max-width:900px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
+
+/* ── NAV ── */
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:0.5px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.nav-logo{width:32px;height:32px;flex-shrink:0}
+.nav-title{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--text)}
+.nav-title span{color:var(--cyan)}
+.nav-links{display:flex;gap:4px}
+.nav-link{font-family:var(--mono);font-size:11px;color:var(--text2);text-decoration:none;padding:5px 10px;border-radius:5px;border:0.5px solid transparent;transition:all .15s}
+.nav-link:hover{color:var(--text);border-color:var(--border2);background:var(--bg3)}
+.nav-link.active{color:var(--cyan);border-color:var(--border2)}
+
+/* ── HERO ── */
+.hero{padding:3rem 0 2.5rem;border-bottom:0.5px solid var(--border);margin-bottom:2.5rem}
+.hero-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:1.25rem}
+.hero-badge{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);background:var(--cyan-dim);border:0.5px solid rgba(0,217,255,.2);padding:3px 10px;border-radius:4px}
+.hero-h1{font-size:36px;font-weight:600;line-height:1.2;letter-spacing:-.02em;margin-bottom:.75rem;font-family:var(--mono)}
+.hero-h1 em{font-style:normal;color:var(--cyan)}
+.hero-sub{font-size:14px;color:var(--text2);max-width:560px;line-height:1.7;margin-bottom:2rem}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12px;font-weight:500;padding:8px 16px;border-radius:6px;border:0.5px solid;text-decoration:none;cursor:pointer;transition:all .15s;background:transparent}
+.btn-primary{color:var(--bg);background:var(--cyan);border-color:var(--cyan)}
+.btn-primary:hover{background:var(--cyan2);border-color:var(--cyan2)}
+.btn-ghost{color:var(--text2);border-color:var(--border2)}
+.btn-ghost:hover{color:var(--text);border-color:var(--border2);background:var(--bg3)}
+
+/* ── STATS ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:2.5rem}
+.stat{background:var(--bg2);border:0.5px solid var(--border);border-radius:8px;padding:14px 16px}
+.stat-n{font-family:var(--mono);font-size:26px;font-weight:600;color:var(--text);line-height:1}
+.stat-n.cyan{color:var(--cyan)}
+.stat-l{font-size:11px;color:var(--text3);margin-top:4px;letter-spacing:.05em;text-transform:uppercase;font-family:var(--mono)}
+
+/* ── SECTION HEADER ── */
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;margin-top:2.5rem}
+.sec-label{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text3)}
+.sec-count{font-family:var(--mono);font-size:11px;color:var(--text3)}
+
+/* ── THEORY GRID ── */
+.theory-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:2.5rem}
+.tcard{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:16px;cursor:pointer;transition:border-color .15s;text-decoration:none;display:block}
+.tcard:hover{border-color:var(--border2)}
+.tcard-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.tcard-num{font-family:var(--mono);font-size:10px;color:var(--text3)}
+.tcard-badge{font-family:var(--mono);font-size:10px;font-weight:500;padding:2px 8px;border-radius:4px}
+.badge-todo{background:var(--bg3);color:var(--text3);border:0.5px solid var(--border)}
+.badge-wip{background:var(--amber-dim);color:var(--amber);border:0.5px solid rgba(245,158,11,.2)}
+.badge-done{background:var(--green-dim);color:var(--green);border:0.5px solid rgba(34,197,94,.2)}
+.tcard-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px}
+.tcard-qrange{font-family:var(--mono);font-size:11px;color:var(--text3);margin-bottom:10px}
+.tcard-bar-wrap{height:2px;background:var(--bg4);border-radius:1px;margin-bottom:10px}
+.tcard-bar{height:2px;border-radius:1px;background:var(--cyan);transition:width .3s}
+.tcard-links{display:flex;gap:12px}
+.tcard-link{font-family:var(--mono);font-size:11px;color:var(--cyan2);text-decoration:none;display:flex;align-items:center;gap:4px;opacity:.8}
+.tcard-link:hover{opacity:1}
+
+/* ── DEMOS GRID ── */
+.demos-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:2.5rem}
+.dcard{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:16px;text-decoration:none;display:block;transition:border-color .15s}
+.dcard:hover{border-color:var(--border2)}
+.dcard-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.dcard-icon{width:34px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;font-family:var(--mono);font-weight:600;color:var(--cyan);background:var(--cyan-dim);border:0.5px solid rgba(0,217,255,.15)}
+.dcard-title{font-size:13px;font-weight:500;color:var(--text)}
+.dcard-port{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:1px}
+.dcard-desc{font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:10px}
+.dcard-tags{display:flex;gap:5px;flex-wrap:wrap}
+.tag{font-family:var(--mono);font-size:10px;color:var(--text3);background:var(--bg3);border:0.5px solid var(--border);padding:2px 7px;border-radius:4px}
+.tag.hl{color:var(--cyan);border-color:rgba(0,217,255,.2);background:var(--cyan-dim)}
+
+/* ── TRACKER ── */
+.tracker{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:2.5rem}
+.tracker-top{padding:14px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.tracker-title{font-size:13px;font-weight:500;color:var(--text)}
+.tracker-count{font-family:var(--mono);font-size:12px;color:var(--text3)}
+.tgroup{border-bottom:0.5px solid var(--border)}
+.tgroup:last-child{border-bottom:none}
+.tgroup-head{display:flex;align-items:center;gap:8px;padding:10px 16px;cursor:pointer;user-select:none;transition:background .1s}
+.tgroup-head:hover{background:var(--bg3)}
+.tg-arrow{font-size:11px;color:var(--text3);transition:transform .15s;font-family:var(--mono)}
+.tg-title{font-size:12px;font-weight:500;color:var(--text2);flex:1}
+.tg-meta{font-family:var(--mono);font-size:11px;color:var(--text3);min-width:36px;text-align:right}
+.tg-barwrap{width:56px;height:2px;background:var(--bg4);border-radius:1px;margin-left:8px}
+.tg-bar{height:2px;border-radius:1px;transition:width .3s}
+.tg-qs{display:none;padding:2px 16px 12px 36px}
+.tg-qs.open{display:block}
+.qrow{display:flex;align-items:flex-start;gap:8px;padding:3px 0}
+.qrow input[type=checkbox]{margin-top:3px;accent-color:var(--cyan);cursor:pointer;flex-shrink:0}
+.qrow label{font-size:12px;color:var(--text3);cursor:pointer;line-height:1.5;flex:1;transition:color .1s}
+.qrow input:checked + label{color:var(--text3);text-decoration:line-through;opacity:.4}
+.qrow:hover label{color:var(--text2)}
+.qnum{font-family:var(--mono);font-size:10px;color:var(--text3);min-width:28px;padding-top:2px}
+
+/* ── SCORECARD ── */
+.scorecard{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:2.5rem}
+.sc-top{padding:14px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.sc-title{font-size:13px;font-weight:500;color:var(--text)}
+.sc-hint{font-family:var(--mono);font-size:10px;color:var(--text3)}
+.scrow{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:0.5px solid var(--border)}
+.scrow:last-child{border-bottom:none}
+.sc-topic{font-size:12px;color:var(--text2);flex:1}
+.sc-stars{display:flex;gap:4px}
+.star{width:22px;height:22px;border-radius:4px;border:0.5px solid var(--border2);background:transparent;cursor:pointer;font-family:var(--mono);font-size:11px;font-weight:500;color:var(--text3);transition:all .1s;display:flex;align-items:center;justify-content:center}
+.star:hover{border-color:var(--cyan);color:var(--cyan)}
+.star.on{background:var(--cyan-dim);border-color:rgba(0,217,255,.3);color:var(--cyan)}
+.sc-lbl{font-family:var(--mono);font-size:10px;color:var(--text3);min-width:100px;text-align:right}
+
+/* ── PROGRESS RING ── */
+.progress-section{display:flex;align-items:center;gap:2rem;padding:2rem 0;border-bottom:0.5px solid var(--border);margin-bottom:2.5rem}
+.ring-wrap{flex-shrink:0}
+.ring-text{font-family:var(--mono)}
+.ring-num{font-size:28px;font-weight:600;color:var(--cyan)}
+.ring-total{font-size:14px;color:var(--text3)}
+.progress-bars{flex:1}
+.pbar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.pbar-label{font-family:var(--mono);font-size:11px;color:var(--text3);width:120px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pbar-track{flex:1;height:3px;background:var(--bg4);border-radius:2px}
+.pbar-fill{height:3px;border-radius:2px;transition:width .3s}
+.pbar-count{font-family:var(--mono);font-size:10px;color:var(--text3);min-width:32px;text-align:right}
+
+/* ── FOOTER ── */
+footer{padding:2rem 1.5rem 1.5rem;border-top:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:gap}
+.footer-left{display:flex;align-items:center;gap:10px}
+.footer-logo{width:24px;height:24px}
+.footer-meta{font-family:var(--mono);font-size:11px;color:var(--text3)}
+.footer-links{display:flex;gap:16px}
+.footer-link{font-family:var(--mono);font-size:11px;color:var(--text3);text-decoration:none}
+.footer-link:hover{color:var(--cyan)}
+
+/* ── SECTIONS ── */
+#section-theory,#section-demos,#section-tracker,#section-scorecard{scroll-margin-top:60px}
+
+/* scrollbar */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <svg class="nav-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#0f172a"/>
+          <stop offset="100%" style="stop-color:#1e293b"/>
+        </linearGradient>
+      </defs>
+      <circle cx="100" cy="100" r="70" fill="url(#g1)" stroke="#64748b" stroke-width="1"/>
+      <text x="92" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="end" fill="#e2e8f0" letter-spacing="1px">VBF</text>
+      <circle cx="100" cy="99" r="8" fill="none" stroke="#00d9ff" stroke-width="2"/>
+      <path d="M 96 99 L 99 102 L 104 95" fill="none" stroke="#00d9ff" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="108" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="start" fill="#e2e8f0" letter-spacing="1px">RGE</text>
+    </svg>
+    <span class="nav-title">vbforge / <span>java-interview-prep</span></span>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link active" href="#section-theory">theory</a>
+    <a class="nav-link" href="#section-demos">demos</a>
+    <a class="nav-link" href="#section-tracker">tracker</a>
+    <a class="nav-link" href="#section-scorecard">scorecard</a>
+    <a class="nav-link" href="https://github.com/vbforge/java-interview-prep" target="_blank">github ↗</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">
+      <span class="hero-badge">Java 21 · Spring Boot 3 · Maven</span>
+    </div>
+    <h1 class="hero-h1">Java Interview <em>Prep</em></h1>
+    <p class="hero-sub">89 questions mapped to 10 theory files and 7 runnable Spring Boot demos. Built as a junior→middle transition reference. Covers all required sections from the recruiter screen.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://github.com/vbforge/java-interview-prep">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        View on GitHub
+      </a>
+      <a class="btn btn-ghost" href="#section-tracker">Track progress →</a>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-n cyan" id="stat-done">0</div>
+      <div class="stat-l">answered</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">89</div>
+      <div class="stat-l">total Qs</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">10</div>
+      <div class="stat-l">theory files</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">7</div>
+      <div class="stat-l">demos</div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-section">
+    <div class="ring-wrap">
+      <svg width="80" height="80" viewBox="0 0 80 80">
+        <circle cx="40" cy="40" r="34" fill="none" stroke="#1a2540" stroke-width="6"/>
+        <circle id="ring-arc" cx="40" cy="40" r="34" fill="none" stroke="#00d9ff" stroke-width="6"
+          stroke-dasharray="213.6" stroke-dashoffset="213.6"
+          stroke-linecap="round" transform="rotate(-90 40 40)"
+          style="transition:stroke-dashoffset .4s ease"/>
+        <text x="40" y="37" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="16" font-weight="600" fill="#00d9ff" id="ring-pct">0%</text>
+        <text x="40" y="51" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#4a5a7a">done</text>
+      </svg>
+    </div>
+    <div class="progress-bars" id="progress-bars"></div>
+  </div>
+
+  <!-- THEORY -->
+  <div id="section-theory">
+    <div class="sec-head">
+      <span class="sec-label">Theory files</span>
+      <span class="sec-count">10 files · Q1–Q89</span>
+    </div>
+    <div class="theory-grid" id="theory-grid"></div>
+  </div>
+
+  <!-- DEMOS -->
+  <div id="section-demos">
+    <div class="sec-head">
+      <span class="sec-label">Runnable demos</span>
+      <span class="sec-count">7 modules · Spring Boot 3</span>
+    </div>
+    <div class="demos-grid" id="demos-grid"></div>
+  </div>
+
+  <!-- TRACKER -->
+  <div id="section-tracker">
+    <div class="sec-head">
+      <span class="sec-label">Question tracker</span>
+      <span class="sec-count" id="tracker-count">0 / 89</span>
+    </div>
+    <div class="tracker">
+      <div class="tracker-top">
+        <span class="tracker-title">Check off questions as you master them</span>
+        <span class="tracker-count" id="tracker-label">0 / 89</span>
+      </div>
+      <div id="tracker-body"></div>
+    </div>
+  </div>
+
+  <!-- SCORECARD -->
+  <div id="section-scorecard">
+    <div class="sec-head">
+      <span class="sec-label">Interview scorecard</span>
+      <span class="sec-count">Rate 1–5 per section</span>
+    </div>
+    <div class="scorecard">
+      <div class="sc-top">
+        <span class="sc-title">Self-assessment — based on recruiter screen rubric</span>
+        <span class="sc-hint">5 = Absolute star · 1 = Not good enough</span>
+      </div>
+      <div id="sc-body"></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-left">
+    <svg class="footer-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="70" fill="#0f172a" stroke="#64748b" stroke-width="1"/>
+      <text x="92" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="end" fill="#e2e8f0" letter-spacing="1px">VBF</text>
+      <circle cx="100" cy="99" r="8" fill="none" stroke="#00d9ff" stroke-width="2"/>
+      <path d="M 96 99 L 99 102 L 104 95" fill="none" stroke="#00d9ff" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="108" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="start" fill="#e2e8f0" letter-spacing="1px">RGE</text>
+    </svg>
+    <span class="footer-meta">vbforge · java-interview-prep · Java 21 · Spring Boot 3</span>
+  </div>
+  <div class="footer-links">
+    <a class="footer-link" href="https://github.com/vbforge">github.com/vbforge</a>
+    <a class="footer-link" href="https://github.com/vbforge/java-interview-prep">repo ↗</a>
+  </div>
+</footer>
+
+<script>
+const THEORY = [
+  {num:'01',title:'JVM Memory',qs:'Q1–Q8',qStart:1,qEnd:8,file:'theory/01-jvm-memory.md',demo:'demo-01'},
+  {num:'02',title:'Data types & Strings',qs:'Q9–Q17',qStart:9,qEnd:17,file:'theory/02-data-types-strings.md',demo:null},
+  {num:'03',title:'OOP, Inheritance & Generics',qs:'Q18–Q27',qStart:18,qEnd:27,file:'theory/03-oop-generics.md',demo:null},
+  {num:'04',title:'Collections — List',qs:'Q28–Q33',qStart:28,qEnd:33,file:'theory/04-collections-list.md',demo:'demo-02'},
+  {num:'05',title:'Collections — HashMap',qs:'Q34–Q44',qStart:34,qEnd:44,file:'theory/05-collections-hashmap.md',demo:'demo-02'},
+  {num:'06',title:'Streams & Lambdas',qs:'Q45–Q52',qStart:45,qEnd:52,file:'theory/06-streams-lambdas.md',demo:'demo-03'},
+  {num:'07',title:'Concurrency',qs:'Q53–Q63',qStart:53,qEnd:63,file:'theory/07-concurrency.md',demo:'demo-04'},
+  {num:'08',title:'Spring core & web',qs:'Q64–Q77',qStart:64,qEnd:77,file:'theory/08-spring-core-web.md',demo:'demo-05'},
+  {num:'09',title:'JPA & databases',qs:'Q78–Q87',qStart:78,qEnd:87,file:'theory/09-jpa-databases.md',demo:'demo-06'},
+  {num:'10',title:'Design patterns',qs:'Q87–Q89',qStart:88,qEnd:89,file:'theory/10-design-patterns.md',demo:'demo-07'},
+];
+
+const DEMOS = [
+  {id:'demo-01',icon:'01',title:'JVM memory',port:'8081',desc:'GC logging, heap region inspection, object lifecycle, humongous allocations.',tags:['java21','G1GC','jvm','actuator']},
+  {id:'demo-02',icon:'02',title:'Collections',port:'8082',desc:'HashMap collision demo, TreeMap ordering, iterator patterns, load factor.',tags:['java21','hashmap','treemap']},
+  {id:'demo-03',icon:'03',title:'Streams & Lambdas',port:'8083',desc:'Stream pipelines, flatMap, collectors, lazy evaluation, functional interfaces.',tags:['java21','streams','lambdas']},
+  {id:'demo-04',icon:'04',title:'Concurrency',port:'8084',desc:'Race condition demo, CAS vs synchronized, ReentrantLock patterns.',tags:['java21','threads','locks','CAS']},
+  {id:'demo-05',icon:'05',title:'Spring core',port:'8085',desc:'Bean scopes, lifecycle hooks, DI types, circular dependency resolution.',tags:['spring-boot','beans','DI']},
+  {id:'demo-06',icon:'06',title:'Spring data / JPA',port:'8086',desc:'EAGER/LAZY fetch, N+1 fix, optimistic & pessimistic locking, index demo.',tags:['spring-boot','jpa','postgres']},
+  {id:'demo-07',icon:'07',title:'Design patterns',port:'8087',desc:'Singleton, Factory, Proxy, Strategy in a Spring Boot context.',tags:['spring-boot','GoF','patterns']},
+];
+
+const GROUPS = [
+  {id:'g0',label:'JVM Memory — Q1–Q8',total:8,color:'#00d9ff',
+    qs:[{n:1,t:'What kinds of memory exist in Java?'},{n:2,t:'What is the stack for, what is stored in it?'},{n:3,t:'What regions is the heap divided into?'},{n:4,t:'Explain garbage collection in Java.'},{n:5,t:'Which garbage collectors do you know?'},{n:6,t:'How does the collector know an object has become garbage?'},{n:7,t:'Do primitives need to be collected?'},{n:8,t:'How does G1 work?'}]},
+  {id:'g1',label:'Data types & Strings — Q9–Q17',total:9,color:'#818cf8',
+    qs:[{n:9,t:'The two main groups of data types'},{n:10,t:'How to compare primitives and objects'},{n:11,t:'Passing method arguments by value vs by reference'},{n:12,t:'Object o = new Object() — what is stored in o?'},{n:13,t:'Boxing / unboxing'},{n:14,t:'String s1 = "string" vs new String("string")'},{n:15,t:'s1 == s2 vs s1.equals(s2)'},{n:16,t:'String.intern()'},{n:17,t:'Are String objects mutable or immutable?'}]},
+  {id:'g2',label:'OOP, Inheritance & Generics — Q18–Q27',total:10,color:'#c084fc',
+    qs:[{n:18,t:'What are generics, and what are they for?'},{n:19,t:'Examples of generics in Java'},{n:20,t:'extends / super in wildcards'},{n:21,t:'Difference between abstract class and interface'},{n:22,t:'How many supertypes can you extend / implement?'},{n:23,t:'Presence of a constructor'},{n:24,t:'Default access modifiers of abstract class and interface'},{n:25,t:'Multiple inheritance with interfaces'},{n:26,t:'What if two interface methods overlap?'},{n:27,t:'What if two default methods conflict?'}]},
+  {id:'g3',label:'Collections — Q28–Q44',total:17,color:'#34d399',
+    qs:[{n:28,t:'What kinds of collections exist in Java?'},{n:29,t:'Describe List'},{n:30,t:'Time complexity of insertion and read/access'},{n:31,t:'When is array-based list better vs linked list?'},{n:32,t:'How does a list differ from a plain array?'},{n:33,t:'What is an iterator?'},{n:34,t:'Describe HashMap'},{n:35,t:'How is HashMap implemented?'},{n:36,t:'What is a hash code?'},{n:37,t:'Hash code normalization / spreading'},{n:38,t:'How is hashCode related to equals?'},{n:39,t:'Why does that matter for a hash map?'},{n:40,t:'Data structure in a bucket on collision'},{n:41,t:'Capacity, load factor, default load factor'},{n:42,t:'Time complexity of lookup and insertion'},{n:43,t:'In what order do you iterate a map?'},{n:44,t:'HashMap vs TreeMap'}]},
+  {id:'g4',label:'Streams & Lambdas — Q45–Q52',total:8,color:'#38bdf8',
+    qs:[{n:45,t:'What is a Stream in Java?'},{n:46,t:'Intermediate vs terminal operations'},{n:47,t:'Can you run two terminal ops on one Stream?'},{n:48,t:'Optional — one-shot container vs stream?'},{n:49,t:'Primitive-specialized stream types'},{n:50,t:'Difference between map and flatMap'},{n:51,t:'What is a lambda? What is it compiled to?'},{n:52,t:'Standard functional interfaces'}]},
+  {id:'g5',label:'Concurrency — Q53–Q63',total:11,color:'#fb923c',
+    qs:[{n:53,t:'How to safely share mutable state across threads?'},{n:54,t:'What goes wrong without coordination?'},{n:55,t:'What is a data race?'},{n:56,t:'Why doesn\'t volatile make i++ atomic?'},{n:57,t:'CAS in AtomicInteger vs i++ under synchronized'},{n:58,t:'When to prefer atomics vs locks?'},{n:59,t:'ReentrantLock — what does reentrant mean?'},{n:60,t:'Why must unlock run in finally?'},{n:61,t:'What do synchronized and ReentrantLock share?'},{n:62,t:'What can ReentrantLock do that synchronized cannot?'},{n:63,t:'Can same thread re-enter synchronized on same monitor?'}]},
+  {id:'g6',label:'Spring core & web — Q64–Q77',total:14,color:'#f472b6',
+    qs:[{n:64,t:'What is a Spring bean?'},{n:65,t:'Where are beans stored, how to retrieve them?'},{n:66,t:'Ways to inject dependencies'},{n:67,t:'Which bean scopes do you know?'},{n:68,t:'What is @PostConstruct used for?'},{n:69,t:'What is @Qualifier used for?'},{n:70,t:'What is @Primary used for?'},{n:71,t:'What is @Order used for?'},{n:72,t:'Can Spring run code after app has started?'},{n:73,t:'Circular dependency — what is it and how to resolve?'},{n:74,t:'Which HTTP methods do you know?'},{n:75,t:'Cookies, HTTP headers, HTTP session'},{n:76,t:'What is CORS?'},{n:77,t:'What is idempotency?'}]},
+  {id:'g7',label:'JPA & databases — Q78–Q87',total:10,color:'#a3e635',
+    qs:[{n:78,t:'Hibernate fetch types — EAGER and LAZY'},{n:79,t:'@OneToOne, @OneToMany, @ManyToMany'},{n:80,t:'N+1 problem'},{n:81,t:'What is optimistic locking?'},{n:82,t:'What is pessimistic locking?'},{n:83,t:'Which locking type to prefer and when?'},{n:84,t:'What is a DB index?'},{n:85,t:'Purpose, pros and cons of indexes'},{n:86,t:'How does a B-tree index work?'},{n:87,t:'Why not index all field combinations?'}]},
+  {id:'g8',label:'Design patterns — Q87–Q89',total:3,color:'#e879f9',
+    qs:[{n:'87b',t:'Name the three main groups of design patterns'},{n:88,t:'Name one pattern from each group'},{n:89,t:'Which three patterns do you most often see in Spring?'}]},
+];
+
+const SC_TOPICS = ['Java memory model','Data types & Strings','OOP, Inheritance, Generics','Collections','Streams & Lambdas','Concurrency','Spring core & web','JPA & databases','Design patterns'];
+const SC_LABELS = ['','Not good enough','Has bright spots','Meets requirement','Excellent overall','Absolute star'];
+const scRatings = new Array(SC_TOPICS.length).fill(0);
+
+const checked = {};
+const groupOpen = {};
+
+function buildTheoryGrid(){
+  const grid = document.getElementById('theory-grid');
+  THEORY.forEach((t,i)=>{
+    const d = document.createElement('a');
+    d.className='tcard';
+    d.href=t.file;
+    d.innerHTML=`
+      <div class="tcard-top">
+        <span class="tcard-num">theory/${t.num}</span>
+        <span class="tcard-badge badge-todo" id="tbadge-${i}">todo</span>
+      </div>
+      <div class="tcard-title">${t.title}</div>
+      <div class="tcard-qrange">${t.qs}</div>
+      <div class="tcard-bar-wrap"><div class="tcard-bar" id="tbar-${i}" style="width:0%"></div></div>
+      <div class="tcard-links">
+        <a class="tcard-link" href="${t.file}" onclick="event.stopPropagation()">
+          <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><path d="M14 1H6a1 1 0 0 0-1 1v3H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-3h3a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM9 13H2V6h3v3a1 1 0 0 0 1 1h3v3zm5-4H6V2h8v7z"/></svg>
+          ${t.file.split('/').pop()}
+        </a>
+        ${t.demo?`<a class="tcard-link" href="demos/${t.demo}" onclick="event.stopPropagation()">
+          <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3L14 8 6 13V3z"/></svg>
+          ${t.demo}
+        </a>`:''}
+      </div>`;
+    grid.appendChild(d);
+  });
+}
+
+function buildDemosGrid(){
+  const grid = document.getElementById('demos-grid');
+  DEMOS.forEach(d=>{
+    const el = document.createElement('a');
+    el.className='dcard';
+    el.href=`demos/${d.id}`;
+    el.innerHTML=`
+      <div class="dcard-head">
+        <div class="dcard-icon">${d.icon}</div>
+        <div>
+          <div class="dcard-title">${d.title}</div>
+          <div class="dcard-port">:${d.port}</div>
+        </div>
+      </div>
+      <div class="dcard-desc">${d.desc}</div>
+      <div class="dcard-tags">${d.tags.map((t,i)=>`<span class="tag${i===0?' hl':''}">${t}</span>`).join('')}</div>`;
+    grid.appendChild(el);
+  });
+}
+
+function buildTracker(){
+  const body = document.getElementById('tracker-body');
+  GROUPS.forEach(g=>{
+    const div = document.createElement('div');
+    div.className='tgroup';
+    div.innerHTML=`
+      <div class="tgroup-head" onclick="toggleGroup('${g.id}')">
+        <span class="tg-arrow" id="arr-${g.id}">▶</span>
+        <span class="tg-title">${g.label}</span>
+        <span class="tg-meta" id="gm-${g.id}">0/${g.total}</span>
+        <div class="tg-barwrap"><div class="tg-bar" id="gb-${g.id}" style="width:0%;background:${g.color}"></div></div>
+      </div>
+      <div class="tg-qs" id="gqs-${g.id}">
+        ${g.qs.map(q=>`
+          <div class="qrow">
+            <span class="qnum">Q${q.n}</span>
+            <input type="checkbox" id="q${q.n}" onchange="tick()">
+            <label for="q${q.n}">${q.t}</label>
+          </div>`).join('')}
+      </div>`;
+    body.appendChild(div);
+  });
+}
+
+function buildProgressBars(){
+  const cont = document.getElementById('progress-bars');
+  GROUPS.forEach(g=>{
+    const row = document.createElement('div');
+    row.className='pbar-row';
+    row.innerHTML=`
+      <span class="pbar-label">${g.label.split(' — ')[0]}</span>
+      <div class="pbar-track"><div class="pbar-fill" id="pb-${g.id}" style="width:0%;background:${g.color}"></div></div>
+      <span class="pbar-count" id="pc-${g.id}">0/${g.total}</span>`;
+    cont.appendChild(row);
+  });
+}
+
+function buildScorecard(){
+  const body = document.getElementById('sc-body');
+  SC_TOPICS.forEach((t,i)=>{
+    const row = document.createElement('div');
+    row.className='scrow';
+    row.innerHTML=`
+      <span class="sc-topic">${t}</span>
+      <div class="sc-stars">${[1,2,3,4,5].map(s=>`<button class="star" id="sc-${i}-${s}" onclick="rate(${i},${s})">${s}</button>`).join('')}</div>
+      <span class="sc-lbl" id="scl-${i}">—</span>`;
+    body.appendChild(row);
+  });
+}
+
+function toggleGroup(id){
+  const qs = document.getElementById('gqs-'+id);
+  const arr = document.getElementById('arr-'+id);
+  const open = qs.classList.toggle('open');
+  arr.textContent = open ? '▼' : '▶';
+  arr.style.color = open ? 'var(--cyan)' : '';
+}
+
+function tick(){
+  let total = 0;
+  GROUPS.forEach(g=>{
+    const done = g.qs.filter(q=>{
+      const el = document.getElementById('q'+q.n);
+      return el && el.checked;
+    }).length;
+    const pct = Math.round(done/g.total*100);
+    document.getElementById('gm-'+g.id).textContent=`${done}/${g.total}`;
+    document.getElementById('gb-'+g.id).style.width=pct+'%';
+    document.getElementById('pb-'+g.id).style.width=pct+'%';
+    document.getElementById('pc-'+g.id).textContent=`${done}/${g.total}`;
+    total+=done;
+
+    // theory card badge + bar
+    const ti = THEORY.findIndex(t=>t.qStart===g.qs[0].n || (g.id==='g8'&&t.num==='10'));
+    if(ti>=0){
+      const bar = document.getElementById('tbar-'+ti);
+      const badge = document.getElementById('tbadge-'+ti);
+      if(bar) bar.style.width=pct+'%';
+      if(badge){
+        if(pct===100){badge.textContent='done';badge.className='tcard-badge badge-done';}
+        else if(pct>0){badge.textContent='in progress';badge.className='tcard-badge badge-wip';}
+        else{badge.textContent='todo';badge.className='tcard-badge badge-todo';}
+      }
+    }
+  });
+
+  // stats
+  document.getElementById('stat-done').textContent=total;
+  document.getElementById('tracker-label').textContent=`${total} / 89`;
+  document.getElementById('tracker-count').textContent=`${total} / 89`;
+
+  // ring
+  const pct = total/89;
+  const circ = 213.6;
+  document.getElementById('ring-arc').style.strokeDashoffset = circ-(circ*pct);
+  document.getElementById('ring-pct').textContent=Math.round(pct*100)+'%';
+}
+
+function rate(topic,val){
+  scRatings[topic]=val;
+  for(let s=1;s<=5;s++){
+    const b=document.getElementById(`sc-${topic}-${s}`);
+    b.className='star'+(s<=val?' on':'');
+  }
+  document.getElementById('scl-'+topic).textContent=SC_LABELS[val]||'—';
+}
+
+buildTheoryGrid();
+buildDemosGrid();
+buildTracker();
+buildProgressBars();
+buildScorecard();
+tick();
+</script>
+</body>
+</html>

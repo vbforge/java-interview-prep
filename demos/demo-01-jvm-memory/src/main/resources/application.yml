@@ -1,0 +1,35 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: demo-01-jvm-memory
+
+# Expose all actuator endpoints so we can inspect heap/GC metrics at runtime
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+# ─────────────────────────────────────────────────────────────────────────────
+# JVM flags are set in the run script / IDEA run config, NOT here.
+# See README.md § "How to run" for the full -XX flag set.
+#
+# Short version — add this to your JVM args:
+#
+#   -Xms64m -Xmx256m
+#   -XX:+UseG1GC
+#   -Xlog:gc*:file=logs/gc.log:time,uptime,level,tags:filecount=3,filesize=5m
+#   -XX:+PrintGCDetails          (Java 8 style, kept here for reference only)
+#   -XX:MaxGCPauseMillis=200
+#   -XX:+HeapDumpOnOutOfMemoryError
+#   -XX:HeapDumpPath=logs/heap-dump.hprof
+# ─────────────────────────────────────────────────────────────────────────────
+
+logging:
+  level:
+    com.vbforge: DEBUG

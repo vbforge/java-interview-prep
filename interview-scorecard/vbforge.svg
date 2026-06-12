@@ -1,0 +1,43 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="modernGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+    </linearGradient>
+    <filter id="neon" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Modern circle -->
+  <circle cx="100" cy="100" r="70" 
+          fill="url(#modernGradient)" 
+          stroke="#64748b" 
+          stroke-width="1"/>
+  
+  <!-- VPF text (left of center O) -->
+  <text x="92" y="105" 
+        font-family="system-ui, sans-serif" 
+        font-size="18" 
+        font-weight="600" 
+        text-anchor="end" 
+        fill="#e2e8f0" 
+        letter-spacing="1px">VBF</text>
+  
+  <!-- Success check O with modern styling - CENTERED -->
+  <circle cx="100" cy="99" r="8" fill="none" stroke="#00d9ff" stroke-width="2" filter="url(#neon)"/>
+  <path d="M 96 99 L 99 102 L 104 95" fill="none" stroke="#00d9ff" stroke-width="2.5" stroke-linecap="round" filter="url(#neon)"/>
+  
+  <!-- RGE text (right of center O) -->
+  <text x="108" y="105" 
+        font-family="system-ui, sans-serif" 
+        font-size="18" 
+        font-weight="600" 
+        text-anchor="start" 
+        fill="#e2e8f0" 
+        letter-spacing="1px">RGE</text>
+</svg>
