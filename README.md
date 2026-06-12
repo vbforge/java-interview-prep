@@ -1,5 +1,7 @@
 # java-interview-prep
 
+[GitHub Pages site](https://vbforge.github.io/java-interview-prep)
+
 Structured preparation for Java backend interviews — 89 questions mapped to 10 theory files and 7 runnable Spring Boot demos. 
 Built as a junior→middle transition reference.
 
