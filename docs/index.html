@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +39,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14
 
 /* ── NAV ── */
 nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:0.5px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
-.nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none}
+.nav-brand{display:flex;align-items:center;gap:10px}
 .nav-logo{width:32px;height:32px;flex-shrink:0}
 .nav-title{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--text)}
 .nav-title span{color:var(--cyan)}
@@ -175,7 +176,7 @@ footer{padding:2rem 1.5rem 1.5rem;border-top:0.5px solid var(--border);display:f
 <body>
 
 <nav>
-  <a href="https://github.com/vbforge" class="nav-brand" style="text-decoration:none">
+  <div class="nav-brand">
     <svg class="nav-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -190,7 +191,7 @@ footer{padding:2rem 1.5rem 1.5rem;border-top:0.5px solid var(--border);display:f
       <text x="108" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="start" fill="#e2e8f0" letter-spacing="1px">RGE</text>
     </svg>
     <span class="nav-title">vbforge / <span>java-interview-prep</span></span>
-  </a>
+  </div>
   <div class="nav-links">
     <a class="nav-link active" href="#section-theory">theory</a>
     <a class="nav-link" href="#section-demos">demos</a>
@@ -306,16 +307,14 @@ footer{padding:2rem 1.5rem 1.5rem;border-top:0.5px solid var(--border);display:f
 
 <footer>
   <div class="footer-left">
-    <a href="https://github.com/vbforge" style="display:flex;align-items:center;gap:10px;text-decoration:none">
-      <svg class="footer-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="100" cy="100" r="70" fill="#0f172a" stroke="#64748b" stroke-width="1"/>
-        <text x="92" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="end" fill="#e2e8f0" letter-spacing="1px">VBF</text>
-        <circle cx="100" cy="99" r="8" fill="none" stroke="#00d9ff" stroke-width="2"/>
-        <path d="M 96 99 L 99 102 L 104 95" fill="none" stroke="#00d9ff" stroke-width="2.5" stroke-linecap="round"/>
-        <text x="108" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="start" fill="#e2e8f0" letter-spacing="1px">RGE</text>
-      </svg>
-      <span class="footer-meta">vbforge · java-interview-prep · Java 21 · Spring Boot 3</span>
-    </a>
+    <svg class="footer-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="70" fill="#0f172a" stroke="#64748b" stroke-width="1"/>
+      <text x="92" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="end" fill="#e2e8f0" letter-spacing="1px">VBF</text>
+      <circle cx="100" cy="99" r="8" fill="none" stroke="#00d9ff" stroke-width="2"/>
+      <path d="M 96 99 L 99 102 L 104 95" fill="none" stroke="#00d9ff" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="108" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="start" fill="#e2e8f0" letter-spacing="1px">RGE</text>
+    </svg>
+    <span class="footer-meta">vbforge · java-interview-prep · Java 21 · Spring Boot 3</span>
   </div>
   <div class="footer-links">
     <a class="footer-link" href="https://github.com/vbforge">github.com/vbforge</a>
@@ -325,26 +324,26 @@ footer{padding:2rem 1.5rem 1.5rem;border-top:0.5px solid var(--border);display:f
 
 <script>
 const THEORY = [
-  {num:'01',title:'JVM Memory',qs:'Q1–Q8',qStart:1,qEnd:8,file:'https://github.com/vbforge/java-interview-prep/blob/main/theory/01-jvm-memory.md',demo:'demo-01-jvm-memory'},
-  {num:'02',title:'Data types & Strings',qs:'Q9–Q17',qStart:9,qEnd:17,file:'https://raw.githubusercontent.com/vbforge/java-interview-prep/main/theory/02-data-types-strings.md',demo:null},
-  {num:'03',title:'OOP, Inheritance & Generics',qs:'Q18–Q27',qStart:18,qEnd:27,file:'https://raw.githubusercontent.com/vbforge/java-interview-prep/main/theory/03-oop-generics.md',demo:null},
-  {num:'04',title:'Collections — List',qs:'Q28–Q33',qStart:28,qEnd:33,file:'https://raw.githubusercontent.com/vbforge/java-interview-prep/main/theory/04-collections-list.md',demo:'demo-02'},
-  {num:'05',title:'Collections — HashMap',qs:'Q34–Q44',qStart:34,qEnd:44,file:'https://raw.githubusercontent.com/vbforge/java-interview-prep/main/theory/05-collections-hashmap.md',demo:'demo-02'},
-  {num:'06',title:'Streams & Lambdas',qs:'Q45–Q52',qStart:45,qEnd:52,file:'https://raw.githubusercontent.com/vbforge/java-interview-prep/main/theory/06-streams-lambdas.md',demo:'demo-03'},
-  {num:'07',title:'Concurrency',qs:'Q53–Q63',qStart:53,qEnd:63,file:'https://raw.githubusercontent.com/vbforge/java-interview-prep/main/theory/07-concurrency.md',demo:'demo-04'},
-  {num:'08',title:'Spring core & web',qs:'Q64–Q77',qStart:64,qEnd:77,file:'https://raw.githubusercontent.com/vbforge/java-interview-prep/main/theory/08-spring-core-web.md',demo:'demo-05'},
-  {num:'09',title:'JPA & databases',qs:'Q78–Q87',qStart:78,qEnd:87,file:'https://raw.githubusercontent.com/vbforge/java-interview-prep/main/theory/09-jpa-databases.md',demo:'demo-06'},
-  {num:'10',title:'Design patterns',qs:'Q87–Q89',qStart:88,qEnd:89,file:'https://raw.githubusercontent.com/vbforge/java-interview-prep/main/theory/10-design-patterns.md',demo:'demo-07'},
+  {num:'01',title:'JVM Memory',qs:'Q1–Q8',qStart:1,qEnd:8,file:'theory/01-jvm-memory.md',demo:'demo-01'},
+  {num:'02',title:'Data types & Strings',qs:'Q9–Q17',qStart:9,qEnd:17,file:'theory/02-data-types-strings.md',demo:null},
+  {num:'03',title:'OOP, Inheritance & Generics',qs:'Q18–Q27',qStart:18,qEnd:27,file:'theory/03-oop-generics.md',demo:null},
+  {num:'04',title:'Collections — List',qs:'Q28–Q33',qStart:28,qEnd:33,file:'theory/04-collections-list.md',demo:'demo-02'},
+  {num:'05',title:'Collections — HashMap',qs:'Q34–Q44',qStart:34,qEnd:44,file:'theory/05-collections-hashmap.md',demo:'demo-02'},
+  {num:'06',title:'Streams & Lambdas',qs:'Q45–Q52',qStart:45,qEnd:52,file:'theory/06-streams-lambdas.md',demo:'demo-03'},
+  {num:'07',title:'Concurrency',qs:'Q53–Q63',qStart:53,qEnd:63,file:'theory/07-concurrency.md',demo:'demo-04'},
+  {num:'08',title:'Spring core & web',qs:'Q64–Q77',qStart:64,qEnd:77,file:'theory/08-spring-core-web.md',demo:'demo-05'},
+  {num:'09',title:'JPA & databases',qs:'Q78–Q87',qStart:78,qEnd:87,file:'theory/09-jpa-databases.md',demo:'demo-06'},
+  {num:'10',title:'Design patterns',qs:'Q87–Q89',qStart:88,qEnd:89,file:'theory/10-design-patterns.md',demo:'demo-07'},
 ];
 
 const DEMOS = [
-  {id:'demo-01',icon:'01',title:'JVM memory',port:'8081',desc:'GC logging, heap region inspection, object lifecycle, humongous allocations.',tags:['java21','G1GC','jvm','actuator'],url:'https://github.com/vbforge/java-interview-prep/tree/main/demos/demo-01-jvm-memory'},
-  {id:'demo-02',icon:'02',title:'Collections',port:'8082',desc:'HashMap collision demo, TreeMap ordering, iterator patterns, load factor.',tags:['java21','hashmap','treemap'],url:'https://github.com/vbforge/java-interview-prep/tree/main/demos/demo-02-collections'},
-  {id:'demo-03',icon:'03',title:'Streams & Lambdas',port:'8083',desc:'Stream pipelines, flatMap, collectors, lazy evaluation, functional interfaces.',tags:['java21','streams','lambdas'],url:'https://github.com/vbforge/java-interview-prep/tree/main/demos/demo-03-streams'},
-  {id:'demo-04',icon:'04',title:'Concurrency',port:'8084',desc:'Race condition demo, CAS vs synchronized, ReentrantLock patterns.',tags:['java21','threads','locks','CAS'],url:'https://github.com/vbforge/java-interview-prep/tree/main/demos/demo-04-concurrency'},
-  {id:'demo-05',icon:'05',title:'Spring core',port:'8085',desc:'Bean scopes, lifecycle hooks, DI types, circular dependency resolution.',tags:['spring-boot','beans','DI'],url:'https://github.com/vbforge/java-interview-prep/tree/main/demos/demo-05-spring-core'},
-  {id:'demo-06',icon:'06',title:'Spring data / JPA',port:'8086',desc:'EAGER/LAZY fetch, N+1 fix, optimistic & pessimistic locking, index demo.',tags:['spring-boot','jpa','postgres'],url:'https://github.com/vbforge/java-interview-prep/tree/main/demos/demo-06-spring-data'},
-  {id:'demo-07',icon:'07',title:'Design patterns',port:'8087',desc:'Singleton, Factory, Proxy, Strategy in a Spring Boot context.',tags:['spring-boot','GoF','patterns'],url:'https://github.com/vbforge/java-interview-prep/tree/main/demos/demo-07-patterns'},
+  {id:'demo-01',icon:'01',title:'JVM memory',port:'8081',desc:'GC logging, heap region inspection, object lifecycle, humongous allocations.',tags:['java21','G1GC','jvm','actuator']},
+  {id:'demo-02',icon:'02',title:'Collections',port:'8082',desc:'HashMap collision demo, TreeMap ordering, iterator patterns, load factor.',tags:['java21','hashmap','treemap']},
+  {id:'demo-03',icon:'03',title:'Streams & Lambdas',port:'8083',desc:'Stream pipelines, flatMap, collectors, lazy evaluation, functional interfaces.',tags:['java21','streams','lambdas']},
+  {id:'demo-04',icon:'04',title:'Concurrency',port:'8084',desc:'Race condition demo, CAS vs synchronized, ReentrantLock patterns.',tags:['java21','threads','locks','CAS']},
+  {id:'demo-05',icon:'05',title:'Spring core',port:'8085',desc:'Bean scopes, lifecycle hooks, DI types, circular dependency resolution.',tags:['spring-boot','beans','DI']},
+  {id:'demo-06',icon:'06',title:'Spring data / JPA',port:'8086',desc:'EAGER/LAZY fetch, N+1 fix, optimistic & pessimistic locking, index demo.',tags:['spring-boot','jpa','postgres']},
+  {id:'demo-07',icon:'07',title:'Design patterns',port:'8087',desc:'Singleton, Factory, Proxy, Strategy in a Spring Boot context.',tags:['spring-boot','GoF','patterns']},
 ];
 
 const GROUPS = [
@@ -381,7 +380,6 @@ function buildTheoryGrid(){
     const d = document.createElement('a');
     d.className='tcard';
     d.href=t.file;
-    d.target='_blank';
     d.innerHTML=`
       <div class="tcard-top">
         <span class="tcard-num">theory/${t.num}</span>
@@ -391,11 +389,11 @@ function buildTheoryGrid(){
       <div class="tcard-qrange">${t.qs}</div>
       <div class="tcard-bar-wrap"><div class="tcard-bar" id="tbar-${i}" style="width:0%"></div></div>
       <div class="tcard-links">
-        <a class="tcard-link" href="${t.file}" target="_blank" onclick="event.stopPropagation()">
+        <a class="tcard-link" href="${t.file}" onclick="event.stopPropagation()">
           <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><path d="M14 1H6a1 1 0 0 0-1 1v3H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-3h3a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM9 13H2V6h3v3a1 1 0 0 0 1 1h3v3zm5-4H6V2h8v7z"/></svg>
           ${t.file.split('/').pop()}
         </a>
-        ${t.demo?`<a class="tcard-link" href="https://github.com/vbforge/java-interview-prep/tree/main/demos/${t.demo}" target="_blank" onclick="event.stopPropagation()">
+        ${t.demo?`<a class="tcard-link" href="demos/${t.demo}" onclick="event.stopPropagation()">
           <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3L14 8 6 13V3z"/></svg>
           ${t.demo}
         </a>`:''}
@@ -409,8 +407,7 @@ function buildDemosGrid(){
   DEMOS.forEach(d=>{
     const el = document.createElement('a');
     el.className='dcard';
-    el.href=d.url;
-    el.target='_blank';
+    el.href=`demos/${d.id}`;
     el.innerHTML=`
       <div class="dcard-head">
         <div class="dcard-icon">${d.icon}</div>
