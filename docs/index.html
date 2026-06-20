@@ -324,13 +324,30 @@ footer{padding:2rem 1.5rem 1.5rem;border-top:0.5px solid var(--border);display:f
 
 <script>
 // ─── CONFIGURATION ──────────────────────────────────────────────
-// GitHub Pages base path - includes the repository name
-// Since the site is at https://vbforge.github.io/java-interview-prep/
+// GitHub Pages base URL - the site is at https://vbforge.github.io/java-interview-prep/
+const GITHUB_REPO = 'vbforge/java-interview-prep';
 const BASE_PATH = '/java-interview-prep';
 
-// All paths are relative to the docs/ folder where this file lives.
-// Theory files are in ../theory/ (one level up from docs/)
-// Demo projects are in ../ (root of repo, one level up from docs/)
+// For files that GitHub Pages can't serve (like demo folders outside docs/),
+// we link directly to GitHub
+function buildUrl(path) {
+  // If path starts with http or https, return as is
+  if (path.startsWith('http://') || path.startsWith('https://')) {
+    return path;
+  }
+  // If path starts with #, it's an anchor link
+  if (path.startsWith('#')) {
+    return path;
+  }
+  // For theory files (.md), link to raw GitHub content
+  if (path.endsWith('.md')) {
+    return `https://raw.githubusercontent.com/${GITHUB_REPO}/main/${path}`;
+  }
+  // For demos (folders), link to GitHub repo view
+  return `https://github.com/${GITHUB_REPO}/tree/main/${path}`;
+}
+
+// ─── DATA ──────────────────────────────────────────────────────
 
 const THEORY = [
   {num:'01',title:'JVM Memory',qs:'Q1–Q8',qStart:1,qEnd:8,file:'theory/01-jvm-memory.md',demo:'demo-01-jvm-memory'},
@@ -383,20 +400,6 @@ const scRatings = new Array(SC_TOPICS.length).fill(0);
 const checked = {};
 const groupOpen = {};
 
-// Helper function to build proper GitHub Pages URLs
-function buildUrl(path) {
-  // If path starts with http or https, return as is
-  if (path.startsWith('http://') || path.startsWith('https://')) {
-    return path;
-  }
-  // If path starts with #, it's an anchor link
-  if (path.startsWith('#')) {
-    return path;
-  }
-  // For everything else, prepend the base path
-  return BASE_PATH + '/' + path;
-}
-
 // ─── BUILD FUNCTIONS ──────────────────────────────────────────
 
 function buildTheoryGrid(){
@@ -406,6 +409,8 @@ function buildTheoryGrid(){
     const d = document.createElement('a');
     d.className='tcard';
     d.href=buildUrl(t.file);
+    d.target='_blank';
+    d.rel='noopener noreferrer';
     d.innerHTML=`
       <div class="tcard-top">
         <span class="tcard-num">theory/${t.num}</span>
@@ -415,11 +420,11 @@ function buildTheoryGrid(){
       <div class="tcard-qrange">${t.qs}</div>
       <div class="tcard-bar-wrap"><div class="tcard-bar" id="tbar-${i}" style="width:0%"></div></div>
       <div class="tcard-links">
-        <a class="tcard-link" href="${buildUrl(t.file)}" onclick="event.stopPropagation()">
+        <a class="tcard-link" href="${buildUrl(t.file)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">
           <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><path d="M14 1H6a1 1 0 0 0-1 1v3H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-3h3a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM9 13H2V6h3v3a1 1 0 0 0 1 1h3v3zm5-4H6V2h8v7z"/></svg>
           ${t.file.split('/').pop()}
         </a>
-        ${t.demo?`<a class="tcard-link" href="${buildUrl(t.demo)}" onclick="event.stopPropagation()">
+        ${t.demo?`<a class="tcard-link" href="${buildUrl(t.demo)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">
           <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3L14 8 6 13V3z"/></svg>
           ${t.demo}
         </a>`:''}
@@ -435,6 +440,8 @@ function buildDemosGrid(){
     const el = document.createElement('a');
     el.className='dcard';
     el.href=buildUrl(d.id);
+    el.target='_blank';
+    el.rel='noopener noreferrer';
     el.innerHTML=`
       <div class="dcard-head">
         <div class="dcard-icon">${d.icon}</div>
