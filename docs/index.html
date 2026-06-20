@@ -30,6 +30,7 @@
   --mono:'JetBrains Mono',monospace;
   --sans:'Inter',system-ui,sans-serif;
 }
+*{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;min-height:100vh}
 
@@ -323,31 +324,35 @@ footer{padding:2rem 1.5rem 1.5rem;border-top:0.5px solid var(--border);display:f
 
 <script>
 // ─── CONFIGURATION ──────────────────────────────────────────────
+// GitHub Pages base path - includes the repository name
+// Since the site is at https://vbforge.github.io/java-interview-prep/
+const BASE_PATH = '/java-interview-prep';
+
 // All paths are relative to the docs/ folder where this file lives.
 // Theory files are in ../theory/ (one level up from docs/)
 // Demo projects are in ../ (root of repo, one level up from docs/)
 
 const THEORY = [
-  {num:'01',title:'JVM Memory',qs:'Q1–Q8',qStart:1,qEnd:8,file:'../theory/01-jvm-memory.md',demo:'../demo-01-jvm-memory'},
-  {num:'02',title:'Data types & Strings',qs:'Q9–Q17',qStart:9,qEnd:17,file:'../theory/02-data-types-strings.md',demo:null},
-  {num:'03',title:'OOP, Inheritance & Generics',qs:'Q18–Q27',qStart:18,qEnd:27,file:'../theory/03-oop-generics.md',demo:null},
-  {num:'04',title:'Collections — List',qs:'Q28–Q33',qStart:28,qEnd:33,file:'../theory/04-collections-list.md',demo:'../demo-02-collections'},
-  {num:'05',title:'Collections — HashMap',qs:'Q34–Q44',qStart:34,qEnd:44,file:'../theory/05-collections-hashmap.md',demo:'../demo-02-collections'},
-  {num:'06',title:'Streams & Lambdas',qs:'Q45–Q52',qStart:45,qEnd:52,file:'../theory/06-streams-lambdas.md',demo:'../demo-03-streams'},
-  {num:'07',title:'Concurrency',qs:'Q53–Q63',qStart:53,qEnd:63,file:'../theory/07-concurrency.md',demo:'../demo-04-concurrency'},
-  {num:'08',title:'Spring core & web',qs:'Q64–Q77',qStart:64,qEnd:77,file:'../theory/08-spring-core-web.md',demo:'../demo-05-spring-core'},
-  {num:'09',title:'JPA & databases',qs:'Q78–Q87',qStart:78,qEnd:87,file:'../theory/09-jpa-databases.md',demo:'../demo-06-spring-data'},
-  {num:'10',title:'Design patterns',qs:'Q87–Q89',qStart:88,qEnd:89,file:'../theory/10-design-patterns.md',demo:'../demo-07-patterns'},
+  {num:'01',title:'JVM Memory',qs:'Q1–Q8',qStart:1,qEnd:8,file:'theory/01-jvm-memory.md',demo:'demo-01-jvm-memory'},
+  {num:'02',title:'Data types & Strings',qs:'Q9–Q17',qStart:9,qEnd:17,file:'theory/02-data-types-strings.md',demo:null},
+  {num:'03',title:'OOP, Inheritance & Generics',qs:'Q18–Q27',qStart:18,qEnd:27,file:'theory/03-oop-generics.md',demo:null},
+  {num:'04',title:'Collections — List',qs:'Q28–Q33',qStart:28,qEnd:33,file:'theory/04-collections-list.md',demo:'demo-02-collections'},
+  {num:'05',title:'Collections — HashMap',qs:'Q34–Q44',qStart:34,qEnd:44,file:'theory/05-collections-hashmap.md',demo:'demo-02-collections'},
+  {num:'06',title:'Streams & Lambdas',qs:'Q45–Q52',qStart:45,qEnd:52,file:'theory/06-streams-lambdas.md',demo:'demo-03-streams'},
+  {num:'07',title:'Concurrency',qs:'Q53–Q63',qStart:53,qEnd:63,file:'theory/07-concurrency.md',demo:'demo-04-concurrency'},
+  {num:'08',title:'Spring core & web',qs:'Q64–Q77',qStart:64,qEnd:77,file:'theory/08-spring-core-web.md',demo:'demo-05-spring-core'},
+  {num:'09',title:'JPA & databases',qs:'Q78–Q87',qStart:78,qEnd:87,file:'theory/09-jpa-databases.md',demo:'demo-06-spring-data'},
+  {num:'10',title:'Design patterns',qs:'Q87–Q89',qStart:88,qEnd:89,file:'theory/10-design-patterns.md',demo:'demo-07-patterns'},
 ];
 
 const DEMOS = [
-  {id:'demo-01-jvm-memory',icon:'01',title:'JVM memory',port:'8081',desc:'GC logging, heap region inspection, object lifecycle, humongous allocations.',tags:['java21','G1GC','jvm','actuator'],path:'../demo-01-jvm-memory'},
-  {id:'demo-02-collections',icon:'02',title:'Collections',port:'8082',desc:'HashMap collision demo, TreeMap ordering, iterator patterns, load factor.',tags:['java21','hashmap','treemap'],path:'../demo-02-collections'},
-  {id:'demo-03-streams',icon:'03',title:'Streams & Lambdas',port:'8083',desc:'Stream pipelines, flatMap, collectors, lazy evaluation, functional interfaces.',tags:['java21','streams','lambdas'],path:'../demo-03-streams'},
-  {id:'demo-04-concurrency',icon:'04',title:'Concurrency',port:'8084',desc:'Race condition demo, CAS vs synchronized, ReentrantLock patterns.',tags:['java21','threads','locks','CAS'],path:'../demo-04-concurrency'},
-  {id:'demo-05-spring-core',icon:'05',title:'Spring core',port:'8085',desc:'Bean scopes, lifecycle hooks, DI types, circular dependency resolution.',tags:['spring-boot','beans','DI'],path:'../demo-05-spring-core'},
-  {id:'demo-06-spring-data',icon:'06',title:'Spring data / JPA',port:'8086',desc:'EAGER/LAZY fetch, N+1 fix, optimistic & pessimistic locking, index demo.',tags:['spring-boot','jpa','postgres'],path:'../demo-06-spring-data'},
-  {id:'demo-07-patterns',icon:'07',title:'Design patterns',port:'8087',desc:'Singleton, Factory, Proxy, Strategy in a Spring Boot context.',tags:['spring-boot','GoF','patterns'],path:'../demo-07-patterns'},
+  {id:'demo-01-jvm-memory',icon:'01',title:'JVM memory',port:'8081',desc:'GC logging, heap region inspection, object lifecycle, humongous allocations.',tags:['java21','G1GC','jvm','actuator']},
+  {id:'demo-02-collections',icon:'02',title:'Collections',port:'8082',desc:'HashMap collision demo, TreeMap ordering, iterator patterns, load factor.',tags:['java21','hashmap','treemap']},
+  {id:'demo-03-streams',icon:'03',title:'Streams & Lambdas',port:'8083',desc:'Stream pipelines, flatMap, collectors, lazy evaluation, functional interfaces.',tags:['java21','streams','lambdas']},
+  {id:'demo-04-concurrency',icon:'04',title:'Concurrency',port:'8084',desc:'Race condition demo, CAS vs synchronized, ReentrantLock patterns.',tags:['java21','threads','locks','CAS']},
+  {id:'demo-05-spring-core',icon:'05',title:'Spring core',port:'8085',desc:'Bean scopes, lifecycle hooks, DI types, circular dependency resolution.',tags:['spring-boot','beans','DI']},
+  {id:'demo-06-spring-data',icon:'06',title:'Spring data / JPA',port:'8086',desc:'EAGER/LAZY fetch, N+1 fix, optimistic & pessimistic locking, index demo.',tags:['spring-boot','jpa','postgres']},
+  {id:'demo-07-patterns',icon:'07',title:'Design patterns',port:'8087',desc:'Singleton, Factory, Proxy, Strategy in a Spring Boot context.',tags:['spring-boot','GoF','patterns']},
 ];
 
 const GROUPS = [
@@ -378,6 +383,20 @@ const scRatings = new Array(SC_TOPICS.length).fill(0);
 const checked = {};
 const groupOpen = {};
 
+// Helper function to build proper GitHub Pages URLs
+function buildUrl(path) {
+  // If path starts with http or https, return as is
+  if (path.startsWith('http://') || path.startsWith('https://')) {
+    return path;
+  }
+  // If path starts with #, it's an anchor link
+  if (path.startsWith('#')) {
+    return path;
+  }
+  // For everything else, prepend the base path
+  return BASE_PATH + '/' + path;
+}
+
 // ─── BUILD FUNCTIONS ──────────────────────────────────────────
 
 function buildTheoryGrid(){
@@ -386,7 +405,7 @@ function buildTheoryGrid(){
   THEORY.forEach((t,i)=>{
     const d = document.createElement('a');
     d.className='tcard';
-    d.href=t.file;
+    d.href=buildUrl(t.file);
     d.innerHTML=`
       <div class="tcard-top">
         <span class="tcard-num">theory/${t.num}</span>
@@ -396,13 +415,13 @@ function buildTheoryGrid(){
       <div class="tcard-qrange">${t.qs}</div>
       <div class="tcard-bar-wrap"><div class="tcard-bar" id="tbar-${i}" style="width:0%"></div></div>
       <div class="tcard-links">
-        <a class="tcard-link" href="${t.file}" onclick="event.stopPropagation()">
+        <a class="tcard-link" href="${buildUrl(t.file)}" onclick="event.stopPropagation()">
           <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><path d="M14 1H6a1 1 0 0 0-1 1v3H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-3h3a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM9 13H2V6h3v3a1 1 0 0 0 1 1h3v3zm5-4H6V2h8v7z"/></svg>
           ${t.file.split('/').pop()}
         </a>
-        ${t.demo?`<a class="tcard-link" href="${t.demo}" onclick="event.stopPropagation()">
+        ${t.demo?`<a class="tcard-link" href="${buildUrl(t.demo)}" onclick="event.stopPropagation()">
           <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3L14 8 6 13V3z"/></svg>
-          ${t.demo.split('/').pop()}
+          ${t.demo}
         </a>`:''}
       </div>`;
     grid.appendChild(d);
@@ -415,7 +434,7 @@ function buildDemosGrid(){
   DEMOS.forEach(d=>{
     const el = document.createElement('a');
     el.className='dcard';
-    el.href=d.path;
+    el.href=buildUrl(d.id);
     el.innerHTML=`
       <div class="dcard-head">
         <div class="dcard-icon">${d.icon}</div>
