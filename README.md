@@ -7,8 +7,8 @@ Built as a junior→middle transition reference.
 
 > Based on a real first-round recruitment agency screen covering all required sections:
 > Java memory model · Collections · Concurrency · Spring · JPA · Databases.
-- **[original questions file (pdf)](first-round-interview-recruitment-agency-questions.pdf)**
-- **[numbering questions file (md)](numbering-questions-readme.md)**
+- **[original questions file (pdf)](docs/assets/first-round-interview-recruitment-agency-questions.pdf)**
+- **[numbering questions file (md)](helpers-files/numbering-questions-readme.md)**
 
 ---
 
@@ -134,7 +134,7 @@ demo-0N-topic/
 
 ## Interview scorecard
 
-The file [interview-scorecard/scorecard-template.md](interview-scorecard/scorecard-template.md) is a markdown version of the original recruiter screen. Use it to:
+The file [interview-scorecard/scorecard-template.md](helpers-files/scorecard-template.md) is a markdown version of the original recruiter screen. Use it to:
 
 - self-assess after each theory pass (rate yourself 1–5 per section)
 - mock-interview with a peer (fill in as the "interviewer")

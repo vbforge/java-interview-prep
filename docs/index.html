@@ -197,6 +197,7 @@ footer{padding:2rem 1.5rem 1.5rem;border-top:0.5px solid var(--border);display:f
     <a class="nav-link" href="#section-demos">demos</a>
     <a class="nav-link" href="#section-tracker">tracker</a>
     <a class="nav-link" href="#section-scorecard">scorecard</a>
+    <a class="nav-link" href="#section-resources">resources</a>
     <a class="nav-link" href="https://github.com/vbforge/java-interview-prep" target="_blank">github ↗</a>
   </div>
 </nav>
@@ -303,6 +304,38 @@ footer{padding:2rem 1.5rem 1.5rem;border-top:0.5px solid var(--border);display:f
     </div>
   </div>
 
+  <!-- RESOURCES -->
+  <div id="section-resources">
+    <div class="sec-head">
+      <span class="sec-label">Additional resources</span>
+      <span class="sec-count">Original materials</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:2.5rem">
+      <a href="numbering-questions.html" class="tcard" style="text-decoration:none">
+        <div class="tcard-top">
+          <span class="tcard-num">📋</span>
+          <span class="tcard-badge badge-done">ready</span>
+        </div>
+        <div class="tcard-title">Numbered questions list</div>
+        <div class="tcard-qrange">All 89 questions with numbering</div>
+        <div class="tcard-links">
+          <span class="tcard-link" style="opacity:0.6">View the full question list →</span>
+        </div>
+      </a>
+      <a href="assets/first-round-interview-recruitment-agency-questions.pdf" class="tcard" style="text-decoration:none" target="_blank">
+        <div class="tcard-top">
+          <span class="tcard-num">📄</span>
+          <span class="tcard-badge badge-done">PDF</span>
+        </div>
+        <div class="tcard-title">Original recruiter screen</div>
+        <div class="tcard-qrange">First-round interview questions (PDF)</div>
+        <div class="tcard-links">
+          <span class="tcard-link" style="opacity:0.6">Open PDF →</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
 </div>
 
 <footer>
@@ -324,24 +357,21 @@ footer{padding:2rem 1.5rem 1.5rem;border-top:0.5px solid var(--border);display:f
 
 <script>
 // ─── CONFIGURATION ──────────────────────────────────────────────
-// GitHub Pages base URL
 const GITHUB_REPO = 'vbforge/java-interview-prep';
 
-// Build URL: theory files are HTML files in the same folder (docs/)
 function buildUrl(path) {
-  // If path starts with http or https, return as is
   if (path.startsWith('http://') || path.startsWith('https://')) {
     return path;
   }
-  // If path starts with #, it's an anchor link
   if (path.startsWith('#')) {
     return path;
   }
-  // For theory files (.html), they are in the same folder as index.html
   if (path.endsWith('.html')) {
     return path;
   }
-  // For demos (folders), link to GitHub repo view
+  if (path.endsWith('.pdf')) {
+    return path;
+  }
   return `https://github.com/${GITHUB_REPO}/tree/main/${path}`;
 }
 
@@ -534,7 +564,6 @@ function tick(){
     if (pcEl) pcEl.textContent=`${done}/${g.total}`;
     total+=done;
 
-    // theory card badge + bar
     const ti = THEORY.findIndex(t=>t.qStart===g.qs[0].n || (g.id==='g8'&&t.num==='10'));
     if(ti>=0){
       const bar = document.getElementById('tbar-'+ti);
@@ -548,7 +577,6 @@ function tick(){
     }
   });
 
-  // stats
   const statDone = document.getElementById('stat-done');
   const trackerLabel = document.getElementById('tracker-label');
   const trackerCount = document.getElementById('tracker-count');
@@ -557,7 +585,6 @@ function tick(){
   if (trackerLabel) trackerLabel.textContent=`${total} / 89`;
   if (trackerCount) trackerCount.textContent=`${total} / 89`;
 
-  // ring
   const pct = total/89;
   const circ = 213.6;
   const ringArc = document.getElementById('ring-arc');
