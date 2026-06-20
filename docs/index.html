@@ -324,12 +324,10 @@ footer{padding:2rem 1.5rem 1.5rem;border-top:0.5px solid var(--border);display:f
 
 <script>
 // ─── CONFIGURATION ──────────────────────────────────────────────
-// GitHub Pages base URL - the site is at https://vbforge.github.io/java-interview-prep/
+// GitHub Pages base URL
 const GITHUB_REPO = 'vbforge/java-interview-prep';
-const BASE_PATH = '/java-interview-prep';
 
-// For files that GitHub Pages can't serve (like demo folders outside docs/),
-// we link directly to GitHub
+// Build URL: theory files are HTML files in the same folder (docs/)
 function buildUrl(path) {
   // If path starts with http or https, return as is
   if (path.startsWith('http://') || path.startsWith('https://')) {
@@ -339,9 +337,9 @@ function buildUrl(path) {
   if (path.startsWith('#')) {
     return path;
   }
-  // For theory files (.md), link to raw GitHub content
-  if (path.endsWith('.md')) {
-    return `https://raw.githubusercontent.com/${GITHUB_REPO}/main/${path}`;
+  // For theory files (.html), they are in the same folder as index.html
+  if (path.endsWith('.html')) {
+    return path;
   }
   // For demos (folders), link to GitHub repo view
   return `https://github.com/${GITHUB_REPO}/tree/main/${path}`;
@@ -350,16 +348,16 @@ function buildUrl(path) {
 // ─── DATA ──────────────────────────────────────────────────────
 
 const THEORY = [
-  {num:'01',title:'JVM Memory',qs:'Q1–Q8',qStart:1,qEnd:8,file:'theory/01-jvm-memory.html',demo:'demo-01-jvm-memory'},
-  {num:'02',title:'Data types & Strings',qs:'Q9–Q17',qStart:9,qEnd:17,file:'theory/02-data-types-strings.md',demo:null},
-  {num:'03',title:'OOP, Inheritance & Generics',qs:'Q18–Q27',qStart:18,qEnd:27,file:'theory/03-oop-generics.md',demo:null},
-  {num:'04',title:'Collections — List',qs:'Q28–Q33',qStart:28,qEnd:33,file:'theory/04-collections-list.md',demo:'demo-02-collections'},
-  {num:'05',title:'Collections — HashMap',qs:'Q34–Q44',qStart:34,qEnd:44,file:'theory/05-collections-hashmap.md',demo:'demo-02-collections'},
-  {num:'06',title:'Streams & Lambdas',qs:'Q45–Q52',qStart:45,qEnd:52,file:'theory/06-streams-lambdas.md',demo:'demo-03-streams'},
-  {num:'07',title:'Concurrency',qs:'Q53–Q63',qStart:53,qEnd:63,file:'theory/07-concurrency.md',demo:'demo-04-concurrency'},
-  {num:'08',title:'Spring core & web',qs:'Q64–Q77',qStart:64,qEnd:77,file:'theory/08-spring-core-web.md',demo:'demo-05-spring-core'},
-  {num:'09',title:'JPA & databases',qs:'Q78–Q87',qStart:78,qEnd:87,file:'theory/09-jpa-databases.md',demo:'demo-06-spring-data'},
-  {num:'10',title:'Design patterns',qs:'Q87–Q89',qStart:88,qEnd:89,file:'theory/10-design-patterns.md',demo:'demo-07-patterns'},
+  {num:'01',title:'JVM Memory',qs:'Q1–Q8',qStart:1,qEnd:8,file:'01-jvm-memory.html',demo:'demo-01-jvm-memory'},
+  {num:'02',title:'Data types & Strings',qs:'Q9–Q17',qStart:9,qEnd:17,file:'02-data-types-strings.html',demo:null},
+  {num:'03',title:'OOP, Inheritance & Generics',qs:'Q18–Q27',qStart:18,qEnd:27,file:'03-oop-generics.html',demo:null},
+  {num:'04',title:'Collections — List',qs:'Q28–Q33',qStart:28,qEnd:33,file:'04-collections-list.html',demo:'demo-02-collections'},
+  {num:'05',title:'Collections — HashMap',qs:'Q34–Q44',qStart:34,qEnd:44,file:'05-collections-hashmap.html',demo:'demo-02-collections'},
+  {num:'06',title:'Streams & Lambdas',qs:'Q45–Q52',qStart:45,qEnd:52,file:'06-streams-lambdas.html',demo:'demo-03-streams'},
+  {num:'07',title:'Concurrency',qs:'Q53–Q63',qStart:53,qEnd:63,file:'07-concurrency.html',demo:'demo-04-concurrency'},
+  {num:'08',title:'Spring core & web',qs:'Q64–Q77',qStart:64,qEnd:77,file:'08-spring-core-web.html',demo:'demo-05-spring-core'},
+  {num:'09',title:'JPA & databases',qs:'Q78–Q87',qStart:78,qEnd:87,file:'09-jpa-databases.html',demo:'demo-06-spring-data'},
+  {num:'10',title:'Design patterns',qs:'Q87–Q89',qStart:88,qEnd:89,file:'10-design-patterns.html',demo:'demo-07-patterns'},
 ];
 
 const DEMOS = [
@@ -409,8 +407,6 @@ function buildTheoryGrid(){
     const d = document.createElement('a');
     d.className='tcard';
     d.href=buildUrl(t.file);
-    d.target='_blank';
-    d.rel='noopener noreferrer';
     d.innerHTML=`
       <div class="tcard-top">
         <span class="tcard-num">theory/${t.num}</span>
@@ -420,11 +416,11 @@ function buildTheoryGrid(){
       <div class="tcard-qrange">${t.qs}</div>
       <div class="tcard-bar-wrap"><div class="tcard-bar" id="tbar-${i}" style="width:0%"></div></div>
       <div class="tcard-links">
-        <a class="tcard-link" href="${buildUrl(t.file)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">
+        <a class="tcard-link" href="${buildUrl(t.file)}" onclick="event.stopPropagation()">
           <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><path d="M14 1H6a1 1 0 0 0-1 1v3H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-3h3a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM9 13H2V6h3v3a1 1 0 0 0 1 1h3v3zm5-4H6V2h8v7z"/></svg>
-          ${t.file.split('/').pop()}
+          ${t.file}
         </a>
-        ${t.demo?`<a class="tcard-link" href="${buildUrl(t.demo)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">
+        ${t.demo?`<a class="tcard-link" href="${buildUrl(t.demo)}" onclick="event.stopPropagation()">
           <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3L14 8 6 13V3z"/></svg>
           ${t.demo}
         </a>`:''}
@@ -440,8 +436,6 @@ function buildDemosGrid(){
     const el = document.createElement('a');
     el.className='dcard';
     el.href=buildUrl(d.id);
-    el.target='_blank';
-    el.rel='noopener noreferrer';
     el.innerHTML=`
       <div class="dcard-head">
         <div class="dcard-icon">${d.icon}</div>
