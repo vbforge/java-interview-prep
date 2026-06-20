@@ -55,7 +55,7 @@ java-interview-prep/
 
 | File | Topic | Questions |
 |------|-------|-----------|
-| [01-jvm-memory.md](theory/01-jvm-memory.md) | JVM memory, GC, G1 | Q1–Q8     |
+| [01-jvm-memory.md](helpers-files/01-jvm-memory.md) | JVM memory, GC, G1 | Q1–Q8     |
 | [02-data-types-strings.md](theory/02-data-types-strings.md) | Primitives, boxing, String pool | Q9–Q17    |
 | [03-oop-generics.md](theory/03-oop-generics.md) | Inheritance, interfaces, generics | Q18–Q27   |
 | [04-collections-list.md](theory/04-collections-list.md) | List, ArrayList, LinkedList, Iterator | Q28–Q33   |

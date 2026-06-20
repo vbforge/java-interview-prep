@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vbforge / java-interview-prep — JVM Memory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0e1a;
+  --bg2:#0f1629;
+  --bg3:#141d35;
+  --bg4:#1a2540;
+  --border:#1e2d50;
+  --border2:#243460;
+  --text:#e2e8f4;
+  --text2:#8899bb;
+  --text3:#4a5a7a;
+  --cyan:#00d9ff;
+  --cyan2:#00b8d9;
+  --cyan-dim:rgba(0,217,255,0.08);
+  --green:#22c55e;
+  --green-dim:rgba(34,197,94,0.08);
+  --amber:#f59e0b;
+  --amber-dim:rgba(245,158,11,0.08);
+  --red:#ef4444;
+  --red-dim:rgba(239,68,68,0.08);
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Inter',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;min-height:100vh}
+
+/* ── LAYOUT ── */
+.page{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem}
+
+/* ── NAV ── */
+nav{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 1.5rem;border-bottom:0.5px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.nav-logo{width:28px;height:28px;flex-shrink:0}
+.nav-title{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--text)}
+.nav-title span{color:var(--cyan)}
+.nav-links{display:flex;gap:4px}
+.nav-link{font-family:var(--mono);font-size:11px;color:var(--text2);text-decoration:none;padding:4px 10px;border-radius:5px;border:0.5px solid transparent;transition:all .15s}
+.nav-link:hover{color:var(--text);border-color:var(--border2);background:var(--bg3)}
+.nav-link.active{color:var(--cyan);border-color:var(--border2)}
+
+/* ── THEORY CONTENT ── */
+.theory-header{
+  padding:2rem 0 1.5rem;
+  border-bottom:0.5px solid var(--border);
+  margin-bottom:2rem;
+}
+.theory-header h1{
+  font-family:var(--mono);
+  font-size:28px;
+  font-weight:600;
+  margin-bottom:0.5rem;
+  color:var(--text);
+}
+.theory-header h1 em{font-style:normal;color:var(--cyan)}
+.theory-meta{
+  display:flex;
+  gap:1.5rem;
+  flex-wrap:wrap;
+  color:var(--text3);
+  font-size:12px;
+  font-family:var(--mono);
+  margin-top:0.5rem;
+}
+.theory-meta a{color:var(--cyan2);text-decoration:none}
+.theory-meta a:hover{color:var(--cyan)}
+.badge-skip{
+  background:var(--amber-dim);
+  color:var(--amber);
+  padding:2px 10px;
+  border-radius:4px;
+  font-size:10px;
+  border:0.5px solid rgba(245,158,11,0.2);
+}
+
+/* ── Q&A BLOCKS ── */
+.qa-block{
+  margin-bottom:2.5rem;
+  padding-bottom:2rem;
+  border-bottom:0.5px solid var(--border);
+}
+.qa-block:last-child{border-bottom:none}
+.qa-number{
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--cyan);
+  margin-bottom:0.3rem;
+}
+.qa-title{
+  font-size:18px;
+  font-weight:600;
+  color:var(--text);
+  margin-bottom:1rem;
+  font-family:var(--sans);
+}
+.qa-section{
+  margin-bottom:1rem;
+}
+.qa-section h3{
+  font-size:13px;
+  font-weight:600;
+  color:var(--text2);
+  margin-bottom:0.3rem;
+  font-family:var(--mono);
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+}
+.qa-section p{
+  color:var(--text2);
+  line-height:1.7;
+  font-size:14px;
+}
+.qa-section ul, .qa-section ol{
+  color:var(--text2);
+  line-height:1.7;
+  padding-left:1.5rem;
+  margin:0.5rem 0;
+}
+.qa-section li{
+  margin-bottom:0.3rem;
+}
+.qa-section code{
+  font-family:var(--mono);
+  font-size:13px;
+  background:var(--bg3);
+  padding:0.1rem 0.4rem;
+  border-radius:3px;
+  color:var(--cyan2);
+}
+.qa-section pre{
+  background:var(--bg3);
+  border:0.5px solid var(--border);
+  border-radius:6px;
+  padding:1rem 1.2rem;
+  overflow-x:auto;
+  margin:0.8rem 0;
+}
+.qa-section pre code{
+  font-family:var(--mono);
+  font-size:13px;
+  color:var(--text2);
+  background:transparent;
+  padding:0;
+  line-height:1.6;
+}
+.qa-section blockquote{
+  border-left:2px solid var(--cyan);
+  padding-left:1rem;
+  margin:0.8rem 0;
+  color:var(--text2);
+}
+.qa-section blockquote strong{
+  color:var(--cyan);
+}
+.qa-section table{
+  width:100%;
+  border-collapse:collapse;
+  margin:0.8rem 0;
+  font-size:13px;
+}
+.qa-section th{
+  background:var(--bg3);
+  color:var(--text);
+  padding:0.5rem 0.8rem;
+  text-align:left;
+  font-weight:500;
+  border:0.5px solid var(--border);
+}
+.qa-section td{
+  padding:0.5rem 0.8rem;
+  border:0.5px solid var(--border);
+  color:var(--text2);
+}
+.qa-section tr:nth-child(even){background:var(--bg2)}
+
+/* ── JUNIOR NOTE ── */
+.junior-note{
+  background:var(--cyan-dim);
+  border:0.5px solid rgba(0,217,255,0.15);
+  border-radius:6px;
+  padding:0.8rem 1rem;
+  margin:1rem 0;
+  color:var(--text2);
+  font-size:13px;
+}
+.junior-note strong{
+  color:var(--cyan);
+}
+
+/* ── CODE HIGHLIGHT ── */
+.hl-comment{color:#4a5a7a}
+.hl-keyword{color:var(--cyan2)}
+.hl-string{color:#a3e635}
+.hl-type{color:#c084fc}
+.hl-method{color:#f472b6}
+
+/* ── FOOTER ── */
+footer{padding:1.5rem 1.5rem;border-top:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem}
+.footer-meta{font-family:var(--mono);font-size:11px;color:var(--text3)}
+.footer-link{font-family:var(--mono);font-size:11px;color:var(--text3);text-decoration:none}
+.footer-link:hover{color:var(--cyan)}
+
+/* ── BACK TO TOP ── */
+.back-top{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--cyan2);
+  text-decoration:none;
+  padding:6px 12px;
+  border-radius:4px;
+  border:0.5px solid var(--border2);
+  transition:all .15s;
+}
+.back-top:hover{color:var(--cyan);border-color:var(--cyan)}
+
+/* scrollbar */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <svg class="nav-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="70" fill="#0f172a" stroke="#64748b" stroke-width="1"/>
+      <text x="92" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="end" fill="#e2e8f0" letter-spacing="1px">VBF</text>
+      <circle cx="100" cy="99" r="8" fill="none" stroke="#00d9ff" stroke-width="2"/>
+      <path d="M 96 99 L 99 102 L 104 95" fill="none" stroke="#00d9ff" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="108" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="start" fill="#e2e8f0" letter-spacing="1px">RGE</text>
+    </svg>
+    <span class="nav-title">vbforge / <span>java-interview-prep</span></span>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="../index.html">home</a>
+    <a class="nav-link active" href="#">theory</a>
+    <a class="nav-link" href="../index.html#section-demos">demos</a>
+    <a class="nav-link" href="https://github.com/vbforge/java-interview-prep" target="_blank">github ↗</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="theory-header">
+    <h1>01 — <em>JVM Memory</em></h1>
+    <div class="theory-meta">
+      <span>📚 Questions: <strong>Q1–Q8</strong></span>
+      <span>🧪 Demo: <a href="https://github.com/vbforge/java-interview-prep/tree/main/demo-01-jvm-memory">demo-01-jvm-memory</a></span>
+      <span class="badge-skip">⭐ Sections that can't be skipped</span>
+    </div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="qa-block">
+    <div class="qa-number">Q1</div>
+    <div class="qa-title">What kinds of memory exist in Java? What is the difference between them? Which is used when?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>The JVM divides memory into two main areas: the <strong>stack</strong> and the <strong>heap</strong>. The stack holds method call frames and local variables; the heap holds all objects. Beyond those two, the JVM also uses <strong>Metaspace</strong> (class metadata), the <strong>Code Cache</strong> (JIT-compiled native code), and <strong>native/off-heap memory</strong> (used by NIO buffers, for example).</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <table>
+        <thead><tr><th>Area</th><th>What lives there</th><th>Lifecycle</th></tr></thead>
+        <tbody>
+          <tr><td>Stack</td><td>Primitive local variables, references (not the objects they point to), method call frames</td><td>Created per thread; a frame is pushed on each method call and popped on return</td></tr>
+          <tr><td>Heap</td><td>All objects created with <code>new</code>, their instance fields</td><td>From <code>new</code> until the GC determines no references remain</td></tr>
+          <tr><td>Metaspace (Java 8+)</td><td>Class definitions, method bytecode, static fields</td><td>Lives as long as the ClassLoader that loaded the class</td></tr>
+          <tr><td>Code Cache</td><td>Machine code produced by the JIT compiler</td><td>Managed by the JVM; old code is evicted when the cache is full</td></tr>
+          <tr><td>Off-heap</td><td><code>ByteBuffer.allocateDirect()</code>, memory-mapped files</td><td>Managed manually or via <code>Cleaner</code>; not subject to GC pauses</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> A common mistake is thinking the <em>object</em> lives on the stack because the <em>variable</em> is declared inside a method. The variable (a reference — just an address) lives on the stack. The object it points to always lives on the heap. The only exception is scalar replacement by the JIT after escape analysis, but that is a JVM optimisation, not something you control.
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="qa-block">
+    <div class="qa-number">Q2</div>
+    <div class="qa-title">What is the stack for, and what is stored in it?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>The stack tracks the execution of method calls. Each thread has its own stack. When a method is called, the JVM pushes a new <strong>stack frame</strong> onto that thread's stack. When the method returns, the frame is popped. If the call depth exceeds the stack limit you get <code>StackOverflowError</code>.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p>Each stack frame contains:</p>
+      <ul>
+        <li><strong>Local variable array</strong> — all primitive variables declared in the method (<code>int</code>, <code>long</code>, <code>boolean</code>, etc.) and all reference variables (i.e. the pointer, not the object).</li>
+        <li><strong>Operand stack</strong> — a working area the JVM uses to evaluate expressions (like a scratch pad for bytecode instructions).</li>
+        <li><strong>Reference to the runtime constant pool</strong> — so the method can resolve symbolic names.</li>
+      </ul>
+      
+      <pre><code><span class="hl-keyword">void</span> <span class="hl-method">example</span>() {
+    <span class="hl-type">int</span> x = <span class="hl-number">42</span>;           <span class="hl-comment">// x lives on the stack (primitive)</span>
+    <span class="hl-type">String</span> s = <span class="hl-string">"hello"</span>;   <span class="hl-comment">// the reference s lives on the stack;</span>
+                          <span class="hl-comment">// the String object lives on the heap</span>
+    <span class="hl-method">helper</span>(x);            <span class="hl-comment">// pushes a new frame; x is copied by value</span>
+}</code></pre>
+
+      <p>The stack is <strong>thread-local</strong> — no two threads share a stack, which is why local variables are inherently thread-safe.</p>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Interviewers sometimes ask "where does a local <code>int</code> live vs a field <code>int</code>?" Local primitive → stack. Instance field primitive → heap (inside the object). Static field primitive → Metaspace (inside the class object).
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="qa-block">
+    <div class="qa-number">Q3</div>
+    <div class="qa-title">What regions is the heap divided into?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>The heap is split into <strong>Young Generation</strong> (Eden + two Survivor spaces) and <strong>Old Generation</strong> (Tenured). Class metadata lives in <strong>Metaspace</strong>, which is technically off-heap but logically part of the memory model discussion.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code>Heap
+├── Young Generation
+│   ├── Eden          ← new objects are allocated here
+│   ├── Survivor S0   ← objects that survived at least one Minor GC
+│   └── Survivor S1   ← only one Survivor is active at a time
+└── Old Generation (Tenured)
+    └── long-lived objects promoted from Young</code></pre>
+
+      <p><strong>Why this split exists — the generational hypothesis:</strong><br>
+      Most objects die young. By collecting the small, frequently-dying Young Generation quickly (Minor GC) rather than scanning the entire heap every time, the GC can keep pause times short. Only objects that survive enough Minor GC cycles get promoted to the Old Generation and are collected less frequently (Major / Full GC).</p>
+
+      <p><strong>Promotion threshold:</strong> controlled by <code>-XX:MaxTenuringThreshold</code> (default 15). After surviving that many Minor GCs, an object is promoted to Old.</p>
+
+      <p><strong>Metaspace</strong> (replaced PermGen in Java 8): stores class metadata, interned strings (moved to heap in Java 7+), and static variables. It grows dynamically in native memory by default; you can cap it with <code>-XX:MaxMetaspaceSize</code>.</p>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> PermGen no longer exists as of Java 8. If you see <code>OutOfMemoryError: PermGen space</code> that is a Java 7 or earlier application. On Java 8+ the equivalent is <code>OutOfMemoryError: Metaspace</code>.
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="qa-block">
+    <div class="qa-number">Q4</div>
+    <div class="qa-title">Explain garbage collection in Java.</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>Garbage collection is the automatic process of identifying objects on the heap that are no longer reachable from any live thread and reclaiming their memory. The programmer does not call <code>free()</code> — the GC runs periodically, finds unreachable objects, and reclaims their space.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p>The GC process has two logical phases:</p>
+      <ol>
+        <li><strong>Mark</strong> — starting from a set of <strong>GC roots</strong> (local variables on all thread stacks, static fields, JNI references), the GC traverses the object graph and marks every reachable object.</li>
+        <li><strong>Sweep / Compact</strong> — unmarked objects are declared garbage. Depending on the collector, memory is either swept in place (leaving gaps) or compacted (live objects are moved together to eliminate fragmentation).</li>
+      </ol>
+
+      <p><strong>GC roots</strong> — the starting points of reachability:</p>
+      <ul>
+        <li>Local variables and method parameters on live thread stacks</li>
+        <li>Static fields of loaded classes</li>
+        <li>References held by JNI native code</li>
+        <li>Objects referenced by synchronisation monitors</li>
+      </ul>
+
+      <p><strong>Minor GC</strong> — collects only the Young Generation. Fast, happens frequently.<br>
+      <strong>Major GC</strong> — collects the Old Generation. Slower, less frequent.<br>
+      <strong>Full GC</strong> — collects the entire heap including Metaspace. Can cause a noticeable pause; something you want to minimise in production.</p>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> You cannot force a GC with <code>System.gc()</code> — that is only a <em>hint</em> to the JVM and may be ignored entirely (and usually should be). Never rely on it in production code.
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="qa-block">
+    <div class="qa-number">Q5</div>
+    <div class="qa-title">Which garbage collectors do you know?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>The main collectors in modern Java are <strong>Serial</strong>, <strong>Parallel</strong>, <strong>CMS</strong> (deprecated), <strong>G1</strong> (default since Java 9), and <strong>ZGC</strong> / <strong>Shenandoah</strong> (low-latency, available from Java 11/15+).</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <table>
+        <thead><tr><th>Collector</th><th>Flag</th><th>Strengths</th><th>Weaknesses</th><th>Use case</th></tr></thead>
+        <tbody>
+          <tr><td>Serial</td><td><code>-XX:+UseSerialGC</code></td><td>Simple, low overhead</td><td>Stop-the-world pauses on full heap</td><td>Single-core, tiny heaps, CLI tools</td></tr>
+          <tr><td>Parallel (Throughput)</td><td><code>-XX:+UseParallelGC</code></td><td>High throughput, uses all cores</td><td>Longer pauses acceptable</td><td>Batch jobs, offline processing</td></tr>
+          <tr><td>CMS</td><td><code>-XX:+UseConcMarkSweepGC</code></td><td>Concurrent, low pause</td><td>Fragmentation, deprecated Java 9, removed Java 14</td><td>Legacy apps</td></tr>
+          <tr><td>G1</td><td><code>-XX:+UseG1GC</code></td><td>Balanced pause/throughput, region-based</td><td>Some concurrent overhead</td><td>General-purpose, default since Java 9</td></tr>
+          <tr><td>ZGC</td><td><code>-XX:+UseZGC</code></td><td>Sub-millisecond pauses, scales to TB heaps</td><td>Higher CPU overhead</td><td>Latency-sensitive services</td></tr>
+          <tr><td>Shenandoah</td><td><code>-XX:+UseShenandoahGC</code></td><td>Similar to ZGC, Red Hat maintained</td><td>Not in all JDK distributions</td><td>Latency-sensitive services</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> In most Spring Boot microservice interviews the answer they want is "G1 is the default and I know roughly how it works." You do not need to memorise all flags, but you should be able to say why you might switch away from G1 (e.g. to ZGC for a latency-critical service).
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="qa-block">
+    <div class="qa-number">Q6</div>
+    <div class="qa-title">How does the collector know an object has become garbage?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>An object is garbage when it is <strong>not reachable</strong> from any GC root. The GC uses a <strong>mark-and-trace</strong> (reachability) algorithm, not reference counting, so cyclic references are handled correctly.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Reachability, not reference counting.</strong><br>
+      Some languages (Python, Objective-C) use reference counting: when the count hits zero, the object is freed. Java does not. It uses a full reachability trace from GC roots, which correctly handles cycles:</p>
+
+      <pre><code><span class="hl-keyword">class</span> <span class="hl-type">Node</span> { <span class="hl-type">Node</span> next; }
+
+<span class="hl-type">Node</span> a = <span class="hl-keyword">new</span> <span class="hl-type">Node</span>();
+<span class="hl-type">Node</span> b = <span class="hl-keyword">new</span> <span class="hl-type">Node</span>();
+a.next = b;
+b.next = a;   <span class="hl-comment">// cycle</span>
+a = <span class="hl-keyword">null</span>;
+b = <span class="hl-keyword">null</span>;
+<span class="hl-comment">// a and b reference each other but are unreachable from any root.</span>
+<span class="hl-comment">// A reference-counting collector would leak them.</span>
+<span class="hl-comment">// Java's GC collects them correctly.</span></code></pre>
+
+      <p><strong>Reachability levels</strong> (from <code>java.lang.ref</code>):</p>
+      <table>
+        <thead><tr><th>Level</th><th>Class</th><th>Collected when</th><th>Typical use</th></tr></thead>
+        <tbody>
+          <tr><td>Strong</td><td>Normal reference</td><td>Never while reachable</td><td>Everyday objects</td></tr>
+          <tr><td>Soft</td><td><code>SoftReference</code></td><td>When JVM needs memory</td><td>Caches</td></tr>
+          <tr><td>Weak</td><td><code>WeakReference</code></td><td>Next GC cycle when no strong refs</td><td><code>WeakHashMap</code>, listeners</td></tr>
+          <tr><td>Phantom</td><td><code>PhantomReference</code></td><td>After finalization</td><td>Cleanup/off-heap resource tracking</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> <code>finalize()</code> is deprecated since Java 9 and removed in Java 18. Do not use it. For cleanup logic use <code>try-with-resources</code> and <code>AutoCloseable</code> instead.
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="qa-block">
+    <div class="qa-number">Q7</div>
+    <div class="qa-title">Do primitives need to be collected?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>No</strong> — primitives that are local variables live on the stack and are automatically discarded when their method frame is popped. No GC involvement needed.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p>Three places a primitive can live, and what happens to it:</p>
+      <table>
+        <thead><tr><th>Where</th><th>Example</th><th>How memory is reclaimed</th></tr></thead>
+        <tbody>
+          <tr><td>Local variable in a method</td><td><code>int x = 5;</code></td><td>Stack frame is popped when method returns — instant, no GC</td></tr>
+          <tr><td>Instance field of an object</td><td><code>class Foo { int x; }</code></td><td>Lives inside the object on the heap; reclaimed when the <em>object</em> is GC'd</td></tr>
+          <tr><td>Static field</td><td><code>static int COUNT;</code></td><td>Lives in Metaspace; reclaimed only when the class is unloaded</td></tr>
+        </tbody>
+      </table>
+
+      <p>The GC collects <em>objects</em> (heap-allocated). Primitives are not objects — they have no header, no identity, no reference. When a primitive is a field, it is part of the object's memory block and is freed as a unit with the object, not tracked individually.</p>
+
+      <p><strong>Autoboxed primitives are a different story:</strong></p>
+      <pre><code><span class="hl-type">Integer</span> i = <span class="hl-number">42</span>;  <span class="hl-comment">// autoboxed — an Integer object IS on the heap and WILL be GC'd</span>
+<span class="hl-type">int</span>    j = <span class="hl-number">42</span>;   <span class="hl-comment">// plain primitive — stack or field, never individually GC'd</span></code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> This is why autoboxing in tight loops (e.g. using <code>Integer</code> instead of <code>int</code> as a counter) creates GC pressure. Prefer primitive streams (<code>IntStream</code>, <code>LongStream</code>) over <code>Stream&lt;Integer&gt;</code> for performance-critical code.
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="qa-block">
+    <div class="qa-number">Q8</div>
+    <div class="qa-title">How does G1 work?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>G1 (Garbage-First) divides the heap into many equal-sized <strong>regions</strong> (typically 1–32 MB each) instead of one contiguous Young/Old area. It predicts which regions contain the most garbage and collects those first — hence "Garbage-First" — while trying to meet a configurable pause-time target.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Region layout:</strong></p>
+      <pre><code>Heap (e.g. 4 GB)
+┌────┬────┬────┬────┬────┬────┬────┬────┬────┐
+│ E  │ E  │ S  │ O  │ O  │ H  │ E  │ O  │ ...  (2048 regions total)
+└────┴────┴────┴────┴────┴────┴────┴────┴────┘
+  E = Eden   S = Survivor   O = Old   H = Humongous (large objects)</code></pre>
+
+      <p>Regions are dynamically assigned roles — a region that was Old can become Eden after collection. There are no fixed generational boundaries in the heap layout.</p>
+
+      <p><strong>Collection phases:</strong></p>
+      <ol>
+        <li><strong>Young-only GC (Minor)</strong> — collects Eden and Survivor regions. Stop-the-world but short, because only Young regions are in scope.</li>
+        <li><strong>Concurrent Marking</strong> — runs alongside the application (mostly). Builds a live-object map of the Old regions without a long pause.
+          <ul>
+            <li>Initial Mark (STW, piggybacks on a Minor GC)</li>
+            <li>Root Region Scan</li>
+            <li>Concurrent Mark</li>
+            <li>Remark (STW, short)</li>
+            <li>Cleanup (STW, short + concurrent)</li>
+          </ul>
+        </li>
+        <li><strong>Mixed GC</strong> — after marking completes, G1 collects all Young regions <em>plus</em> a selection of Old regions that are most full of garbage (highest garbage-to-live ratio). This is the "Garbage-First" selection.</li>
+        <li><strong>Full GC</strong> — last resort, single-threaded (parallel since Java 10), compacts the entire heap. Indicates the heap is too small or the mixed GC cannot keep up.</li>
+      </ol>
+
+      <p><strong>Key tuning knob:</strong> <code>-XX:MaxGCPauseMillis=200</code> (default 200 ms). G1 adjusts the number of regions it collects per cycle to try to stay within this target. It is a <em>goal</em>, not a hard guarantee.</p>
+
+      <p><strong>Humongous objects:</strong> Objects larger than 50% of a region are allocated directly in one or more contiguous Old regions. They are collected during the Cleanup phase and can be a source of fragmentation if the heap has many of them.</p>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> The most common interview follow-up is "what would you change if you were seeing long GC pauses?" Good answer: increase heap size (<code>-Xmx</code>), lower <code>-XX:MaxGCPauseMillis</code> (G1 collects less per cycle), or switch to ZGC if latency is the primary concern. Never say "I'd call <code>System.gc()</code>."
+    </div>
+  </div>
+
+  <!-- CHEAT SHEET -->
+  <div class="qa-block" style="border-bottom:none;padding-bottom:0;margin-bottom:0">
+    <div class="qa-title" style="font-size:16px;color:var(--cyan)">📋 Quick-reference cheat sheet</div>
+    <div class="qa-section">
+      <pre style="background:var(--bg2);border-color:var(--border2);padding:1.2rem;border-radius:8px;font-size:13px;line-height:1.8"><code>Stack       → per thread, method frames, local primitives + references, StackOverflowError
+Heap        → all objects, divided into Young (Eden + S0 + S1) and Old
+Metaspace   → class metadata, static fields, grows in native memory
+GC roots    → thread stacks, static fields, JNI refs, monitor refs
+Reachable   → has a path from a GC root → NOT garbage
+Unreachable → no path from any GC root → garbage → collected
+
+Collectors (know these three for most interviews):
+  Parallel  → max throughput, batch jobs
+  G1        → default, balanced, region-based, pause-time target
+  ZGC       → sub-ms pauses, latency-critical services
+
+G1 key ideas:
+  - heap split into ~2048 equal regions (~1–32 MB each)
+  - regions assigned Eden / Survivor / Old / Humongous roles dynamically
+  - concurrent marking + mixed GC = collects highest-garbage Old regions first
+  - tuning knob: -XX:MaxGCPauseMillis (default 200 ms)</code></pre>
+    </div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <div style="display:flex;justify-content:space-between;margin-top:2rem;padding-top:1.5rem;border-top:0.5px solid var(--border)">
+    <span style="color:var(--text3);font-family:var(--mono);font-size:12px">← Previous</span>
+    <a href="../index.html" class="back-top">🏠 Back to home</a>
+    <a href="#" style="color:var(--text3);font-family:var(--mono);font-size:12px;text-decoration:none">Next →</a>
+  </div>
+
+</div>
+
+<footer>
+  <span class="footer-meta">vbforge · java-interview-prep · Java 21</span>
+  <a class="footer-link" href="https://github.com/vbforge/java-interview-prep">github.com/vbforge/java-interview-prep</a>
+</footer>
+
+</body>
+</html>
