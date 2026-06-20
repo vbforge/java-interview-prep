@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -323,27 +322,32 @@ footer{padding:2rem 1.5rem 1.5rem;border-top:0.5px solid var(--border);display:f
 </footer>
 
 <script>
+// ─── CONFIGURATION ──────────────────────────────────────────────
+// All paths are relative to the docs/ folder where this file lives.
+// Theory files are in ../theory/ (one level up from docs/)
+// Demo projects are in ../ (root of repo, one level up from docs/)
+
 const THEORY = [
-  {num:'01',title:'JVM Memory',qs:'Q1–Q8',qStart:1,qEnd:8,file:'theory/01-jvm-memory.md',demo:'demo-01'},
-  {num:'02',title:'Data types & Strings',qs:'Q9–Q17',qStart:9,qEnd:17,file:'theory/02-data-types-strings.md',demo:null},
-  {num:'03',title:'OOP, Inheritance & Generics',qs:'Q18–Q27',qStart:18,qEnd:27,file:'theory/03-oop-generics.md',demo:null},
-  {num:'04',title:'Collections — List',qs:'Q28–Q33',qStart:28,qEnd:33,file:'theory/04-collections-list.md',demo:'demo-02'},
-  {num:'05',title:'Collections — HashMap',qs:'Q34–Q44',qStart:34,qEnd:44,file:'theory/05-collections-hashmap.md',demo:'demo-02'},
-  {num:'06',title:'Streams & Lambdas',qs:'Q45–Q52',qStart:45,qEnd:52,file:'theory/06-streams-lambdas.md',demo:'demo-03'},
-  {num:'07',title:'Concurrency',qs:'Q53–Q63',qStart:53,qEnd:63,file:'theory/07-concurrency.md',demo:'demo-04'},
-  {num:'08',title:'Spring core & web',qs:'Q64–Q77',qStart:64,qEnd:77,file:'theory/08-spring-core-web.md',demo:'demo-05'},
-  {num:'09',title:'JPA & databases',qs:'Q78–Q87',qStart:78,qEnd:87,file:'theory/09-jpa-databases.md',demo:'demo-06'},
-  {num:'10',title:'Design patterns',qs:'Q87–Q89',qStart:88,qEnd:89,file:'theory/10-design-patterns.md',demo:'demo-07'},
+  {num:'01',title:'JVM Memory',qs:'Q1–Q8',qStart:1,qEnd:8,file:'../theory/01-jvm-memory.md',demo:'../demo-01-jvm-memory'},
+  {num:'02',title:'Data types & Strings',qs:'Q9–Q17',qStart:9,qEnd:17,file:'../theory/02-data-types-strings.md',demo:null},
+  {num:'03',title:'OOP, Inheritance & Generics',qs:'Q18–Q27',qStart:18,qEnd:27,file:'../theory/03-oop-generics.md',demo:null},
+  {num:'04',title:'Collections — List',qs:'Q28–Q33',qStart:28,qEnd:33,file:'../theory/04-collections-list.md',demo:'../demo-02-collections'},
+  {num:'05',title:'Collections — HashMap',qs:'Q34–Q44',qStart:34,qEnd:44,file:'../theory/05-collections-hashmap.md',demo:'../demo-02-collections'},
+  {num:'06',title:'Streams & Lambdas',qs:'Q45–Q52',qStart:45,qEnd:52,file:'../theory/06-streams-lambdas.md',demo:'../demo-03-streams'},
+  {num:'07',title:'Concurrency',qs:'Q53–Q63',qStart:53,qEnd:63,file:'../theory/07-concurrency.md',demo:'../demo-04-concurrency'},
+  {num:'08',title:'Spring core & web',qs:'Q64–Q77',qStart:64,qEnd:77,file:'../theory/08-spring-core-web.md',demo:'../demo-05-spring-core'},
+  {num:'09',title:'JPA & databases',qs:'Q78–Q87',qStart:78,qEnd:87,file:'../theory/09-jpa-databases.md',demo:'../demo-06-spring-data'},
+  {num:'10',title:'Design patterns',qs:'Q87–Q89',qStart:88,qEnd:89,file:'../theory/10-design-patterns.md',demo:'../demo-07-patterns'},
 ];
 
 const DEMOS = [
-  {id:'demo-01',icon:'01',title:'JVM memory',port:'8081',desc:'GC logging, heap region inspection, object lifecycle, humongous allocations.',tags:['java21','G1GC','jvm','actuator']},
-  {id:'demo-02',icon:'02',title:'Collections',port:'8082',desc:'HashMap collision demo, TreeMap ordering, iterator patterns, load factor.',tags:['java21','hashmap','treemap']},
-  {id:'demo-03',icon:'03',title:'Streams & Lambdas',port:'8083',desc:'Stream pipelines, flatMap, collectors, lazy evaluation, functional interfaces.',tags:['java21','streams','lambdas']},
-  {id:'demo-04',icon:'04',title:'Concurrency',port:'8084',desc:'Race condition demo, CAS vs synchronized, ReentrantLock patterns.',tags:['java21','threads','locks','CAS']},
-  {id:'demo-05',icon:'05',title:'Spring core',port:'8085',desc:'Bean scopes, lifecycle hooks, DI types, circular dependency resolution.',tags:['spring-boot','beans','DI']},
-  {id:'demo-06',icon:'06',title:'Spring data / JPA',port:'8086',desc:'EAGER/LAZY fetch, N+1 fix, optimistic & pessimistic locking, index demo.',tags:['spring-boot','jpa','postgres']},
-  {id:'demo-07',icon:'07',title:'Design patterns',port:'8087',desc:'Singleton, Factory, Proxy, Strategy in a Spring Boot context.',tags:['spring-boot','GoF','patterns']},
+  {id:'demo-01-jvm-memory',icon:'01',title:'JVM memory',port:'8081',desc:'GC logging, heap region inspection, object lifecycle, humongous allocations.',tags:['java21','G1GC','jvm','actuator'],path:'../demo-01-jvm-memory'},
+  {id:'demo-02-collections',icon:'02',title:'Collections',port:'8082',desc:'HashMap collision demo, TreeMap ordering, iterator patterns, load factor.',tags:['java21','hashmap','treemap'],path:'../demo-02-collections'},
+  {id:'demo-03-streams',icon:'03',title:'Streams & Lambdas',port:'8083',desc:'Stream pipelines, flatMap, collectors, lazy evaluation, functional interfaces.',tags:['java21','streams','lambdas'],path:'../demo-03-streams'},
+  {id:'demo-04-concurrency',icon:'04',title:'Concurrency',port:'8084',desc:'Race condition demo, CAS vs synchronized, ReentrantLock patterns.',tags:['java21','threads','locks','CAS'],path:'../demo-04-concurrency'},
+  {id:'demo-05-spring-core',icon:'05',title:'Spring core',port:'8085',desc:'Bean scopes, lifecycle hooks, DI types, circular dependency resolution.',tags:['spring-boot','beans','DI'],path:'../demo-05-spring-core'},
+  {id:'demo-06-spring-data',icon:'06',title:'Spring data / JPA',port:'8086',desc:'EAGER/LAZY fetch, N+1 fix, optimistic & pessimistic locking, index demo.',tags:['spring-boot','jpa','postgres'],path:'../demo-06-spring-data'},
+  {id:'demo-07-patterns',icon:'07',title:'Design patterns',port:'8087',desc:'Singleton, Factory, Proxy, Strategy in a Spring Boot context.',tags:['spring-boot','GoF','patterns'],path:'../demo-07-patterns'},
 ];
 
 const GROUPS = [
@@ -374,8 +378,11 @@ const scRatings = new Array(SC_TOPICS.length).fill(0);
 const checked = {};
 const groupOpen = {};
 
+// ─── BUILD FUNCTIONS ──────────────────────────────────────────
+
 function buildTheoryGrid(){
   const grid = document.getElementById('theory-grid');
+  if (!grid) return;
   THEORY.forEach((t,i)=>{
     const d = document.createElement('a');
     d.className='tcard';
@@ -393,9 +400,9 @@ function buildTheoryGrid(){
           <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><path d="M14 1H6a1 1 0 0 0-1 1v3H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-3h3a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM9 13H2V6h3v3a1 1 0 0 0 1 1h3v3zm5-4H6V2h8v7z"/></svg>
           ${t.file.split('/').pop()}
         </a>
-        ${t.demo?`<a class="tcard-link" href="demos/${t.demo}" onclick="event.stopPropagation()">
+        ${t.demo?`<a class="tcard-link" href="${t.demo}" onclick="event.stopPropagation()">
           <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3L14 8 6 13V3z"/></svg>
-          ${t.demo}
+          ${t.demo.split('/').pop()}
         </a>`:''}
       </div>`;
     grid.appendChild(d);
@@ -404,10 +411,11 @@ function buildTheoryGrid(){
 
 function buildDemosGrid(){
   const grid = document.getElementById('demos-grid');
+  if (!grid) return;
   DEMOS.forEach(d=>{
     const el = document.createElement('a');
     el.className='dcard';
-    el.href=`demos/${d.id}`;
+    el.href=d.path;
     el.innerHTML=`
       <div class="dcard-head">
         <div class="dcard-icon">${d.icon}</div>
@@ -424,6 +432,7 @@ function buildDemosGrid(){
 
 function buildTracker(){
   const body = document.getElementById('tracker-body');
+  if (!body) return;
   GROUPS.forEach(g=>{
     const div = document.createElement('div');
     div.className='tgroup';
@@ -448,6 +457,7 @@ function buildTracker(){
 
 function buildProgressBars(){
   const cont = document.getElementById('progress-bars');
+  if (!cont) return;
   GROUPS.forEach(g=>{
     const row = document.createElement('div');
     row.className='pbar-row';
@@ -461,6 +471,7 @@ function buildProgressBars(){
 
 function buildScorecard(){
   const body = document.getElementById('sc-body');
+  if (!body) return;
   SC_TOPICS.forEach((t,i)=>{
     const row = document.createElement('div');
     row.className='scrow';
@@ -472,9 +483,12 @@ function buildScorecard(){
   });
 }
 
+// ─── INTERACTIVE FUNCTIONS ───────────────────────────────────
+
 function toggleGroup(id){
   const qs = document.getElementById('gqs-'+id);
   const arr = document.getElementById('arr-'+id);
+  if (!qs || !arr) return;
   const open = qs.classList.toggle('open');
   arr.textContent = open ? '▼' : '▶';
   arr.style.color = open ? 'var(--cyan)' : '';
@@ -488,10 +502,16 @@ function tick(){
       return el && el.checked;
     }).length;
     const pct = Math.round(done/g.total*100);
-    document.getElementById('gm-'+g.id).textContent=`${done}/${g.total}`;
-    document.getElementById('gb-'+g.id).style.width=pct+'%';
-    document.getElementById('pb-'+g.id).style.width=pct+'%';
-    document.getElementById('pc-'+g.id).textContent=`${done}/${g.total}`;
+    
+    const gmEl = document.getElementById('gm-'+g.id);
+    const gbEl = document.getElementById('gb-'+g.id);
+    const pbEl = document.getElementById('pb-'+g.id);
+    const pcEl = document.getElementById('pc-'+g.id);
+    
+    if (gmEl) gmEl.textContent=`${done}/${g.total}`;
+    if (gbEl) gbEl.style.width=pct+'%';
+    if (pbEl) pbEl.style.width=pct+'%';
+    if (pcEl) pcEl.textContent=`${done}/${g.total}`;
     total+=done;
 
     // theory card badge + bar
@@ -509,25 +529,35 @@ function tick(){
   });
 
   // stats
-  document.getElementById('stat-done').textContent=total;
-  document.getElementById('tracker-label').textContent=`${total} / 89`;
-  document.getElementById('tracker-count').textContent=`${total} / 89`;
+  const statDone = document.getElementById('stat-done');
+  const trackerLabel = document.getElementById('tracker-label');
+  const trackerCount = document.getElementById('tracker-count');
+  
+  if (statDone) statDone.textContent=total;
+  if (trackerLabel) trackerLabel.textContent=`${total} / 89`;
+  if (trackerCount) trackerCount.textContent=`${total} / 89`;
 
   // ring
   const pct = total/89;
   const circ = 213.6;
-  document.getElementById('ring-arc').style.strokeDashoffset = circ-(circ*pct);
-  document.getElementById('ring-pct').textContent=Math.round(pct*100)+'%';
+  const ringArc = document.getElementById('ring-arc');
+  const ringPct = document.getElementById('ring-pct');
+  
+  if (ringArc) ringArc.style.strokeDashoffset = circ-(circ*pct);
+  if (ringPct) ringPct.textContent=Math.round(pct*100)+'%';
 }
 
 function rate(topic,val){
   scRatings[topic]=val;
   for(let s=1;s<=5;s++){
     const b=document.getElementById(`sc-${topic}-${s}`);
-    b.className='star'+(s<=val?' on':'');
+    if(b) b.className='star'+(s<=val?' on':'');
   }
-  document.getElementById('scl-'+topic).textContent=SC_LABELS[val]||'—';
+  const lbl = document.getElementById('scl-'+topic);
+  if(lbl) lbl.textContent=SC_LABELS[val]||'—';
 }
+
+// ─── INIT ─────────────────────────────────────────────────────
 
 buildTheoryGrid();
 buildDemosGrid();

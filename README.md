@@ -32,15 +32,14 @@ java-interview-prep/
 │   ├── 08-spring-core-web.md          # Q64–Q77
 │   ├── 09-jpa-databases.md            # Q78–Q86
 │   └── 10-design-patterns.md          # Q87–Q89
-│
-├── demos/                             # Runnable Spring Boot / Java projects
-│   ├── demo-01-jvm-memory/
-│   ├── demo-02-collections/
-│   ├── demo-03-streams/
-│   ├── demo-04-concurrency/
-│   ├── demo-05-spring-core/
-│   ├── demo-06-spring-data/
-│   └── demo-07-patterns/
+│                   
+├── demo-01-jvm-memory/                        # Runnable Spring Boot / Java projects
+├── demo-02-collections/
+├── demo-03-streams/
+├── demo-04-concurrency/
+├── demo-05-spring-core/
+├── demo-06-spring-data/
+├── demo-07-patterns/
 │
 └── interview-scorecard/
     └── scorecard-template.md          # 1–5 rating sheet from the original screen
