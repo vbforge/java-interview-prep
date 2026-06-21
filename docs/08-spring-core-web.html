@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vbforge / java-interview-prep — Spring Core & Web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0e1a;
+  --bg2:#0f1629;
+  --bg3:#141d35;
+  --bg4:#1a2540;
+  --border:#1e2d50;
+  --border2:#243460;
+  --text:#e2e8f4;
+  --text2:#8899bb;
+  --text3:#4a5a7a;
+  --cyan:#00d9ff;
+  --cyan2:#00b8d9;
+  --cyan-dim:rgba(0,217,255,0.08);
+  --green:#22c55e;
+  --green-dim:rgba(34,197,94,0.08);
+  --amber:#f59e0b;
+  --amber-dim:rgba(245,158,11,0.08);
+  --red:#ef4444;
+  --red-dim:rgba(239,68,68,0.08);
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Inter',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;min-height:100vh}
+
+.page{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 1.5rem;border-bottom:0.5px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.nav-logo{width:28px;height:28px;flex-shrink:0}
+.nav-title{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--text)}
+.nav-title span{color:var(--cyan)}
+.nav-links{display:flex;gap:4px}
+.nav-link{font-family:var(--mono);font-size:11px;color:var(--text2);text-decoration:none;padding:4px 10px;border-radius:5px;border:0.5px solid transparent;transition:all .15s}
+.nav-link:hover{color:var(--text);border-color:var(--border2);background:var(--bg3)}
+.nav-link.active{color:var(--cyan);border-color:var(--border2)}
+
+.theory-header{
+  padding:2rem 0 1.5rem;
+  border-bottom:0.5px solid var(--border);
+  margin-bottom:2rem;
+}
+.theory-header h1{
+  font-family:var(--mono);
+  font-size:28px;
+  font-weight:600;
+  margin-bottom:0.5rem;
+  color:var(--text);
+}
+.theory-header h1 em{font-style:normal;color:var(--cyan)}
+.theory-meta{
+  display:flex;
+  gap:1.5rem;
+  flex-wrap:wrap;
+  color:var(--text3);
+  font-size:12px;
+  font-family:var(--mono);
+  margin-top:0.5rem;
+}
+.theory-meta a{color:var(--cyan2);text-decoration:none}
+.theory-meta a:hover{color:var(--cyan)}
+.badge-skip{
+  background:var(--amber-dim);
+  color:var(--amber);
+  padding:2px 10px;
+  border-radius:4px;
+  font-size:10px;
+  border:0.5px solid rgba(245,158,11,0.2);
+}
+
+.qa-block{
+  margin-bottom:2.5rem;
+  padding-bottom:2rem;
+  border-bottom:0.5px solid var(--border);
+}
+.qa-block:last-child{border-bottom:none}
+.qa-number{
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--cyan);
+  margin-bottom:0.3rem;
+}
+.qa-title{
+  font-size:18px;
+  font-weight:600;
+  color:var(--text);
+  margin-bottom:1rem;
+  font-family:var(--sans);
+}
+.qa-section{
+  margin-bottom:1rem;
+}
+.qa-section h3{
+  font-size:13px;
+  font-weight:600;
+  color:var(--text2);
+  margin-bottom:0.3rem;
+  font-family:var(--mono);
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+}
+.qa-section p{
+  color:var(--text2);
+  line-height:1.7;
+  font-size:14px;
+}
+.qa-section ul, .qa-section ol{
+  color:var(--text2);
+  line-height:1.7;
+  padding-left:1.5rem;
+  margin:0.5rem 0;
+}
+.qa-section li{
+  margin-bottom:0.3rem;
+}
+.qa-section code{
+  font-family:var(--mono);
+  font-size:13px;
+  background:var(--bg3);
+  padding:0.1rem 0.4rem;
+  border-radius:3px;
+  color:var(--cyan2);
+}
+.qa-section pre{
+  background:var(--bg3);
+  border:0.5px solid var(--border);
+  border-radius:6px;
+  padding:1rem 1.2rem;
+  overflow-x:auto;
+  margin:0.8rem 0;
+}
+.qa-section pre code{
+  font-family:var(--mono);
+  font-size:13px;
+  color:var(--text2);
+  background:transparent;
+  padding:0;
+  line-height:1.6;
+}
+.qa-section blockquote{
+  border-left:2px solid var(--cyan);
+  padding-left:1rem;
+  margin:0.8rem 0;
+  color:var(--text2);
+}
+.qa-section blockquote strong{
+  color:var(--cyan);
+}
+.qa-section table{
+  width:100%;
+  border-collapse:collapse;
+  margin:0.8rem 0;
+  font-size:13px;
+}
+.qa-section th{
+  background:var(--bg3);
+  color:var(--text);
+  padding:0.5rem 0.8rem;
+  text-align:left;
+  font-weight:500;
+  border:0.5px solid var(--border);
+}
+.qa-section td{
+  padding:0.5rem 0.8rem;
+  border:0.5px solid var(--border);
+  color:var(--text2);
+}
+.qa-section tr:nth-child(even){background:var(--bg2)}
+
+.junior-note{
+  background:var(--cyan-dim);
+  border:0.5px solid rgba(0,217,255,0.15);
+  border-radius:6px;
+  padding:0.8rem 1rem;
+  margin:1rem 0;
+  color:var(--text2);
+  font-size:13px;
+}
+.junior-note strong{
+  color:var(--cyan);
+}
+
+.hl-comment{color:#4a5a7a}
+.hl-keyword{color:var(--cyan2)}
+.hl-string{color:#a3e635}
+.hl-type{color:#c084fc}
+.hl-method{color:#f472b6}
+.hl-number{color:#f59e0b}
+.hl-annotation{color:#f472b6}
+
+footer{padding:1.5rem 1.5rem;border-top:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem}
+.footer-meta{font-family:var(--mono);font-size:11px;color:var(--text3)}
+.footer-link{font-family:var(--mono);font-size:11px;color:var(--text3);text-decoration:none}
+.footer-link:hover{color:var(--cyan)}
+
+.back-top{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--cyan2);
+  text-decoration:none;
+  padding:6px 12px;
+  border-radius:4px;
+  border:0.5px solid var(--border2);
+  transition:all .15s;
+}
+.back-top:hover{color:var(--cyan);border-color:var(--cyan)}
+
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <svg class="nav-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="70" fill="#0f172a" stroke="#64748b" stroke-width="1"/>
+      <text x="92" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="end" fill="#e2e8f0" letter-spacing="1px">VBF</text>
+      <circle cx="100" cy="99" r="8" fill="none" stroke="#00d9ff" stroke-width="2"/>
+      <path d="M 96 99 L 99 102 L 104 95" fill="none" stroke="#00d9ff" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="108" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="start" fill="#e2e8f0" letter-spacing="1px">RGE</text>
+    </svg>
+    <span class="nav-title">vbforge / <span>java-interview-prep</span></span>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">home</a>
+    <a class="nav-link active" href="#">theory</a>
+    <a class="nav-link" href="index.html#section-demos">demos</a>
+    <a class="nav-link" href="https://github.com/vbforge/java-interview-prep" target="_blank">github ↗</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="theory-header">
+    <h1>08 — <em>Spring Core & Web</em></h1>
+    <div class="theory-meta">
+      <span>📚 Questions: <strong>Q64–Q77</strong></span>
+      <span>🧪 Demo: <a href="https://github.com/vbforge/java-interview-prep/tree/main/demo-05-spring-core">demo-05-spring-core</a></span>
+      <span class="badge-skip">⭐ Framework core</span>
+    </div>
+  </div>
+
+  <!-- Q64 -->
+  <div class="qa-block">
+    <div class="qa-number">Q64</div>
+    <div class="qa-title">What is a Spring bean?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>A <strong>Spring bean</strong> is an object that is instantiated, assembled, and managed by the Spring IoC (Inversion of Control) container. Beans are the backbone of a Spring application — they are the objects that form the application's business logic and infrastructure.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Key characteristics:</strong></p>
+      <ul>
+        <li><strong>Managed lifecycle:</strong> Created and destroyed by the Spring container</li>
+        <li><strong>Dependency injection:</strong> Dependencies are injected automatically</li>
+        <li><strong>Singleton by default:</strong> One instance per Spring container (unless scoped otherwise)</li>
+        <li><strong>Configurable:</strong> Defined via annotations or XML configuration</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Bean definition via annotation</span>
+<span class="hl-annotation">@Component</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">UserService</span> {
+    <span class="hl-annotation">@Autowired</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">UserRepository</span> userRepository;
+    
+    <span class="hl-keyword">public</span> <span class="hl-type">User</span> <span class="hl-method">findUser</span>(<span class="hl-type">Long</span> id) {
+        <span class="hl-keyword">return</span> userRepository.findById(id);
+    }
+}
+
+<span class="hl-comment">// Bean definition via @Configuration</span>
+<span class="hl-annotation">@Configuration</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">AppConfig</span> {
+    <span class="hl-annotation">@Bean</span>
+    <span class="hl-keyword">public</span> <span class="hl-type">DataSource</span> <span class="hl-method">dataSource</span>() {
+        <span class="hl-keyword">return</span> <span class="hl-keyword">new</span> <span class="hl-type">HikariDataSource</span>();
+    }
+}
+
+<span class="hl-comment">// XML bean definition (legacy)</span>
+<span class="hl-comment">&lt;bean id="userService" class="com.vbforge.UserService"/&gt;</span></code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Any Java object can be a Spring bean, but typically beans are services, repositories, controllers, or configuration objects. Spring beans are <strong>singletons by default</strong> — the container creates one instance per bean definition.
+    </div>
+  </div>
+
+  <!-- Q65 -->
+  <div class="qa-block">
+    <div class="qa-number">Q65</div>
+    <div class="qa-title">Where are beans stored, and how do you retrieve them from the container?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>Beans are stored in the <strong>Spring IoC container</strong> (ApplicationContext or BeanFactory). You retrieve them using <code>getBean()</code> method by name, type, or both. In practice, you rarely retrieve beans manually — you use <strong>dependency injection</strong> instead.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Bean storage:</strong></p>
+      <ul>
+        <li><strong>ApplicationContext:</strong> The main container interface, provides bean definitions and lifecycle management</li>
+        <li><strong>BeanFactory:</strong> The root interface, less feature-rich than ApplicationContext</li>
+        <li><strong>BeanDefinition:</strong> Metadata about each bean (class, scope, dependencies)</li>
+        <li><strong>Singleton cache:</strong> For singleton beans, the container caches the instance</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Retrieving beans manually (rarely needed)</span>
+<span class="hl-annotation">@SpringBootApplication</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">Application</span> {
+    <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-keyword">void</span> <span class="hl-method">main</span>(<span class="hl-type">String</span>[] args) {
+        <span class="hl-type">ApplicationContext</span> context = SpringApplication.run(Application.class, args);
+        
+        <span class="hl-comment">// By name</span>
+        <span class="hl-type">UserService</span> service1 = (<span class="hl-type">UserService</span>) context.getBean(<span class="hl-string">"userService"</span>);
+        
+        <span class="hl-comment">// By type (preferred)</span>
+        <span class="hl-type">UserService</span> service2 = context.getBean(<span class="hl-type">UserService</span>.class);
+        
+        <span class="hl-comment">// By name and type</span>
+        <span class="hl-type">UserService</span> service3 = context.getBean(<span class="hl-string">"userService"</span>, <span class="hl-type">UserService</span>.class);
+    }
+}
+
+<span class="hl-comment">// ✅ Preferred: dependency injection</span>
+<span class="hl-annotation">@RestController</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">UserController</span> {
+    <span class="hl-annotation">@Autowired</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">UserService</span> userService;  <span class="hl-comment">// Injected automatically</span>
+}</code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> You should almost never call <code>getBean()</code> in your application code. That defeats the purpose of dependency injection. Use DI via <code>@Autowired</code>, constructor injection, or <code>@Resource</code> instead.
+    </div>
+  </div>
+
+  <!-- Q66 -->
+  <div class="qa-block">
+    <div class="qa-number">Q66</div>
+    <div class="qa-title">What ways exist to inject dependencies (constructor, setter, field, etc.)?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>Spring supports <strong>constructor injection</strong>, <strong>setter injection</strong>, and <strong>field injection</strong>. <strong>Constructor injection</strong> is recommended because it makes dependencies explicit, ensures immutability, and simplifies testing.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Comparison of injection types:</strong></p>
+      <table>
+        <thead><tr><th>Type</th><th>How it works</th><th>Pros</th><th>Cons</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Constructor</strong></td><td>Dependencies passed via constructor parameters</td><td>Immutable, testable, required dependencies</td><td>Verbose for many dependencies</td></tr>
+          <tr><td><strong>Setter</strong></td><td>Dependencies injected via setter methods</td><td>Optional dependencies, reconfigurable</td><td>Mutable, can be forgotten</td></tr>
+          <tr><td><strong>Field</strong></td><td>Dependencies injected directly into fields</td><td>Concise, less code</td><td>Hard to test, hidden dependencies</td></tr>
+        </tbody>
+      </table>
+
+      <pre><code><span class="hl-comment">// ✅ Constructor injection (recommended)</span>
+<span class="hl-annotation">@Service</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">UserService</span> {
+    <span class="hl-keyword">private</span> <span class="hl-keyword">final</span> <span class="hl-type">UserRepository</span> userRepository;
+    <span class="hl-keyword">private</span> <span class="hl-keyword">final</span> <span class="hl-type">EmailService</span> emailService;
+    
+    <span class="hl-comment">// No @Autowired needed in Spring 4.3+ for single constructor</span>
+    <span class="hl-keyword">public</span> <span class="hl-method">UserService</span>(<span class="hl-type">UserRepository</span> userRepository, <span class="hl-type">EmailService</span> emailService) {
+        <span class="hl-keyword">this</span>.userRepository = userRepository;
+        <span class="hl-keyword">this</span>.emailService = emailService;
+    }
+}
+
+<span class="hl-comment">// ✅ Setter injection (optional dependencies)</span>
+<span class="hl-annotation">@Service</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">NotificationService</span> {
+    <span class="hl-keyword">private</span> <span class="hl-type">SmsService</span> smsService;
+    
+    <span class="hl-annotation">@Autowired</span>
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">setSmsService</span>(<span class="hl-type">SmsService</span> smsService) {
+        <span class="hl-keyword">this</span>.smsService = smsService;  <span class="hl-comment">// Optional dependency</span>
+    }
+}
+
+<span class="hl-comment">// ⚠️ Field injection (not recommended)</span>
+<span class="hl-annotation">@Service</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">LegacyService</span> {
+    <span class="hl-annotation">@Autowired</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">UserRepository</span> userRepository;  <span class="hl-comment">// Hard to test</span>
+}</code></pre>
+
+      <p><strong>Spring's recommendation:</strong> Since Spring 4.3, constructor injection is preferred. It makes dependencies explicit and allows fields to be <code>final</code> (immutable).</p>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Constructor injection is the <strong>recommended</strong> approach in modern Spring. Field injection is convenient but makes unit testing difficult and hides dependencies. In interviews, always mention constructor injection as the preferred method.
+    </div>
+  </div>
+
+  <!-- Q67 -->
+  <div class="qa-block">
+    <div class="qa-number">Q67</div>
+    <div class="qa-title">Which bean scopes do you know?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>Spring provides <strong>singleton</strong> (default, one per container), <strong>prototype</strong> (new instance on each request), and web-aware scopes: <strong>request</strong> (one per HTTP request), <strong>session</strong> (one per HTTP session), and <strong>application</strong> (one per ServletContext).</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <table>
+        <thead><tr><th>Scope</th><th>Description</th><th>When to use</th></tr></thead>
+        <tbody>
+          <tr><td><strong>singleton</strong></td><td>One instance per Spring container (default)</td><td>Stateless services, repositories, controllers</td></tr>
+          <tr><td><strong>prototype</strong></td><td>New instance every time requested</td><td>Stateful objects, objects with mutable state</td></tr>
+          <tr><td><strong>request</strong></td><td>One instance per HTTP request</td><td>Request-scoped data, DTOs</td></tr>
+          <tr><td><strong>session</strong></td><td>One instance per HTTP session</td><td>User preferences, shopping cart</td></tr>
+          <tr><td><strong>application</strong></td><td>One instance per ServletContext</td><td>Application-wide singletons</td></tr>
+          <tr><td><strong>websocket</strong></td><td>One per WebSocket session</td><td>WebSocket connections</td></tr>
+        </tbody>
+      </table>
+
+      <pre><code><span class="hl-comment">// Singleton (default)</span>
+<span class="hl-annotation">@Component</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">UserService</span> {
+    <span class="hl-comment">// One instance for the entire application</span>
+}
+
+<span class="hl-comment">// Prototype</span>
+<span class="hl-annotation">@Component</span>
+<span class="hl-annotation">@Scope</span>(<span class="hl-string">"prototype"</span>)
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">ShoppingCart</span> {
+    <span class="hl-comment">// New instance for each injection point</span>
+}
+
+<span class="hl-comment">// Request scope</span>
+<span class="hl-annotation">@Component</span>
+<span class="hl-annotation">@Scope</span>(value = <span class="hl-string">"request"</span>, proxyMode = <span class="hl-type">ScopedProxyMode</span>.TARGET_CLASS)
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">RequestData</span> {
+    <span class="hl-comment">// One instance per HTTP request</span>
+}
+
+<span class="hl-comment">// Session scope</span>
+<span class="hl-annotation">@Component</span>
+<span class="hl-annotation">@Scope</span>(value = <span class="hl-string">"session"</span>, proxyMode = <span class="hl-type">ScopedProxyMode</span>.TARGET_CLASS)
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">UserPreferences</span> {
+    <span class="hl-comment">// One instance per HTTP session</span>
+}
+
+<span class="hl-comment">// Using @Scope with string constant</span>
+<span class="hl-annotation">@Scope</span>(<span class="hl-type">BeanDefinition</span>.SCOPE_PROTOTYPE)  <span class="hl-comment">// Better than "prototype"</span></code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Singleton is the default scope. <strong>Never</strong> store mutable state in singleton beans unless it's thread-safe. For web applications, request/session scopes are useful for storing user-specific data. When injecting request/session scoped beans into singletons, use <code>ScopedProxyMode.TARGET_CLASS</code> to avoid proxy issues.
+    </div>
+  </div>
+
+  <!-- Q68 -->
+  <div class="qa-block">
+    <div class="qa-number">Q68</div>
+    <div class="qa-title">What is @PostConstruct used for?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><code>@PostConstruct</code> is a lifecycle annotation that marks a method to be <strong>executed after dependency injection</strong> is complete and before the bean is put into service. It's used for initialization logic that depends on injected dependencies.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code><span class="hl-annotation">@Component</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">DatabaseInitializer</span> {
+    <span class="hl-annotation">@Autowired</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">DataSource</span> dataSource;
+    
+    <span class="hl-annotation">@PostConstruct</span>
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">init</span>() {
+        <span class="hl-comment">// Called AFTER dependency injection</span>
+        <span class="hl-comment">// dataSource is already injected here</span>
+        initializeDatabase();
+        loadDefaultData();
+    }
+    
+    <span class="hl-keyword">private</span> <span class="hl-keyword">void</span> <span class="hl-method">initializeDatabase</span>() {
+        <span class="hl-comment">// Use dataSource to set up tables, indexes, etc.</span>
+    }
+}
+
+<span class="hl-comment">// Bean lifecycle order:</span>
+<span class="hl-comment">// 1. Constructor (object instantiated)</span>
+<span class="hl-comment">// 2. Dependencies injected (@Autowired)</span>
+<span class="hl-comment">// 3. @PostConstruct method called</span>
+<span class="hl-comment">// 4. Bean ready for use</span>
+<span class="hl-comment">// 5. @PreDestroy method called before destruction</span></code></pre>
+
+      <p><strong>Alternatives to @PostConstruct:</strong></p>
+      <ul>
+        <li><strong>InitializingBean interface:</strong> <code>afterPropertiesSet()</code> method</li>
+        <li><strong>@Bean initMethod:</strong> <code>@Bean(initMethod = "init")</code></li>
+        <li><strong>@EventListener:</strong> <code>@EventListener(ApplicationReadyEvent.class)</code> for app startup</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Alternative: InitializingBean</span>
+<span class="hl-annotation">@Component</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">MyBean</span> <span class="hl-keyword">implements</span> <span class="hl-type">InitializingBean</span> {
+    <span class="hl-annotation">@Override</span>
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">afterPropertiesSet</span>() {
+        <span class="hl-comment">// Initialization logic</span>
+    }
+}</code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> <code>@PostConstruct</code> is a standard Java EE annotation (javax.annotation) that Spring supports. It's preferred over <code>InitializingBean</code> because it doesn't tie your code to Spring-specific interfaces. Methods annotated with <code>@PostConstruct</code> must have <code>void</code> return type and no parameters.
+    </div>
+  </div>
+
+  <!-- Q69 -->
+  <div class="qa-block">
+    <div class="qa-number">Q69</div>
+    <div class="qa-title">What is @Qualifier used for?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><code>@Qualifier</code> is used to <strong>disambiguate</strong> when multiple beans of the same type exist. It specifies <strong>which bean</strong> should be injected when there are multiple candidates matching the injection point.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code><span class="hl-comment">// Multiple implementations of the same interface</span>
+<span class="hl-keyword">interface</span> <span class="hl-type">PaymentService</span> {
+    <span class="hl-keyword">void</span> <span class="hl-method">processPayment</span>(<span class="hl-type">double</span> amount);
+}
+
+<span class="hl-annotation">@Component</span>
+<span class="hl-annotation">@Qualifier</span>(<span class="hl-string">"creditCard"</span>)
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">CreditCardPayment</span> <span class="hl-keyword">implements</span> <span class="hl-type">PaymentService</span> {
+    <span class="hl-annotation">@Override</span>
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">processPayment</span>(<span class="hl-type">double</span> amount) {
+        <span class="hl-comment">// Credit card payment logic</span>
+    }
+}
+
+<span class="hl-annotation">@Component</span>
+<span class="hl-annotation">@Qualifier</span>(<span class="hl-string">"paypal"</span>)
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">PayPalPayment</span> <span class="hl-keyword">implements</span> <span class="hl-type">PaymentService</span> {
+    <span class="hl-annotation">@Override</span>
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">processPayment</span>(<span class="hl-type">double</span> amount) {
+        <span class="hl-comment">// PayPal payment logic</span>
+    }
+}
+
+<span class="hl-comment">// Injection with @Qualifier</span>
+<span class="hl-annotation">@Service</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">OrderService</span> {
+    <span class="hl-annotation">@Autowired</span>
+    <span class="hl-annotation">@Qualifier</span>(<span class="hl-string">"creditCard"</span>)  <span class="hl-comment">// Inject CreditCardPayment</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">PaymentService</span> paymentService;
+    
+    <span class="hl-comment">// Constructor injection with @Qualifier</span>
+    <span class="hl-keyword">public</span> <span class="hl-method">OrderService</span>(<span class="hl-annotation">@Qualifier</span>(<span class="hl-string">"paypal"</span>) <span class="hl-type">PaymentService</span> paymentService) {
+        <span class="hl-keyword">this</span>.paymentService = paymentService;
+    }
+}
+
+<span class="hl-comment">// Custom qualifier annotation (type-safe)</span>
+<span class="hl-annotation">@Target</span>({<span class="hl-type">ElementType</span>.FIELD, <span class="hl-type">ElementType</span>.PARAMETER})
+<span class="hl-annotation">@Retention</span>(<span class="hl-type">RetentionPolicy</span>.RUNTIME)
+<span class="hl-annotation">@Qualifier</span>
+<span class="hl-keyword">public</span> <span class="hl-annotation">@interface</span> <span class="hl-type">CreditCard</span> {
+}
+
+<span class="hl-comment">// Usage</span>
+<span class="hl-annotation">@CreditCard</span>
+<span class="hl-keyword">private</span> <span class="hl-type">PaymentService</span> paymentService;  <span class="hl-comment">// Type-safe, no string literals</span></code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> <code>@Qualifier</code> works together with <code>@Autowired</code>. It's essential when you have multiple beans of the same type. Use meaningful qualifier names (like the examples above). For better type safety, consider creating custom qualifier annotations.
+    </div>
+  </div>
+
+  <!-- Q70 -->
+  <div class="qa-block">
+    <div class="qa-number">Q70</div>
+    <div class="qa-title">What is @Primary used for?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><code>@Primary</code> designates a <strong>default bean</strong> to be injected when there are multiple beans of the same type and no <code>@Qualifier</code> is specified. It gives the bean <strong>priority</strong> over other beans of the same type.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code><span class="hl-comment">// Multiple beans of the same type</span>
+<span class="hl-annotation">@Component</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">H2DataSource</span> <span class="hl-keyword">implements</span> <span class="hl-type">DataSource</span> {
+    <span class="hl-comment">// H2 in-memory database</span>
+}
+
+<span class="hl-annotation">@Component</span>
+<span class="hl-annotation">@Primary</span>  <span class="hl-comment">// This is the default!</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">PostgresDataSource</span> <span class="hl-keyword">implements</span> <span class="hl-type">DataSource</span> {
+    <span class="hl-comment">// PostgreSQL production database</span>
+}
+
+<span class="hl-comment">// Injection without @Qualifier</span>
+<span class="hl-annotation">@Service</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">DatabaseService</span> {
+    <span class="hl-annotation">@Autowired</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">DataSource</span> dataSource;  <span class="hl-comment">// Gets PostgresDataSource (primary)</span>
+}
+
+<span class="hl-comment">// Can still use @Qualifier to override</span>
+<span class="hl-annotation">@Service</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">TestService</span> {
+    <span class="hl-annotation">@Autowired</span>
+    <span class="hl-annotation">@Qualifier</span>(<span class="hl-string">"h2DataSource"</span>)  <span class="hl-comment">// Overrides @Primary</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">DataSource</span> dataSource;
+}</code></pre>
+
+      <p><strong>@Primary vs @Qualifier:</strong></p>
+      <table>
+        <thead><tr><th>Feature</th><th>@Primary</th><th>@Qualifier</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Purpose</strong></td><td>Set default bean</td><td>Select specific bean</td></tr>
+          <tr><td><strong>Scope</strong></td><td>Global (all injection points)</td><td>Local (specific injection point)</td></tr>
+          <tr><td><strong>Overridable</strong></td><td>✅ With @Qualifier</td><td>N/A</td></tr>
+          <tr><td><strong>Use case</strong></td><td>Default implementation</td><td>Explicit selection</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Use <code>@Primary</code> when you have a "default" implementation and <code>@Qualifier</code> for specific selections. A common pattern is having a <code>@Primary</code> production implementation and using <code>@Qualifier</code> for test/mock implementations.
+    </div>
+  </div>
+
+  <!-- Q71 -->
+  <div class="qa-block">
+    <div class="qa-number">Q71</div>
+    <div class="qa-title">What is @Order used for?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><code>@Order</code> defines the <strong>execution order</strong> of beans when multiple beans of the same type are processed. Lower values have <strong>higher precedence</strong> and execute first. It's used for ordered collections, interceptors, filters, and configuration classes.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code><span class="hl-comment">// Ordered filters</span>
+<span class="hl-annotation">@Component</span>
+<span class="hl-annotation">@Order</span>(<span class="hl-number">1</span>)  <span class="hl-comment">// Executes first</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">LoggingFilter</span> <span class="hl-keyword">implements</span> <span class="hl-type">Filter</span> {
+    <span class="hl-annotation">@Override</span>
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">doFilter</span>(<span class="hl-type">ServletRequest</span> req, <span class="hl-type">ServletResponse</span> resp, <span class="hl-type">FilterChain</span> chain) {
+        System.out.println(<span class="hl-string">"Logging filter"</span>);
+        chain.doFilter(req, resp);
+    }
+}
+
+<span class="hl-annotation">@Component</span>
+<span class="hl-annotation">@Order</span>(<span class="hl-number">2</span>)  <span class="hl-comment">// Executes second</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">AuthenticationFilter</span> <span class="hl-keyword">implements</span> <span class="hl-type">Filter</span> {
+    <span class="hl-annotation">@Override</span>
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">doFilter</span>(<span class="hl-type">ServletRequest</span> req, <span class="hl-type">ServletResponse</span> resp, <span class="hl-type">FilterChain</span> chain) {
+        System.out.println(<span class="hl-string">"Authentication filter"</span>);
+        chain.doFilter(req, resp);
+    }
+}
+
+<span class="hl-comment">// Ordered configuration classes</span>
+<span class="hl-annotation">@Configuration</span>
+<span class="hl-annotation">@Order</span>(<span class="hl-number">1</span>)
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">SecurityConfig</span> {
+    <span class="hl-comment">// Security configuration loaded first</span>
+}
+
+<span class="hl-annotation">@Configuration</span>
+<span class="hl-annotation">@Order</span>(<span class="hl-number">2</span>)
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">AppConfig</span> {
+    <span class="hl-comment">// Application configuration loaded second</span>
+}
+
+<span class="hl-comment">// Ordered advice (AspectJ)</span>
+<span class="hl-annotation">@Aspect</span>
+<span class="hl-annotation">@Component</span>
+<span class="hl-annotation">@Order</span>(<span class="hl-number">1</span>)
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">LoggingAspect</span> {
+    <span class="hl-annotation">@Around</span>(<span class="hl-string">"execution(* com.vbforge.*.*(..))"</span>)
+    <span class="hl-keyword">public</span> <span class="hl-type">Object</span> <span class="hl-method">log</span>(<span class="hl-type">ProceedingJoinPoint</span> joinPoint) <span class="hl-keyword">throws</span> <span class="hl-type">Throwable</span> {
+        System.out.println(<span class="hl-string">"Before"</span>);
+        <span class="hl-type">Object</span> result = joinPoint.proceed();
+        System.out.println(<span class="hl-string">"After"</span>);
+        <span class="hl-keyword">return</span> result;
+    }
+}</code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> <code>@Order</code> is most commonly used with filters, interceptors, and aspects. Lower numbers execute first. For the same order, execution is non-deterministic. Spring also uses <code>@Order</code> for ordered collections injected with <code>@Autowired</code> into a <code>List</code>.
+    </div>
+  </div>
+
+  <!-- Q72 -->
+  <div class="qa-block">
+    <div class="qa-number">Q72</div>
+    <div class="qa-title">Can Spring run code after the web application has finished starting up?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>Yes.</strong> You can use <code>@EventListener(ApplicationReadyEvent.class)</code> or implement <code>ApplicationRunner</code> or <code>CommandLineRunner</code>. These run <strong>after</strong> the application context is fully initialized and the web server is ready.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code><span class="hl-comment">// Method 1: @EventListener (recommended for web apps)</span>
+<span class="hl-annotation">@Component</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">StartupListener</span> {
+    <span class="hl-annotation">@EventListener</span>(<span class="hl-type">ApplicationReadyEvent</span>.class)
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">onApplicationReady</span>() {
+        System.out.println(<span class="hl-string">"Application is ready! Running startup code..."</span>);
+        <span class="hl-comment">// Database migrations, cache warming, etc.</span>
+    }
+}
+
+<span class="hl-comment">// Method 2: ApplicationRunner (has access to arguments)</span>
+<span class="hl-annotation">@Component</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">AppRunner</span> <span class="hl-keyword">implements</span> <span class="hl-type">ApplicationRunner</span> {
+    <span class="hl-annotation">@Autowired</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">SomeService</span> someService;
+    
+    <span class="hl-annotation">@Override</span>
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">run</span>(<span class="hl-type">ApplicationArguments</span> args) <span class="hl-keyword">throws</span> <span class="hl-type">Exception</span> {
+        <span class="hl-comment">// Run after application starts</span>
+        someService.initialize();
+    }
+}
+
+<span class="hl-comment">// Method 3: CommandLineRunner (simpler, no argument access)</span>
+<span class="hl-annotation">@Component</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">CLRunner</span> <span class="hl-keyword">implements</span> <span class="hl-type">CommandLineRunner</span> {
+    <span class="hl-annotation">@Autowired</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">DataLoader</span> dataLoader;
+    
+    <span class="hl-annotation">@Override</span>
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">run</span>(<span class="hl-type">String</span>... args) <span class="hl-keyword">throws</span> <span class="hl-type">Exception</span> {
+        dataLoader.loadInitialData();
+    }
+}
+
+<span class="hl-comment">// Method 4: @PostConstruct + @EventListener(ApplicationStartedEvent.class)</span>
+<span class="hl-annotation">@Component</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">EarlyStartup</span> {
+    <span class="hl-annotation">@EventListener</span>(<span class="hl-type">ApplicationStartedEvent</span>.class)
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">onStartup</span>() {
+        <span class="hl-comment">// Runs before ApplicationReadyEvent</span>
+        System.out.println(<span class="hl-string">"Application started"</span>);
+    }
+}</code></pre>
+
+      <p><strong>Event order:</strong></p>
+      <ul>
+        <li><code>ApplicationStartingEvent</code> — before any processing</li>
+        <li><code>ApplicationEnvironmentPreparedEvent</code> — environment ready</li>
+        <li><code>ApplicationContextInitializedEvent</code> — context ready</li>
+        <li><code>ApplicationPreparedEvent</code> — context loaded</li>
+        <li><code>ApplicationStartedEvent</code> — context refreshed</li>
+        <li><code>ApplicationReadyEvent</code> — web server ready (use this!)</li>
+        <li><code>ApplicationFailedEvent</code> — on failure</li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> <code>@PostConstruct</code> runs <strong>before</strong> the web server starts, so it's not suitable for tasks that depend on the web application being fully ready. Use <code>ApplicationReadyEvent</code> for startup tasks that require the full application context, including web server.
+    </div>
+  </div>
+
+  <!-- Q73 -->
+  <div class="qa-block">
+    <div class="qa-number">Q73</div>
+    <div class="qa-title">What is a circular dependency between beans, and how can you resolve or avoid it?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>A <strong>circular dependency</strong> occurs when Bean A depends on Bean B, and Bean B depends on Bean A. Spring can resolve <strong>setter/field</strong> circular dependencies but <strong>not constructor</strong> circular dependencies. Best practices include using <strong>constructor injection</strong> and <strong>@Lazy</strong> to break the cycle.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code><span class="hl-comment">// ❌ Circular dependency via constructor (fails)</span>
+<span class="hl-annotation">@Service</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">ServiceA</span> {
+    <span class="hl-keyword">private</span> <span class="hl-keyword">final</span> <span class="hl-type">ServiceB</span> serviceB;
+    
+    <span class="hl-keyword">public</span> <span class="hl-method">ServiceA</span>(<span class="hl-type">ServiceB</span> serviceB) {  <span class="hl-comment">// Constructor injection</span>
+        <span class="hl-keyword">this</span>.serviceB = serviceB;
+    }
+}
+
+<span class="hl-annotation">@Service</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">ServiceB</span> {
+    <span class="hl-keyword">private</span> <span class="hl-keyword">final</span> <span class="hl-type">ServiceA</span> serviceA;
+    
+    <span class="hl-keyword">public</span> <span class="hl-method">ServiceB</span>(<span class="hl-type">ServiceA</span> serviceA) {  <span class="hl-comment">// Constructor injection</span>
+        <span class="hl-keyword">this</span>.serviceA = serviceA;  <span class="hl-comment">// Circular! → Application fails to start</span>
+    }
+}
+
+<span class="hl-comment">// ✅ Solution 1: Use @Lazy on one dependency</span>
+<span class="hl-annotation">@Service</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">ServiceA</span> {
+    <span class="hl-keyword">private</span> <span class="hl-keyword">final</span> <span class="hl-type">ServiceB</span> serviceB;
+    
+    <span class="hl-keyword">public</span> <span class="hl-method">ServiceA</span>(<span class="hl-annotation">@Lazy</span> <span class="hl-type">ServiceB</span> serviceB) {
+        <span class="hl-keyword">this</span>.serviceB = serviceB;  <span class="hl-comment">// Resolved with proxy</span>
+    }
+}
+
+<span class="hl-comment">// ✅ Solution 2: Use setter/field injection (not recommended)</span>
+<span class="hl-annotation">@Service</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">ServiceA</span> {
+    <span class="hl-annotation">@Autowired</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">ServiceB</span> serviceB;  <span class="hl-comment">// Field injection — Spring can handle</span>
+}
+
+<span class="hl-annotation">@Service</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">ServiceB</span> {
+    <span class="hl-annotation">@Autowired</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">ServiceA</span> serviceA;  <span class="hl-comment">// Works but not recommended</span>
+}
+
+<span class="hl-comment">// ✅ Solution 3: Restructure to avoid circular dependency</span>
+<span class="hl-comment">// Extract common functionality to a third bean</span>
+<span class="hl-annotation">@Service</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">ServiceA</span> {
+    <span class="hl-keyword">private</span> <span class="hl-keyword">final</span> <span class="hl-type">CommonService</span> commonService;
+    
+    <span class="hl-keyword">public</span> <span class="hl-method">ServiceA</span>(<span class="hl-type">CommonService</span> commonService) {
+        <span class="hl-keyword">this</span>.commonService = commonService;
+    }
+}
+
+<span class="hl-annotation">@Service</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">ServiceB</span> {
+    <span class="hl-keyword">private</span> <span class="hl-keyword">final</span> <span class="hl-type">CommonService</span> commonService;
+    
+    <span class="hl-keyword">public</span> <span class="hl-method">ServiceB</span>(<span class="hl-type">CommonService</span> commonService) {
+        <span class="hl-keyword">this</span>.commonService = commonService;  <span class="hl-comment">// No circular dependency</span>
+    }
+}
+
+<span class="hl-comment">// ✅ Solution 4: Use @PostConstruct for initialization</span>
+<span class="hl-annotation">@Service</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">ServiceA</span> {
+    <span class="hl-annotation">@Autowired</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">ServiceB</span> serviceB;  <span class="hl-comment">// Field injection works</span>
+    
+    <span class="hl-annotation">@PostConstruct</span>
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">init</span>() {
+        <span class="hl-comment">// Use serviceB here</span>
+    }
+}</code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Spring <strong>cannot</strong> resolve constructor circular dependencies. Always use constructor injection (it's recommended), but if you have a circular dependency, use <code>@Lazy</code> on one of the constructors or restructure your code. Circular dependencies are a design smell — consider if your beans should really depend on each other.
+    </div>
+  </div>
+
+  <!-- Q74 -->
+  <div class="qa-block">
+    <div class="qa-number">Q74</div>
+    <div class="qa-title">Which HTTP methods do you know?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>The main HTTP methods are <strong>GET</strong>, <strong>POST</strong>, <strong>PUT</strong>, <strong>DELETE</strong>, <strong>PATCH</strong>, <strong>HEAD</strong>, <strong>OPTIONS</strong>, and <strong>TRACE</strong>. REST APIs primarily use GET, POST, PUT, DELETE, and PATCH.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <table>
+        <thead><tr><th>Method</th><th>Purpose</th><th>Idempotent?</th><th>Safe?</th><th>Body?</th></tr></thead>
+        <tbody>
+          <tr><td><strong>GET</strong></td><td>Retrieve data</td><td>✅ Yes</td><td>✅ Yes</td><td>❌ No</td></tr>
+          <tr><td><strong>POST</strong></td><td>Create new resource</td><td>❌ No</td><td>❌ No</td><td>✅ Yes</td></tr>
+          <tr><td><strong>PUT</strong></td><td>Update/replace resource (full)</td><td>✅ Yes</td><td>❌ No</td><td>✅ Yes</td></tr>
+          <tr><td><strong>DELETE</strong></td><td>Delete resource</td><td>✅ Yes</td><td>❌ No</td><td>❌ No</td></tr>
+          <tr><td><strong>PATCH</strong></td><td>Partial update</td><td>❌ No</td><td>❌ No</td><td>✅ Yes</td></tr>
+          <tr><td><strong>HEAD</strong></td><td>Same as GET but no body</td><td>✅ Yes</td><td>✅ Yes</td><td>❌ No</td></tr>
+          <tr><td><strong>OPTIONS</strong></td><td>Get supported methods</td><td>✅ Yes</td><td>✅ Yes</td><td>❌ No</td></tr>
+          <tr><td><strong>TRACE</strong></td><td>Echo request for debugging</td><td>✅ Yes</td><td>✅ Yes</td><td>❌ No</td></tr>
+        </tbody>
+      </table>
+
+      <pre><code><span class="hl-comment">// Spring REST controller examples</span>
+<span class="hl-annotation">@RestController</span>
+<span class="hl-annotation">@RequestMapping</span>(<span class="hl-string">"/api/users"</span>)
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">UserController</span> {
+    
+    <span class="hl-annotation">@GetMapping</span>  <span class="hl-comment">// GET /api/users</span>
+    <span class="hl-keyword">public</span> <span class="hl-type">List</span>&lt;<span class="hl-type">User</span>&gt; <span class="hl-method">getAll</span>() { ... }
+    
+    <span class="hl-annotation">@GetMapping</span>(<span class="hl-string">"/{id}"</span>)  <span class="hl-comment">// GET /api/users/{id}</span>
+    <span class="hl-keyword">public</span> <span class="hl-type">User</span> <span class="hl-method">getById</span>(<span class="hl-annotation">@PathVariable</span> <span class="hl-type">Long</span> id) { ... }
+    
+    <span class="hl-annotation">@PostMapping</span>  <span class="hl-comment">// POST /api/users</span>
+    <span class="hl-keyword">public</span> <span class="hl-type">User</span> <span class="hl-method">create</span>(<span class="hl-annotation">@RequestBody</span> <span class="hl-type">User</span> user) { ... }
+    
+    <span class="hl-annotation">@PutMapping</span>(<span class="hl-string">"/{id}"</span>)  <span class="hl-comment">// PUT /api/users/{id}</span>
+    <span class="hl-keyword">public</span> <span class="hl-type">User</span> <span class="hl-method">update</span>(<span class="hl-annotation">@PathVariable</span> <span class="hl-type">Long</span> id, <span class="hl-annotation">@RequestBody</span> <span class="hl-type">User</span> user) { ... }
+    
+    <span class="hl-annotation">@PatchMapping</span>(<span class="hl-string">"/{id}"</span>)  <span class="hl-comment">// PATCH /api/users/{id}</span>
+    <span class="hl-keyword">public</span> <span class="hl-type">User</span> <span class="hl-method">patch</span>(<span class="hl-annotation">@PathVariable</span> <span class="hl-type">Long</span> id, <span class="hl-annotation">@RequestBody</span> <span class="hl-type">Map</span>&lt;<span class="hl-type">String</span>, <span class="hl-type">Object</span>&gt; updates) { ... }
+    
+    <span class="hl-annotation">@DeleteMapping</span>(<span class="hl-string">"/{id}"</span>)  <span class="hl-comment">// DELETE /api/users/{id}</span>
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">delete</span>(<span class="hl-annotation">@PathVariable</span> <span class="hl-type">Long</span> id) { ... }
+}</code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Understanding HTTP methods is crucial for REST API design. Remember: GET is safe and idempotent, POST is neither (creates resources), PUT is idempotent (replace entire resource), PATCH is not idempotent (partial update). In interviews, be ready to explain when to use PUT vs PATCH.
+    </div>
+  </div>
+
+  <!-- Q75 -->
+  <div class="qa-block">
+    <div class="qa-number">Q75</div>
+    <div class="qa-title">How do you understand cookies, HTTP headers, and HTTP session?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>HTTP Headers</strong> are metadata sent with requests/responses. <strong>Cookies</strong> are small pieces of data stored client-side, sent with every request. <strong>HTTP Session</strong> is a server-side object that persists data across multiple requests from the same client, typically identified by a session ID stored in a cookie.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>HTTP Headers — key types:</strong></p>
+      <ul>
+        <li><strong>Request headers:</strong> <code>Authorization</code>, <code>Content-Type</code>, <code>Accept</code>, <code>User-Agent</code></li>
+        <li><strong>Response headers:</strong> <code>Content-Type</code>, <code>Set-Cookie</code>, <code>Cache-Control</code>, <code>Location</code></li>
+        <li><strong>Entity headers:</strong> <code>Content-Length</code>, <code>Content-Type</code></li>
+        <li><strong>General headers:</strong> <code>Date</code>, <code>Connection</code></li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Accessing headers in Spring</span>
+<span class="hl-annotation">@GetMapping</span>(<span class="hl-string">"/data"</span>)
+<span class="hl-keyword">public</span> <span class="hl-type">String</span> <span class="hl-method">getData</span>(<span class="hl-annotation">@RequestHeader</span>(<span class="hl-string">"Authorization"</span>) <span class="hl-type">String</span> auth) {
+    <span class="hl-keyword">return</span> <span class="hl-string">"Auth: "</span> + auth;
+}
+
+<span class="hl-comment">// Setting response headers</span>
+<span class="hl-annotation">@GetMapping</span>(<span class="hl-string">"/download"</span>)
+<span class="hl-keyword">public</span> <span class="hl-type">ResponseEntity</span>&lt;<span class="hl-type">byte</span>[]&gt; <span class="hl-method">download</span>() {
+    <span class="hl-keyword">return</span> ResponseEntity.ok()
+        .header(<span class="hl-string">"Content-Disposition"</span>, <span class="hl-string">"attachment; filename=file.pdf"</span>)
+        .contentType(<span class="hl-type">MediaType</span>.APPLICATION_PDF)
+        .body(data);
+}</code></pre>
+
+      <p><strong>Cookies:</strong></p>
+      <ul>
+        <li><strong>Client-side storage:</strong> Stored in browser</li>
+        <li><strong>Sent automatically:</strong> Sent with every request to the domain</li>
+        <li><strong>Size limit:</strong> ~4KB per cookie</li>
+        <li><strong>Attributes:</strong> <code>Secure</code> (HTTPS only), <code>HttpOnly</code> (no JS access), <code>SameSite</code>, <code>Path</code></li>
+        <li><strong>Used for:</strong> Session tracking, preferences, authentication</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Working with cookies in Spring</span>
+<span class="hl-annotation">@GetMapping</span>(<span class="hl-string">"/set-cookie"</span>)
+<span class="hl-keyword">public</span> <span class="hl-type">String</span> <span class="hl-method">setCookie</span>(<span class="hl-type">HttpServletResponse</span> response) {
+    <span class="hl-type">Cookie</span> cookie = <span class="hl-keyword">new</span> <span class="hl-type">Cookie</span>(<span class="hl-string">"userId"</span>, <span class="hl-string">"123"</span>);
+    cookie.setMaxAge(<span class="hl-number">3600</span>);  <span class="hl-comment">// 1 hour</span>
+    cookie.setSecure(<span class="hl-keyword">true</span>);     <span class="hl-comment">// HTTPS only</span>
+    cookie.setHttpOnly(<span class="hl-keyword">true</span>);   <span class="hl-comment">// Not accessible via JS</span>
+    cookie.setPath(<span class="hl-string">"/"</span>);
+    response.addCookie(cookie);
+    <span class="hl-keyword">return</span> <span class="hl-string">"Cookie set!"</span>;
+}
+
+<span class="hl-annotation">@GetMapping</span>(<span class="hl-string">"/get-cookie"</span>)
+<span class="hl-keyword">public</span> <span class="hl-type">String</span> <span class="hl-method">getCookie</span>(<span class="hl-annotation">@CookieValue</span>(<span class="hl-string">"userId"</span>) <span class="hl-type">String</span> userId) {
+    <span class="hl-keyword">return</span> <span class="hl-string">"User ID: "</span> + userId;
+}</code></pre>
+
+      <p><strong>HTTP Session:</strong></p>
+      <ul>
+        <li><strong>Server-side storage:</strong> Data stored on server</li>
+        <li><strong>Session ID:</strong> Unique identifier sent via cookie (<code>JSESSIONID</code>)</li>
+        <li><strong>Lifetime:</strong> Typically 30 minutes, configurable</li>
+        <li><strong>Used for:</strong> Shopping cart, user authentication, temporary data</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Working with session in Spring</span>
+<span class="hl-annotation">@GetMapping</span>(<span class="hl-string">"/login"</span>)
+<span class="hl-keyword">public</span> <span class="hl-type">String</span> <span class="hl-method">login</span>(<span class="hl-type">HttpSession</span> session, <span class="hl-annotation">@RequestParam</span> <span class="hl-type">String</span> username) {
+    session.setAttribute(<span class="hl-string">"username"</span>, username);
+    <span class="hl-keyword">return</span> <span class="hl-string">"Logged in!"</span>;
+}
+
+<span class="hl-annotation">@GetMapping</span>(<span class="hl-string">"/profile"</span>)
+<span class="hl-keyword">public</span> <span class="hl-type">String</span> <span class="hl-method">profile</span>(<span class="hl-type">HttpSession</span> session) {
+    <span class="hl-type">String</span> username = (<span class="hl-type">String</span>) session.getAttribute(<span class="hl-string">"username"</span>);
+    <span class="hl-keyword">return</span> <span class="hl-string">"Welcome: "</span> + username;
+}
+
+<span class="hl-comment">// Spring Session scoped bean</span>
+<span class="hl-annotation">@Component</span>
+<span class="hl-annotation">@Scope</span>(value = <span class="hl-string">"session"</span>, proxyMode = <span class="hl-type">ScopedProxyMode</span>.TARGET_CLASS)
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">UserSession</span> {
+    <span class="hl-keyword">private</span> <span class="hl-type">String</span> username;
+    <span class="hl-comment">// Getters and setters</span>
+}</code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> In modern applications, JWT tokens (stateless) are often preferred over sessions (stateful) for scalability. However, sessions are still common in traditional web apps. Know the difference: cookies are client-side, sessions are server-side.
+    </div>
+  </div>
+
+  <!-- Q76 -->
+  <div class="qa-block">
+    <div class="qa-number">Q76</div>
+    <div class="qa-title">What is CORS (Cross-Origin Resource Sharing)?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>CORS</strong> is a security mechanism that allows servers to specify which origins are permitted to access resources. It prevents malicious websites from making unauthorized requests to your API. Browsers enforce CORS policies for security.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Why CORS exists:</strong></p>
+      <ul>
+        <li><strong>Same-Origin Policy:</strong> Browsers prevent scripts from accessing resources from different origins</li>
+        <li><strong>Cross-origin requests:</strong> Needed for modern web apps (frontend on different domain)</li>
+        <li><strong>CORS headers:</strong> Server specifies allowed origins, methods, headers</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Spring CORS configuration</span>
+
+<span class="hl-comment">// Method 1: @CrossOrigin annotation</span>
+<span class="hl-annotation">@RestController</span>
+<span class="hl-annotation">@CrossOrigin</span>(origins = <span class="hl-string">"http://localhost:3000"</span>)
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">UserController</span> {
+    <span class="hl-annotation">@GetMapping</span>(<span class="hl-string">"/users"</span>)
+    <span class="hl-keyword">public</span> <span class="hl-type">List</span>&lt;<span class="hl-type">User</span>&gt; <span class="hl-method">getUsers</span>() { ... }
+}
+
+<span class="hl-comment">// Method 2: Global CORS configuration</span>
+<span class="hl-annotation">@Configuration</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">WebConfig</span> <span class="hl-keyword">implements</span> <span class="hl-type">WebMvcConfigurer</span> {
+    <span class="hl-annotation">@Override</span>
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">addCorsMappings</span>(<span class="hl-type">CorsRegistry</span> registry) {
+        registry.addMapping(<span class="hl-string">"/api/**"</span>)
+            .allowedOrigins(<span class="hl-string">"http://localhost:3000"</span>, <span class="hl-string">"https://myapp.com"</span>)
+            .allowedMethods(<span class="hl-string">"GET"</span>, <span class="hl-string">"POST"</span>, <span class="hl-string">"PUT"</span>, <span class="hl-string">"DELETE"</span>)
+            .allowedHeaders(<span class="hl-string">"*"</span>)
+            .allowCredentials(<span class="hl-keyword">true</span>)
+            .maxAge(<span class="hl-number">3600</span>);  <span class="hl-comment">// Cache preflight for 1 hour</span>
+    }
+}
+
+<span class="hl-comment">// Method 3: CORS filter (most flexible)</span>
+<span class="hl-annotation">@Bean</span>
+<span class="hl-keyword">public</span> <span class="hl-type">CorsFilter</span> <span class="hl-method">corsFilter</span>() {
+    <span class="hl-type">UrlBasedCorsConfigurationSource</span> source = <span class="hl-keyword">new</span> <span class="hl-type">UrlBasedCorsConfigurationSource</span>();
+    <span class="hl-type">CorsConfiguration</span> config = <span class="hl-keyword">new</span> <span class="hl-type">CorsConfiguration</span>();
+    config.setAllowedOrigins(<span class="hl-type">List</span>.of(<span class="hl-string">"http://localhost:3000"</span>));
+    config.setAllowedMethods(<span class="hl-type">List</span>.of(<span class="hl-string">"*"</span>));
+    config.setAllowedHeaders(<span class="hl-type">List</span>.of(<span class="hl-string">"*"</span>));
+    source.registerCorsConfiguration(<span class="hl-string">"/api/**"</span>, config);
+    <span class="hl-keyword">return</span> <span class="hl-keyword">new</span> <span class="hl-type">CorsFilter</span>(source);
+}</code></pre>
+
+      <p><strong>Preflight requests:</strong></p>
+      <ul>
+        <li><strong>Simple requests:</strong> GET, POST (with simple content types) — no preflight</li>
+        <li><strong>Preflighted requests:</strong> PUT, DELETE, custom headers, certain content types</li>
+        <li><strong>OPTIONS request:</strong> Sent automatically by browser to check CORS permissions</li>
+        <li><strong>Response headers:</strong> Server responds with allowed methods, origins, headers</li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> CORS is often a source of confusion. Remember: CORS is enforced by the <strong>browser</strong>, not the server. If you're getting CORS errors with tools like Postman (which don't enforce CORS), it's a frontend issue. The server must send the correct CORS headers for the browser to allow the request.
+    </div>
+  </div>
+
+  <!-- Q77 -->
+  <div class="qa-block">
+    <div class="qa-number">Q77</div>
+    <div class="qa-title">What is idempotency (in the context of HTTP APIs)?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>Idempotency</strong> means that making the same request multiple times produces the <strong>same result</strong> as making it once. In HTTP, <strong>GET</strong>, <strong>PUT</strong>, <strong>DELETE</strong>, and <strong>HEAD</strong> are idempotent. <strong>POST</strong> is not idempotent because it creates new resources.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Idempotent HTTP methods:</strong></p>
+      <table>
+        <thead><tr><th>Method</th><th>Idempotent?</th><th>Why?</th></tr></thead>
+        <tbody>
+          <tr><td><strong>GET</strong></td><td>✅ Yes</td><td>Reads data without side effects</td></tr>
+          <tr><td><strong>PUT</strong></td><td>✅ Yes</td><td>Replaces resource with same data each time</td></tr>
+          <tr><td><strong>DELETE</strong></td><td>✅ Yes</td><td>Deleting same resource multiple times has same effect</td></tr>
+          <tr><td><strong>POST</strong></td><td>❌ No</td><td>Creates new resource each time (different IDs)</td></tr>
+          <tr><td><strong>PATCH</strong></td><td>⚠️ Can be</td><td>Can be idempotent if implemented correctly</td></tr>
+        </tbody>
+      </table>
+
+      <pre><code><span class="hl-comment">// Idempotent example: PUT</span>
+<span class="hl-comment">// Request 1: PUT /users/123 { "name": "Alice" }</span>
+<span class="hl-comment">// → Creates/updates user with id 123, name "Alice"</span>
+<span class="hl-comment">// Request 2: PUT /users/123 { "name": "Alice" }</span>
+<span class="hl-comment">// → Same result, user still has name "Alice"</span>
+
+<span class="hl-comment">// Non-idempotent example: POST</span>
+<span class="hl-comment">// Request 1: POST /users { "name": "Bob" }</span>
+<span class="hl-comment">// → Creates user with id 456</span>
+<span class="hl-comment">// Request 2: POST /users { "name": "Bob" }</span>
+<span class="hl-comment">// → Creates user with id 457 (different resource!)</span>
+
+<span class="hl-comment">// Implementing idempotency in APIs</span>
+<span class="hl-annotation">@PostMapping</span>(<span class="hl-string">"/orders"</span>)
+<span class="hl-keyword">public</span> <span class="hl-type">Order</span> <span class="hl-method">createOrder</span>(<span class="hl-annotation">@RequestHeader</span>(<span class="hl-string">"Idempotency-Key"</span>) <span class="hl-type">String</span> idempotencyKey,
+                               <span class="hl-annotation">@RequestBody</span> <span class="hl-type">OrderRequest</span> request) {
+    <span class="hl-comment">// Store idempotencyKey and result</span>
+    <span class="hl-comment">// If same key received, return cached result</span>
+}</code></pre>
+
+      <p><strong>Why idempotency matters:</strong></p>
+      <ul>
+        <li><strong>Retry safety:</strong> Clients can retry failed requests without causing duplicates</li>
+        <li><strong>Network resilience:</strong> Handle network timeouts gracefully</li>
+        <li><strong>Consistency:</strong> Guarantees deterministic behavior</li>
+        <li><strong>Distributed systems:</strong> Essential for reliable messaging</li>
+      </ul>
+
+      <p><strong>Idempotency patterns:</strong></p>
+      <ul>
+        <li><strong>Idempotency keys:</strong> Client generates unique key, server deduplicates</li>
+        <li><strong>Versioning:</strong> Use ETag or version fields</li>
+        <li><strong>Check-and-set:</strong> Conditional updates with If-Match headers</li>
+        <li><strong>Optimistic locking:</strong> Version field prevents lost updates</li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Idempotency is crucial for building reliable APIs. Always remember: <strong>PUT is idempotent, POST is not</strong>. If you're designing an API for creating resources, consider using POST with idempotency keys instead of using PUT. In interviews, explain why idempotency matters for distributed systems and retry mechanisms.
+    </div>
+  </div>
+
+  <!-- CHEAT SHEET -->
+  <div class="qa-block" style="border-bottom:none;padding-bottom:0;margin-bottom:0">
+    <div class="qa-title" style="font-size:16px;color:var(--cyan)">📋 Quick-reference cheat sheet</div>
+    <div class="qa-section">
+      <pre style="background:var(--bg2);border-color:var(--border2);padding:1.2rem;border-radius:8px;font-size:13px;line-height:1.8"><code>Spring Bean:
+  - Object managed by Spring IoC container
+  - Singleton by default, defined with @Component/@Bean
+
+Dependency Injection:
+  Constructor (✅ recommended) → immutable, testable
+  Setter (⚠️ optional) → mutable, reconfigurable
+  Field (❌ not recommended) → hard to test, hidden dependencies
+
+Bean Scopes:
+  singleton   → one per container (default)
+  prototype   → new instance each time
+  request     → one per HTTP request
+  session     → one per HTTP session
+  application → one per ServletContext
+
+@Qualifier → disambiguate multiple beans of same type
+@Primary   → set default bean when multiple exist
+@Order     → define execution order (lower = first)
+
+Startup Code:
+  @EventListener(ApplicationReadyEvent.class) → app fully ready
+  ApplicationRunner → access to arguments
+  CommandLineRunner → simple startup code
+
+Circular Dependency:
+  ❌ Constructor injection (fails)
+  ✅ @Lazy on one dependency
+  ✅ Setter/field injection (works but not recommended)
+  ✅ Restructure to avoid
+
+HTTP Methods:
+  GET     → read (idempotent, safe)
+  POST    → create (not idempotent)
+  PUT     → full update (idempotent)
+  DELETE  → delete (idempotent)
+  PATCH   → partial update (can be idempotent)
+
+CORS:
+  - Browser security mechanism
+  - Server allows cross-origin requests via headers
+  - @CrossOrigin or global configuration
+
+Idempotency:
+  - Same request multiple times → same result
+  - GET, PUT, DELETE are idempotent
+  - POST is NOT idempotent
+  - Use idempotency keys for safe retries</code></pre>
+    </div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <div style="display:flex;justify-content:space-between;margin-top:2rem;padding-top:1.5rem;border-top:0.5px solid var(--border)">
+    <a href="07-concurrency.html" style="color:var(--text3);font-family:var(--mono);font-size:12px;text-decoration:none">← Previous: Concurrency</a>
+    <a href="index.html" class="back-top">🏠 Back to home</a>
+    <a href="09-jpa-databases.html" style="color:var(--text3);font-family:var(--mono);font-size:12px;text-decoration:none">Next: JPA & Databases →</a>
+  </div>
+
+</div>
+
+<footer>
+  <span class="footer-meta">vbforge · java-interview-prep · Java 21</span>
+  <a class="footer-link" href="https://github.com/vbforge/java-interview-prep">github.com/vbforge/java-interview-prep</a>
+</footer>
+
+</body>
+</html>
