@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vbforge / java-interview-prep — Data types & Strings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0e1a;
+  --bg2:#0f1629;
+  --bg3:#141d35;
+  --bg4:#1a2540;
+  --border:#1e2d50;
+  --border2:#243460;
+  --text:#e2e8f4;
+  --text2:#8899bb;
+  --text3:#4a5a7a;
+  --cyan:#00d9ff;
+  --cyan2:#00b8d9;
+  --cyan-dim:rgba(0,217,255,0.08);
+  --green:#22c55e;
+  --green-dim:rgba(34,197,94,0.08);
+  --amber:#f59e0b;
+  --amber-dim:rgba(245,158,11,0.08);
+  --red:#ef4444;
+  --red-dim:rgba(239,68,68,0.08);
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Inter',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;min-height:100vh}
+
+/* ── LAYOUT ── */
+.page{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem}
+
+/* ── NAV ── */
+nav{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 1.5rem;border-bottom:0.5px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.nav-logo{width:28px;height:28px;flex-shrink:0}
+.nav-title{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--text)}
+.nav-title span{color:var(--cyan)}
+.nav-links{display:flex;gap:4px}
+.nav-link{font-family:var(--mono);font-size:11px;color:var(--text2);text-decoration:none;padding:4px 10px;border-radius:5px;border:0.5px solid transparent;transition:all .15s}
+.nav-link:hover{color:var(--text);border-color:var(--border2);background:var(--bg3)}
+.nav-link.active{color:var(--cyan);border-color:var(--border2)}
+
+/* ── THEORY CONTENT ── */
+/*.memory-diagram {*/
+/*    background-color: #f4f4f4;*/
+/*    border-left: 4px solid #007acc;*/
+/*    padding: 15px;*/
+/*    border-radius: 6px;*/
+/*    overflow-x: auto;*/
+/*    font-family: "Courier New", monospace;*/
+/*    line-height: 1.4;*/
+/*}*/
+
+.theory-header{
+  padding:2rem 0 1.5rem;
+  border-bottom:0.5px solid var(--border);
+  margin-bottom:2rem;
+}
+.theory-header h1{
+  font-family:var(--mono);
+  font-size:28px;
+  font-weight:600;
+  margin-bottom:0.5rem;
+  color:var(--text);
+}
+.theory-header h1 em{font-style:normal;color:var(--cyan)}
+.theory-meta{
+  display:flex;
+  gap:1.5rem;
+  flex-wrap:wrap;
+  color:var(--text3);
+  font-size:12px;
+  font-family:var(--mono);
+  margin-top:0.5rem;
+}
+.theory-meta a{color:var(--cyan2);text-decoration:none}
+.theory-meta a:hover{color:var(--cyan)}
+.badge-skip{
+  background:var(--amber-dim);
+  color:var(--amber);
+  padding:2px 10px;
+  border-radius:4px;
+  font-size:10px;
+  border:0.5px solid rgba(245,158,11,0.2);
+}
+
+/* ── Q&A BLOCKS ── */
+.qa-block{
+  margin-bottom:2.5rem;
+  padding-bottom:2rem;
+  border-bottom:0.5px solid var(--border);
+}
+.qa-block:last-child{border-bottom:none}
+.qa-number{
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--cyan);
+  margin-bottom:0.3rem;
+}
+.qa-title{
+  font-size:18px;
+  font-weight:600;
+  color:var(--text);
+  margin-bottom:1rem;
+  font-family:var(--sans);
+}
+.qa-section{
+  margin-bottom:1rem;
+}
+.qa-section h3{
+  font-size:13px;
+  font-weight:600;
+  color:var(--text2);
+  margin-bottom:0.3rem;
+  font-family:var(--mono);
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+}
+.qa-section p{
+  color:var(--text2);
+  line-height:1.7;
+  font-size:14px;
+}
+.qa-section ul, .qa-section ol{
+  color:var(--text2);
+  line-height:1.7;
+  padding-left:1.5rem;
+  margin:0.5rem 0;
+}
+.qa-section li{
+  margin-bottom:0.3rem;
+}
+.qa-section code{
+  font-family:var(--mono);
+  font-size:13px;
+  background:var(--bg3);
+  padding:0.1rem 0.4rem;
+  border-radius:3px;
+  color:var(--cyan2);
+}
+.qa-section pre{
+  background:var(--bg3);
+  border:0.5px solid var(--border);
+  border-radius:6px;
+  padding:1rem 1.2rem;
+  overflow-x:auto;
+  margin:0.8rem 0;
+}
+.qa-section pre code{
+  font-family:var(--mono);
+  font-size:13px;
+  color:var(--text2);
+  background:transparent;
+  padding:0;
+  line-height:1.6;
+}
+.qa-section blockquote{
+  border-left:2px solid var(--cyan);
+  padding-left:1rem;
+  margin:0.8rem 0;
+  color:var(--text2);
+}
+.qa-section blockquote strong{
+  color:var(--cyan);
+}
+.qa-section table{
+  width:100%;
+  border-collapse:collapse;
+  margin:0.8rem 0;
+  font-size:13px;
+}
+.qa-section th{
+  background:var(--bg3);
+  color:var(--text);
+  padding:0.5rem 0.8rem;
+  text-align:left;
+  font-weight:500;
+  border:0.5px solid var(--border);
+}
+.qa-section td{
+  padding:0.5rem 0.8rem;
+  border:0.5px solid var(--border);
+  color:var(--text2);
+}
+.qa-section tr:nth-child(even){background:var(--bg2)}
+
+/* ── JUNIOR NOTE ── */
+.junior-note{
+  background:var(--cyan-dim);
+  border:0.5px solid rgba(0,217,255,0.15);
+  border-radius:6px;
+  padding:0.8rem 1rem;
+  margin:1rem 0;
+  color:var(--text2);
+  font-size:13px;
+}
+.junior-note strong{
+  color:var(--cyan);
+}
+
+/* ── CODE HIGHLIGHT ── */
+.hl-comment{color:#4a5a7a}
+.hl-keyword{color:var(--cyan2)}
+.hl-string{color:#a3e635}
+.hl-type{color:#c084fc}
+.hl-method{color:#f472b6}
+.hl-number{color:#f59e0b}
+
+/* ── FOOTER ── */
+footer{padding:1.5rem 1.5rem;border-top:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem}
+.footer-meta{font-family:var(--mono);font-size:11px;color:var(--text3)}
+.footer-link{font-family:var(--mono);font-size:11px;color:var(--text3);text-decoration:none}
+.footer-link:hover{color:var(--cyan)}
+
+/* ── BACK TO TOP ── */
+.back-top{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--cyan2);
+  text-decoration:none;
+  padding:6px 12px;
+  border-radius:4px;
+  border:0.5px solid var(--border2);
+  transition:all .15s;
+}
+.back-top:hover{color:var(--cyan);border-color:var(--cyan)}
+
+/* scrollbar */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <svg class="nav-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="70" fill="#0f172a" stroke="#64748b" stroke-width="1"/>
+      <text x="92" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="end" fill="#e2e8f0" letter-spacing="1px">VBF</text>
+      <circle cx="100" cy="99" r="8" fill="none" stroke="#00d9ff" stroke-width="2"/>
+      <path d="M 96 99 L 99 102 L 104 95" fill="none" stroke="#00d9ff" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="108" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="start" fill="#e2e8f0" letter-spacing="1px">RGE</text>
+    </svg>
+    <span class="nav-title">vbforge / <span>java-interview-prep</span></span>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">home</a>
+    <a class="nav-link active" href="#">theory</a>
+    <a class="nav-link" href="index.html#section-demos">demos</a>
+    <a class="nav-link" href="https://github.com/vbforge/java-interview-prep" target="_blank">github ↗</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="theory-header">
+    <h1>02 — <em>Data types & Strings</em></h1>
+    <div class="theory-meta">
+      <span>📚 Questions: <strong>Q9–Q17</strong></span>
+      <span>📄 Covers: Primitives, Objects, Boxing, String pool</span>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="qa-block">
+    <div class="qa-number">Q9</div>
+    <div class="qa-title">The two main groups of data types</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>Java has two main groups of data types: <strong>primitive types</strong> and <strong>reference types</strong>. Primitive types store values directly. Reference types store references (addresses) to objects on the heap.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <table>
+        <thead><tr><th>Group</th><th>What they store</th><th>Examples</th><th>Where they live</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Primitive types</strong></td><td>Actual values</td><td><code>int</code>, <code>long</code>, <code>boolean</code>, <code>double</code>, <code>char</code>, <code>byte</code>, <code>short</code>, <code>float</code></td><td>Stack (local) or Heap (fields)</td></tr>
+          <tr><td><strong>Reference types</strong></td><td>Memory address (pointer)</td><td>All classes, interfaces, arrays, enums</td><td>Reference on Stack, Object on Heap</td></tr>
+        </tbody>
+      </table>
+
+      <pre><code><span class="hl-type">int</span> x = <span class="hl-number">42</span>;              <span class="hl-comment">// x stores the VALUE 42 directly</span>
+<span class="hl-type">String</span> s = <span class="hl-string">"hello"</span>;        <span class="hl-comment">// s stores a REFERENCE (address) to a String object</span>
+<span class="hl-type">int</span>[] arr = <span class="hl-keyword">new</span> <span class="hl-type">int</span>[<span class="hl-number">10</span>];  <span class="hl-comment">// arr stores a REFERENCE to an array object</span></code></pre>
+
+      <p><strong>Primitive types are not objects</strong> — they have no methods, no identity, no header. They are just bits in memory. That's why you can't call methods on them: <code>int x = 5; x.toString()</code> doesn't work directly (autoboxing would convert to <code>Integer</code> first).</p>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> A common mistake is thinking "everything in Java is an object." Primitives are NOT objects. The phrase "Everything in Java is an object except primitives" is more accurate.
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="qa-block">
+    <div class="qa-number">Q10</div>
+    <div class="qa-title">How to compare primitives and objects</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>Primitives are compared using <code>==</code> (compares values). Objects are compared using <code>==</code> (compares references) OR <code>.equals()</code> (compares content/logical equality).</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <table>
+        <thead><tr><th>Comparison</th><th>What it compares</th><th>When to use</th></tr></thead>
+        <tbody>
+          <tr><td><code>==</code> with primitives</td><td>Values</td><td>Always correct for primitives</td></tr>
+          <tr><td><code>==</code> with objects</td><td>References (memory addresses)</td><td>Checking if two references point to the exact same object</td></tr>
+          <tr><td><code>.equals()</code></td><td>Content / logical equality</td><td>Comparing object content (String, custom classes)</td></tr>
+        </tbody>
+      </table>
+
+      <pre><code><span class="hl-type">int</span> a = <span class="hl-number">5</span>;
+<span class="hl-type">int</span> b = <span class="hl-number">5</span>;
+<span class="hl-keyword">boolean</span> result = (a == b);  <span class="hl-comment">// true — values are equal</span>
+
+<span class="hl-type">String</span> s1 = <span class="hl-string">"hello"</span>;
+<span class="hl-type">String</span> s2 = <span class="hl-string">"hello"</span>;
+<span class="hl-keyword">boolean</span> refsEqual = (s1 == s2);       <span class="hl-comment">// true (string pool, same reference)</span>
+<span class="hl-keyword">boolean</span> contentEqual = s1.equals(s2);  <span class="hl-comment">// true (content is the same)</span>
+
+<span class="hl-type">String</span> s3 = <span class="hl-keyword">new</span> <span class="hl-type">String</span>(<span class="hl-string">"hello"</span>);
+<span class="hl-keyword">boolean</span> refsEqual2 = (s1 == s3);       <span class="hl-comment">// false — different objects</span>
+<span class="hl-keyword">boolean</span> contentEqual2 = s1.equals(s3);  <span class="hl-comment">// true — content is the same</span></code></pre>
+
+      <p><strong>⚠️ Never use <code>==</code> to compare object content</strong> — always use <code>.equals()</code> (or <code>Objects.equals()</code> for null-safety).</p>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> <code>String</code> has its own <code>.equals()</code> implementation that compares characters. For custom classes, you must override <code>equals()</code> and <code>hashCode()</code> if you want content-based comparison.
+    </div>
+  </div>
+
+  <!-- Q11 -->
+  <div class="qa-block">
+    <div class="qa-number">Q11</div>
+    <div class="qa-title">Passing method arguments by value vs by reference</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>Java is <strong>always pass-by-value</strong>. For primitives, the value is copied. For objects, the <strong>reference</strong> is copied (also pass-by-value, the reference value is copied).</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Pass-by-value for primitives:</strong></p>
+      <pre><code><span class="hl-keyword">void</span> <span class="hl-method">change</span>(<span class="hl-type">int</span> x) {
+    x = <span class="hl-number">100</span>;  <span class="hl-comment">// only the copy changes</span>
+}
+
+<span class="hl-type">int</span> num = <span class="hl-number">5</span>;
+<span class="hl-method">change</span>(num);
+<span class="hl-comment">// num is still 5 — the original was not modified</span></code></pre>
+
+      <p><strong>Pass-by-value for objects (reference copy):</strong></p>
+      <pre><code><span class="hl-keyword">void</span> <span class="hl-method">modify</span>(<span class="hl-type">Person</span> p) {
+    p.setName(<span class="hl-string">"Alice"</span>);  <span class="hl-comment">// modifies the object the reference points to</span>
+    p = <span class="hl-keyword">new</span> <span class="hl-type">Person</span>();   <span class="hl-comment">// reassigns the COPY of the reference</span>
+}
+
+<span class="hl-type">Person</span> person = <span class="hl-keyword">new</span> <span class="hl-type">Person</span>(<span class="hl-string">"Bob"</span>);
+<span class="hl-method">modify</span>(person);
+<span class="hl-comment">// person still points to the original object, but its name is now "Alice"</span>
+<span class="hl-comment">// The reassignment inside the method did NOT affect the original reference</span></code></pre>
+
+      <p><strong>Key insight:</strong> When you pass an object reference, you're passing the <em>value of the reference</em>. That's why reassigning the parameter inside the method doesn't affect the original reference.</p>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Many juniors think Java is "pass-by-reference" for objects. That's incorrect. Java is <strong>always</strong> pass-by-value. The confusion comes from the fact that the reference value (memory address) is what gets copied, not the object itself.
+    </div>
+  </div>
+
+  <!-- Q12 -->
+  <div class="qa-block">
+    <div class="qa-number">Q12</div>
+    <div class="qa-title">Object o = new Object(); — What is stored in o? Where does new Object() live?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><code>o</code> stores a <strong>reference</strong> (memory address) to the <code>Object</code> instance. The <code>new Object()</code> object lives on the <strong>heap</strong>.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code><span class="hl-type">Object</span> o = <span class="hl-keyword">new</span> <span class="hl-type">Object</span>();</code></pre>
+
+      <p>This single line does two things:</p>
+      <ol>
+        <li><strong>On the heap:</strong> <code>new Object()</code> allocates memory for an <code>Object</code> instance — about 16 bytes (header) for an empty object (JVM-specific).</li>
+        <li><strong>On the stack:</strong> The reference variable <code>o</code> is stored on the stack (if it's a local variable) and holds the memory address of that heap object.</li>
+      </ol>
+
+        <pre><code>
+   Stack (current method frame)
+
+   -----------------------------------------------
+   |       o → 0x7f3c2a1b4c (reference)          |
+   -----------------------------------------------
+                    │
+                    ▼
+   Heap
+
+   ------------------------------------------------
+   |       Object @ 0x7f3c2a1b4c                  |
+   |        • header (mark word, class ptr)       |
+   |        • no fields (empty object)            |
+   ------------------------------------------------
+</code></pre>
+
+
+      <p><strong>If <code>o</code> is a field</strong> (instance variable), the reference is stored inside the containing object on the heap, not on the stack.</p>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> The most common mistake: "o is the object." No, o is the <em>reference</em> to the object. The object is on the heap. The reference is on the stack (or inside another object if it's a field).
+    </div>
+  </div>
+
+  <!-- Q13 -->
+  <div class="qa-block">
+    <div class="qa-number">Q13</div>
+    <div class="qa-title">Boxing / unboxing</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>Boxing</strong> is converting a primitive to its corresponding wrapper class object. <strong>Unboxing</strong> is converting a wrapper object back to a primitive. This happens automatically in Java (autoboxing / autounboxing).</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <table>
+        <thead><tr><th>Primitive</th><th>Wrapper Class</th></tr></thead>
+        <tbody>
+          <tr><td><code>int</code></td><td><code>Integer</code></td></tr>
+          <tr><td><code>long</code></td><td><code>Long</code></td></tr>
+          <tr><td><code>double</code></td><td><code>Double</code></td></tr>
+          <tr><td><code>boolean</code></td><td><code>Boolean</code></td></tr>
+          <tr><td><code>char</code></td><td><code>Character</code></td></tr>
+        </tbody>
+      </table>
+
+      <pre><code><span class="hl-comment">// Boxing (primitive → wrapper)</span>
+<span class="hl-type">int</span> primitive = <span class="hl-number">42</span>;
+<span class="hl-type">Integer</span> wrapped = <span class="hl-type">Integer</span>.valueOf(primitive);  <span class="hl-comment">// explicit boxing</span>
+<span class="hl-type">Integer</span> autoBoxed = primitive;                <span class="hl-comment">// autoboxing (compiler does it)</span>
+
+<span class="hl-comment">// Unboxing (wrapper → primitive)</span>
+<span class="hl-type">Integer</span> wrappedNum = <span class="hl-number">100</span>;
+<span class="hl-type">int</span> unboxed = wrappedNum.intValue();         <span class="hl-comment">// explicit unboxing</span>
+<span class="hl-type">int</span> autoUnboxed = wrappedNum;                <span class="hl-comment">// autounboxing</span>
+
+<span class="hl-comment">// Common autoboxing trap:</span>
+<span class="hl-type">Integer</span> a = <span class="hl-number">127</span>;
+<span class="hl-type">Integer</span> b = <span class="hl-number">127</span>;
+<span class="hl-comment">// a == b is true (Integer cache for -128 to 127)</span>
+
+<span class="hl-type">Integer</span> c = <span class="hl-number">128</span>;
+<span class="hl-type">Integer</span> d = <span class="hl-number">128</span>;
+<span class="hl-comment">// c == d is false (different objects)</span>
+<span class="hl-comment">// Use c.equals(d) instead!</span></code></pre>
+
+      <p><strong>Cost of boxing:</strong> Autoboxing creates objects on the heap, which adds GC pressure. In performance-critical code, use primitives instead of wrappers.</p>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> The <code>Integer</code> cache (values -128 to 127) is a common interview trap. Always use <code>.equals()</code> for comparing wrapper objects, not <code>==</code>. Also, avoid autoboxing in tight loops — it creates unnecessary objects.
+    </div>
+  </div>
+
+  <!-- Q14 -->
+  <div class="qa-block">
+    <div class="qa-number">Q14</div>
+    <div class="qa-title">Is there a difference between String s1 = "string" and String s2 = new String("string")?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>Yes.</strong> <code>String s1 = "string"</code> uses the <strong>string pool</strong> (interned). <code>String s2 = new String("string")</code> creates a <strong>new object</strong> on the heap, bypassing the pool.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code><span class="hl-type">String</span> s1 = <span class="hl-string">"hello"</span>;                    <span class="hl-comment">// Uses string pool</span>
+<span class="hl-type">String</span> s2 = <span class="hl-keyword">new</span> <span class="hl-type">String</span>(<span class="hl-string">"hello"</span>);        <span class="hl-comment">// Creates new object on heap</span>
+<span class="hl-type">String</span> s3 = <span class="hl-string">"hello"</span>;                    <span class="hl-comment">// Reuses s1's object from pool</span>
+
+<span class="hl-keyword">boolean</span> isSameRef1 = (s1 == s2);  <span class="hl-comment">// false — different objects</span>
+<span class="hl-keyword">boolean</span> isSameRef2 = (s1 == s3);  <span class="hl-comment">// true — same object from pool</span>
+<span class="hl-keyword">boolean</span> isEqual = s1.equals(s2);  <span class="hl-comment">// true — content is the same</span></code></pre>
+
+      <p><strong>The String Pool (String Intern Pool):</strong></p>
+      <ul>
+        <li>Stored in the heap (since Java 7+, before that in PermGen)</li>
+        <li>Used to save memory by reusing <code>String</code> literals</li>
+        <li>When you use <code>""</code> literal, the JVM checks if the string already exists in the pool</li>
+        <li>If it exists, the reference is reused; if not, a new string is added to the pool</li>
+      </ul>
+
+      <p><strong>String objects created with <code>new</code>:</strong></p>
+      <ul>
+        <li>Always create a new <code>String</code> object on the heap</li>
+        <li>Do NOT use the pool (unless you call <code>.intern()</code>)</li>
+        <li>Usually unnecessary — prefer <code>""</code> literals</li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> In modern Java, you should almost never use <code>new String("...")</code>. Use the literal syntax <code>"..."</code> instead. The only exception is when you explicitly need a new object (rare). The compiler and JVM optimize string literals automatically.
+    </div>
+  </div>
+
+  <!-- Q15 -->
+  <div class="qa-block">
+    <div class="qa-number">Q15</div>
+    <div class="qa-title">s1 == s2 vs s1.equals(s2)</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><code>==</code> compares <strong>references</strong> (memory addresses). <code>.equals()</code> compares <strong>content</strong> (logical equality). For strings, always use <code>.equals()</code> unless you specifically need reference equality.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code><span class="hl-type">String</span> s1 = <span class="hl-string">"hello"</span>;
+<span class="hl-type">String</span> s2 = <span class="hl-keyword">new</span> <span class="hl-type">String</span>(<span class="hl-string">"hello"</span>);
+<span class="hl-type">String</span> s3 = <span class="hl-string">"hello"</span>;
+
+<span class="hl-comment">// Reference equality (memory addresses)</span>
+s1 == s2   <span class="hl-comment">// false — different objects</span>
+s1 == s3   <span class="hl-comment">// true — same object from string pool</span>
+
+<span class="hl-comment">// Content equality</span>
+s1.equals(s2)   <span class="hl-comment">// true — both contain "hello"</span>
+s1.equals(s3)   <span class="hl-comment">// true — both contain "hello"</span>
+
+<span class="hl-comment">// Null-safe alternative</span>
+<span class="hl-type">Objects</span>.equals(s1, s2)   <span class="hl-comment">// true, also handles nulls</span></code></pre>
+
+      <p><strong>When <code>==</code> with objects makes sense:</strong></p>
+      <ul>
+        <li>Comparing enum constants: <code>if (status == Status.ACTIVE)</code></li>
+        <li>Checking if two references point to the same object instance</li>
+        <li>Comparing primitive values (not objects)</li>
+      </ul>
+
+      <p><strong>When <code>.equals()</code> is required:</strong></p>
+      <ul>
+        <li>String content comparison</li>
+        <li>Custom objects where logical equality matters</li>
+        <li>Any time you care about values, not memory addresses</li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> The most common junior mistake in interviews: using <code>==</code> to compare strings. Always explain that <code>==</code> compares references and <code>.equals()</code> compares content. For strings, always use <code>.equals()</code>!
+    </div>
+  </div>
+
+  <!-- Q16 -->
+  <div class="qa-block">
+    <div class="qa-number">Q16</div>
+    <div class="qa-title">String.intern()</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><code>String.intern()</code> adds the string to the <strong>string pool</strong> if it's not already there, and returns a reference to the pooled string. It can be used to manually pool strings to save memory.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code><span class="hl-type">String</span> s1 = <span class="hl-keyword">new</span> <span class="hl-type">String</span>(<span class="hl-string">"hello"</span>);
+<span class="hl-type">String</span> s2 = s1.intern();      <span class="hl-comment">// Adds "hello" to pool (if not already there)</span>
+<span class="hl-type">String</span> s3 = <span class="hl-string">"hello"</span>;           <span class="hl-comment">// Uses the pooled string</span>
+
+s1 == s2   <span class="hl-comment">// false — s1 is heap object, s2 is pooled</span>
+s2 == s3   <span class="hl-comment">// true — both from pool</span></code></pre>
+
+      <p><strong>When to use <code>intern()</code>:</strong></p>
+      <ul>
+        <li><strong>Memory optimization:</strong> If you have many duplicate strings, interning can save memory</li>
+        <li><strong>Performance:</strong> <code>==</code> comparison of interned strings is faster than <code>.equals()</code></li>
+        <li><strong>When to avoid:</strong> If you intern too many unique strings, you can cause memory issues (the pool is not unlimited)</li>
+      </ul>
+
+      <p><strong>How the string pool works:</strong></p>
+      <ul>
+        <li>Before Java 7: Pool was in PermGen (fixed size, could cause OutOfMemoryError)</li>
+        <li>Java 7+: Pool is on the regular heap, can grow dynamically</li>
+        <li>Interned strings are garbage-collected (unlike before Java 7)</li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Modern applications rarely need to call <code>intern()</code> manually. The JVM handles string pooling for literals automatically. In most cases, explicitly calling <code>intern()</code> is unnecessary and can even hurt performance if overused.
+    </div>
+  </div>
+
+  <!-- Q17 -->
+  <div class="qa-block">
+    <div class="qa-number">Q17</div>
+    <div class="qa-title">Are String objects mutable or immutable?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>Immutable.</strong> Once a <code>String</code> object is created, its value cannot be changed. Any method that "modifies" a string (like <code>toUpperCase()</code>, <code>concat()</code>, <code>replace()</code>) returns a <strong>new</strong> <code>String</code> object.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code><span class="hl-type">String</span> s = <span class="hl-string">"hello"</span>;
+<span class="hl-type">String</span> upper = s.toUpperCase();
+
+<span class="hl-comment">// s is still "hello"</span>
+<span class="hl-comment">// upper is "HELLO" (new object)</span>
+
+s = s.concat(<span class="hl-string">" world"</span>);  <span class="hl-comment">// s now points to a NEW string "hello world"</span>
+                        <span class="hl-comment">// The original "hello" string is unchanged and may be GC'd</span></code></pre>
+
+      <p><strong>Why strings are immutable:</strong></p>
+      <ul>
+        <li><strong>Security:</strong> Strings are used in class loading, file paths, passwords, etc. Immutability prevents modification</li>
+        <li><strong>String pool:</strong> Reusing string literals safely requires immutability</li>
+        <li><strong>Thread safety:</strong> Strings can be shared freely between threads</li>
+        <li><strong>Hash caching:</strong> String hash code is computed once and cached</li>
+        <li><strong>Performance:</strong> Many string operations are optimized (e.g., substring shares char array)</li>
+      </ul>
+
+      <p><strong>Alternatives for mutable strings:</strong></p>
+      <ul>
+        <li><code>StringBuilder</code> — not thread-safe, fastest for concatenation in loops</li>
+        <li><code>StringBuffer</code> — thread-safe, slower (synchronized methods)</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Use StringBuilder for heavy modifications</span>
+<span class="hl-type">StringBuilder</span> sb = <span class="hl-keyword">new</span> <span class="hl-type">StringBuilder</span>(<span class="hl-string">"hello"</span>);
+sb.append(<span class="hl-string">" world"</span>);
+<span class="hl-type">String</span> result = sb.toString();  <span class="hl-comment">// "hello world" — no intermediate objects created</span></code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> A common interview question: "How many objects are created by <code>String s = new String("abc")</code>?" Answer: At least two — one in the pool (<code>"abc"</code>) and one on the heap (the <code>new</code> object). This is why you should avoid <code>new String("...")</code>.
+    </div>
+  </div>
+
+  <!-- CHEAT SHEET -->
+  <div class="qa-block" style="border-bottom:none;padding-bottom:0;margin-bottom:0">
+    <div class="qa-title" style="font-size:16px;color:var(--cyan)">📋 Quick-reference cheat sheet</div>
+    <div class="qa-section">
+      <pre style="background:var(--bg2);border-color:var(--border2);padding:1.2rem;border-radius:8px;font-size:13px;line-height:1.8"><code>Primitives   → 8 types: byte, short, int, long, float, double, char, boolean
+              → stored on stack (local) or heap (fields)
+              → compared with == (value comparison)
+
+References   → classes, interfaces, arrays, enums
+              → reference on stack, object on heap
+              → compared with == (reference) or .equals() (content)
+
+Passing      → ALWAYS pass-by-value in Java
+              → primitives: value copied
+              → objects: reference value copied (not the object)
+
+String pool  → stores string literals for reuse
+              → s1 = "hello" → pool
+              → new String("hello") → heap (bypasses pool)
+              → .intern() → returns pooled reference
+
+String       → IMMUTABLE (any modification creates a new object)
+              → use StringBuilder for mutable strings
+
+Boxing       → primitive → wrapper (e.g., int → Integer)
+Unboxing     → wrapper → primitive (e.g., Integer → int)
+              → automatic (autoboxing/autounboxing)
+              → watch out for Integer cache (-128 to 127)</code></pre>
+    </div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <div style="display:flex;justify-content:space-between;margin-top:2rem;padding-top:1.5rem;border-top:0.5px solid var(--border)">
+    <a href="01-jvm-memory.html" style="color:var(--text3);font-family:var(--mono);font-size:12px;text-decoration:none">← Previous: JVM Memory</a>
+    <a href="index.html" class="back-top">🏠 Back to home</a>
+    <a href="03-oop-generics.html" style="color:var(--text3);font-family:var(--mono);font-size:12px;text-decoration:none">Next: OOP & Generics →</a>
+  </div>
+
+</div>
+
+<footer>
+  <span class="footer-meta">vbforge · java-interview-prep · Java 21</span>
+  <a class="footer-link" href="https://github.com/vbforge/java-interview-prep">github.com/vbforge/java-interview-prep</a>
+</footer>
+
+</body>
+</html>

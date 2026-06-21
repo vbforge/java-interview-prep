@@ -56,15 +56,15 @@ java-interview-prep/
 | File | Topic | Questions |
 |------|-------|-----------|
 | [01-jvm-memory.md](helpers-files/theory/01-jvm-memory.md) | JVM memory, GC, G1 | Q1–Q8     |
-| [02-data-types-strings.md](helpers-files/theory/02-data-types-strings.md) | Primitives, boxing, String pool | Q9–Q17    |
-| [03-oop-generics.md](helpers-files/theory/03-oop-generics.md) | Inheritance, interfaces, generics | Q18–Q27   |
-| [04-collections-list.md](helpers-files/theory/04-collections-list.md) | List, ArrayList, LinkedList, Iterator | Q28–Q33   |
-| [05-collections-hashmap.md](helpers-files/theory/05-collections-hashmap.md) | HashMap internals, TreeMap | Q34–Q44   |
-| [06-streams-lambdas.md](helpers-files/theory/06-streams-lambdas.md) | Streams, Optional, lambdas, functional interfaces | Q45–Q52   |
-| [07-concurrency.md](helpers-files/theory/07-concurrency.md) | Threads, volatile, CAS, ReentrantLock | Q53–Q63   |
-| [08-spring-core-web.md](helpers-files/theory/08-spring-core-web.md) | Beans, DI, scopes, HTTP, CORS | Q64–Q77   |
-| [09-jpa-databases.md](helpers-files/theory/09-jpa-databases.md) | JPA, N+1, locking, indexes | Q78–Q86   |
-| [10-design-patterns.md](helpers-files/theory/10-design-patterns.md) | GoF groups, Spring patterns | Q87–Q89   |
+| [02-data-types-strings.md](docs/02-data-types-strings.html) | Primitives, boxing, String pool | Q9–Q17    |
+| [03-oop-generics.md](docs/03-oop-generics.html) | Inheritance, interfaces, generics | Q18–Q27   |
+| [04-collections-list.md](docs/04-collections-list.html) | List, ArrayList, LinkedList, Iterator | Q28–Q33   |
+| [05-collections-hashmap.md](docs/05-collections-hashmap.html) | HashMap internals, TreeMap | Q34–Q44   |
+| [06-streams-lambdas.md](docs/06-streams-lambdas.html) | Streams, Optional, lambdas, functional interfaces | Q45–Q52   |
+| [07-concurrency.md](docs/07-concurrency.html) | Threads, volatile, CAS, ReentrantLock | Q53–Q63   |
+| [08-spring-core-web.md](docs/08-spring-core-web.html) | Beans, DI, scopes, HTTP, CORS | Q64–Q77   |
+| [09-jpa-databases.md](docs/09-jpa-databases.html) | JPA, N+1, locking, indexes | Q78–Q86   |
+| [10-design-patterns.md](docs/10-design-patterns.html) | GoF groups, Spring patterns | Q87–Q89   |
 
 Each theory file follows the same structure:
 
