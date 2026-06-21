@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vbforge / java-interview-prep — Design Patterns</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0e1a;
+  --bg2:#0f1629;
+  --bg3:#141d35;
+  --bg4:#1a2540;
+  --border:#1e2d50;
+  --border2:#243460;
+  --text:#e2e8f4;
+  --text2:#8899bb;
+  --text3:#4a5a7a;
+  --cyan:#00d9ff;
+  --cyan2:#00b8d9;
+  --cyan-dim:rgba(0,217,255,0.08);
+  --green:#22c55e;
+  --green-dim:rgba(34,197,94,0.08);
+  --amber:#f59e0b;
+  --amber-dim:rgba(245,158,11,0.08);
+  --red:#ef4444;
+  --red-dim:rgba(239,68,68,0.08);
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Inter',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;min-height:100vh}
+
+.page{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 1.5rem;border-bottom:0.5px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.nav-logo{width:28px;height:28px;flex-shrink:0}
+.nav-title{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--text)}
+.nav-title span{color:var(--cyan)}
+.nav-links{display:flex;gap:4px}
+.nav-link{font-family:var(--mono);font-size:11px;color:var(--text2);text-decoration:none;padding:4px 10px;border-radius:5px;border:0.5px solid transparent;transition:all .15s}
+.nav-link:hover{color:var(--text);border-color:var(--border2);background:var(--bg3)}
+.nav-link.active{color:var(--cyan);border-color:var(--border2)}
+
+.theory-header{
+  padding:2rem 0 1.5rem;
+  border-bottom:0.5px solid var(--border);
+  margin-bottom:2rem;
+}
+.theory-header h1{
+  font-family:var(--mono);
+  font-size:28px;
+  font-weight:600;
+  margin-bottom:0.5rem;
+  color:var(--text);
+}
+.theory-header h1 em{font-style:normal;color:var(--cyan)}
+.theory-meta{
+  display:flex;
+  gap:1.5rem;
+  flex-wrap:wrap;
+  color:var(--text3);
+  font-size:12px;
+  font-family:var(--mono);
+  margin-top:0.5rem;
+}
+.theory-meta a{color:var(--cyan2);text-decoration:none}
+.theory-meta a:hover{color:var(--cyan)}
+.badge-skip{
+  background:var(--amber-dim);
+  color:var(--amber);
+  padding:2px 10px;
+  border-radius:4px;
+  font-size:10px;
+  border:0.5px solid rgba(245,158,11,0.2);
+}
+
+.qa-block{
+  margin-bottom:2.5rem;
+  padding-bottom:2rem;
+  border-bottom:0.5px solid var(--border);
+}
+.qa-block:last-child{border-bottom:none}
+.qa-number{
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--cyan);
+  margin-bottom:0.3rem;
+}
+.qa-title{
+  font-size:18px;
+  font-weight:600;
+  color:var(--text);
+  margin-bottom:1rem;
+  font-family:var(--sans);
+}
+.qa-section{
+  margin-bottom:1rem;
+}
+.qa-section h3{
+  font-size:13px;
+  font-weight:600;
+  color:var(--text2);
+  margin-bottom:0.3rem;
+  font-family:var(--mono);
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+}
+.qa-section p{
+  color:var(--text2);
+  line-height:1.7;
+  font-size:14px;
+}
+.qa-section ul, .qa-section ol{
+  color:var(--text2);
+  line-height:1.7;
+  padding-left:1.5rem;
+  margin:0.5rem 0;
+}
+.qa-section li{
+  margin-bottom:0.3rem;
+}
+.qa-section code{
+  font-family:var(--mono);
+  font-size:13px;
+  background:var(--bg3);
+  padding:0.1rem 0.4rem;
+  border-radius:3px;
+  color:var(--cyan2);
+}
+.qa-section pre{
+  background:var(--bg3);
+  border:0.5px solid var(--border);
+  border-radius:6px;
+  padding:1rem 1.2rem;
+  overflow-x:auto;
+  margin:0.8rem 0;
+}
+.qa-section pre code{
+  font-family:var(--mono);
+  font-size:13px;
+  color:var(--text2);
+  background:transparent;
+  padding:0;
+  line-height:1.6;
+}
+.qa-section blockquote{
+  border-left:2px solid var(--cyan);
+  padding-left:1rem;
+  margin:0.8rem 0;
+  color:var(--text2);
+}
+.qa-section blockquote strong{
+  color:var(--cyan);
+}
+.qa-section table{
+  width:100%;
+  border-collapse:collapse;
+  margin:0.8rem 0;
+  font-size:13px;
+}
+.qa-section th{
+  background:var(--bg3);
+  color:var(--text);
+  padding:0.5rem 0.8rem;
+  text-align:left;
+  font-weight:500;
+  border:0.5px solid var(--border);
+}
+.qa-section td{
+  padding:0.5rem 0.8rem;
+  border:0.5px solid var(--border);
+  color:var(--text2);
+}
+.qa-section tr:nth-child(even){background:var(--bg2)}
+
+.junior-note{
+  background:var(--cyan-dim);
+  border:0.5px solid rgba(0,217,255,0.15);
+  border-radius:6px;
+  padding:0.8rem 1rem;
+  margin:1rem 0;
+  color:var(--text2);
+  font-size:13px;
+}
+.junior-note strong{
+  color:var(--cyan);
+}
+
+.hl-comment{color:#4a5a7a}
+.hl-keyword{color:var(--cyan2)}
+.hl-string{color:#a3e635}
+.hl-type{color:#c084fc}
+.hl-method{color:#f472b6}
+.hl-number{color:#f59e0b}
+.hl-annotation{color:#f472b6}
+
+footer{padding:1.5rem 1.5rem;border-top:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem}
+.footer-meta{font-family:var(--mono);font-size:11px;color:var(--text3)}
+.footer-link{font-family:var(--mono);font-size:11px;color:var(--text3);text-decoration:none}
+.footer-link:hover{color:var(--cyan)}
+
+.back-top{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--cyan2);
+  text-decoration:none;
+  padding:6px 12px;
+  border-radius:4px;
+  border:0.5px solid var(--border2);
+  transition:all .15s;
+}
+.back-top:hover{color:var(--cyan);border-color:var(--cyan)}
+
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <svg class="nav-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="70" fill="#0f172a" stroke="#64748b" stroke-width="1"/>
+      <text x="92" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="end" fill="#e2e8f0" letter-spacing="1px">VBF</text>
+      <circle cx="100" cy="99" r="8" fill="none" stroke="#00d9ff" stroke-width="2"/>
+      <path d="M 96 99 L 99 102 L 104 95" fill="none" stroke="#00d9ff" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="108" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="start" fill="#e2e8f0" letter-spacing="1px">RGE</text>
+    </svg>
+    <span class="nav-title">vbforge / <span>java-interview-prep</span></span>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">home</a>
+    <a class="nav-link active" href="#">theory</a>
+    <a class="nav-link" href="index.html#section-demos">demos</a>
+    <a class="nav-link" href="https://github.com/vbforge/java-interview-prep" target="_blank">github ↗</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="theory-header">
+    <h1>10 — <em>Design Patterns</em></h1>
+    <div class="theory-meta">
+      <span>📚 Questions: <strong>Q87–Q89</strong></span>
+      <span>🧪 Demo: <a href="https://github.com/vbforge/java-interview-prep/tree/main/demo-07-patterns">demo-07-patterns</a></span>
+      <span class="badge-skip">⭐ Architecture</span>
+    </div>
+  </div>
+
+  <!-- Q87b -->
+  <div class="qa-block">
+    <div class="qa-number">Q87</div>
+    <div class="qa-title">Name the three main groups of design patterns</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>The three main groups are <strong>Creational</strong>, <strong>Structural</strong>, and <strong>Behavioral</strong> patterns, as classified by the Gang of Four (GoF) in their seminal book "Design Patterns: Elements of Reusable Object-Oriented Software."</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>1. Creational Patterns — Object creation:</strong></p>
+      <ul>
+        <li>Abstract the instantiation process</li>
+        <li>Make system independent of how objects are created</li>
+        <li>Deal with object creation mechanisms</li>
+        <li><strong>Examples:</strong> Singleton, Factory, Abstract Factory, Builder, Prototype</li>
+      </ul>
+
+      <p><strong>2. Structural Patterns — Object composition:</strong></p>
+      <ul>
+        <li>Concerned with how classes and objects are composed</li>
+        <li>Form larger structures from smaller parts</li>
+        <li>Focus on relationships between entities</li>
+        <li><strong>Examples:</strong> Adapter, Bridge, Composite, Decorator, Facade, Flyweight, Proxy</li>
+      </ul>
+
+      <p><strong>3. Behavioral Patterns — Object communication:</strong></p>
+      <ul>
+        <li>Focus on communication between objects</li>
+        <li>Define how objects interact and distribute responsibility</li>
+        <li>Describe algorithms and flow of control</li>
+        <li><strong>Examples:</strong> Chain of Responsibility, Command, Interpreter, Iterator, Mediator, Memento, Observer, State, Strategy, Template Method, Visitor</li>
+      </ul>
+
+      <pre><code>GoF Design Pattern Categories:
+
+┌─────────────────────────────────────────────────────────────┐
+│                    Design Patterns                           │
+│                                                             │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐       │
+│  │  Creational │  │ Structural  │  │ Behavioral  │       │
+│  │   Patterns  │  │  Patterns   │  │  Patterns   │       │
+│  ├─────────────┤  ├─────────────┤  ├─────────────┤       │
+│  │ Factory     │  │ Adapter     │  │ Chain of    │       │
+│  │ Abstract    │  │ Bridge      │  │  Response.  │       │
+│  │  Factory    │  │ Composite   │  │ Command     │       │
+│  │ Singleton   │  │ Decorator   │  │ Iterator    │       │
+│  │ Builder     │  │ Facade      │  │ Observer    │       │
+│  │ Prototype   │  │ Proxy       │  │ Strategy    │       │
+│  └─────────────┘  └─────────────┘  └─────────────┘       │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘</code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> The Gang of Four (GoF) classification is the standard way to organize design patterns. Remember the three groups by their purpose: <strong>Creational</strong> = creation, <strong>Structural</strong> = composition, <strong>Behavioral</strong> = communication. In interviews, you'll often be asked to name patterns from each group.
+    </div>
+  </div>
+
+  <!-- Q88 -->
+  <div class="qa-block">
+    <div class="qa-number">Q88</div>
+    <div class="qa-title">Name one pattern from each group</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>Creational:</strong> Singleton — ensures only one instance of a class exists.<br>
+      <strong>Structural:</strong> Proxy — provides a surrogate or placeholder for another object.<br>
+      <strong>Behavioral:</strong> Strategy — defines a family of algorithms, makes them interchangeable.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      
+      <p><strong>1. Singleton (Creational):</strong></p>
+      <pre><code><span class="hl-comment">// Thread-safe Singleton with double-checked locking</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">DatabaseConnection</span> {
+    <span class="hl-keyword">private</span> <span class="hl-keyword">static</span> <span class="hl-keyword">volatile</span> <span class="hl-type">DatabaseConnection</span> instance;
+    
+    <span class="hl-keyword">private</span> <span class="hl-method">DatabaseConnection</span>() { }
+    
+    <span class="hl-keyword">public</span> <span class="hl-keyword">static</span> <span class="hl-type">DatabaseConnection</span> <span class="hl-method">getInstance</span>() {
+        <span class="hl-keyword">if</span> (instance == <span class="hl-keyword">null</span>) {
+            <span class="hl-keyword">synchronized</span> (<span class="hl-type">DatabaseConnection</span>.class) {
+                <span class="hl-keyword">if</span> (instance == <span class="hl-keyword">null</span>) {
+                    instance = <span class="hl-keyword">new</span> <span class="hl-type">DatabaseConnection</span>();
+                }
+            }
+        }
+        <span class="hl-keyword">return</span> instance;
+    }
+}
+
+<span class="hl-comment">// Alternative: Enum Singleton (most robust)</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">enum</span> <span class="hl-type">Singleton</span> {
+    INSTANCE;
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">doSomething</span>() { ... }
+}</code></pre>
+
+      <p><strong>2. Proxy (Structural):</strong></p>
+      <pre><code><span class="hl-comment">// Proxy pattern - controls access to real object</span>
+<span class="hl-keyword">interface</span> <span class="hl-type">Image</span> {
+    <span class="hl-keyword">void</span> <span class="hl-method">display</span>();
+}
+
+<span class="hl-comment">// Real object</span>
+<span class="hl-keyword">class</span> <span class="hl-type">RealImage</span> <span class="hl-keyword">implements</span> <span class="hl-type">Image</span> {
+    <span class="hl-keyword">private</span> <span class="hl-type">String</span> filename;
+    
+    <span class="hl-keyword">public</span> <span class="hl-method">RealImage</span>(<span class="hl-type">String</span> filename) {
+        <span class="hl-keyword">this</span>.filename = filename;
+        loadFromDisk();
+    }
+    
+    <span class="hl-keyword">private</span> <span class="hl-keyword">void</span> <span class="hl-method">loadFromDisk</span>() {
+        System.out.println(<span class="hl-string">"Loading: "</span> + filename);
+    }
+    
+    <span class="hl-annotation">@Override</span>
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">display</span>() {
+        System.out.println(<span class="hl-string">"Displaying: "</span> + filename);
+    }
+}
+
+<span class="hl-comment">// Proxy - lazy loading</span>
+<span class="hl-keyword">class</span> <span class="hl-type">ProxyImage</span> <span class="hl-keyword">implements</span> <span class="hl-type">Image</span> {
+    <span class="hl-keyword">private</span> <span class="hl-type">RealImage</span> realImage;
+    <span class="hl-keyword">private</span> <span class="hl-type">String</span> filename;
+    
+    <span class="hl-keyword">public</span> <span class="hl-method">ProxyImage</span>(<span class="hl-type">String</span> filename) {
+        <span class="hl-keyword">this</span>.filename = filename;
+    }
+    
+    <span class="hl-annotation">@Override</span>
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">display</span>() {
+        <span class="hl-keyword">if</span> (realImage == <span class="hl-keyword">null</span>) {
+            realImage = <span class="hl-keyword">new</span> <span class="hl-type">RealImage</span>(filename);  <span class="hl-comment">// Lazy load</span>
+        }
+        realImage.display();
+    }
+}</code></pre>
+
+      <p><strong>3. Strategy (Behavioral):</strong></p>
+      <pre><code><span class="hl-comment">// Strategy pattern - interchangeable algorithms</span>
+<span class="hl-keyword">interface</span> <span class="hl-type">PaymentStrategy</span> {
+    <span class="hl-keyword">void</span> <span class="hl-method">pay</span>(<span class="hl-type">int</span> amount);
+}
+
+<span class="hl-comment">// Concrete strategies</span>
+<span class="hl-keyword">class</span> <span class="hl-type">CreditCardPayment</span> <span class="hl-keyword">implements</span> <span class="hl-type">PaymentStrategy</span> {
+    <span class="hl-annotation">@Override</span>
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">pay</span>(<span class="hl-type">int</span> amount) {
+        System.out.println(<span class="hl-string">"Paid "</span> + amount + <span class="hl-string">" with Credit Card"</span>);
+    }
+}
+
+<span class="hl-keyword">class</span> <span class="hl-type">PayPalPayment</span> <span class="hl-keyword">implements</span> <span class="hl-type">PaymentStrategy</span> {
+    <span class="hl-annotation">@Override</span>
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">pay</span>(<span class="hl-type">int</span> amount) {
+        System.out.println(<span class="hl-string">"Paid "</span> + amount + <span class="hl-string">" with PayPal"</span>);
+    }
+}
+
+<span class="hl-comment">// Context</span>
+<span class="hl-keyword">class</span> <span class="hl-type">ShoppingCart</span> {
+    <span class="hl-keyword">private</span> <span class="hl-type">PaymentStrategy</span> paymentStrategy;
+    
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">setPaymentStrategy</span>(<span class="hl-type">PaymentStrategy</span> strategy) {
+        <span class="hl-keyword">this</span>.paymentStrategy = strategy;
+    }
+    
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">checkout</span>(<span class="hl-type">int</span> amount) {
+        paymentStrategy.pay(amount);
+    }
+}
+
+<span class="hl-comment">// Usage</span>
+<span class="hl-type">ShoppingCart</span> cart = <span class="hl-keyword">new</span> <span class="hl-type">ShoppingCart</span>();
+cart.setPaymentStrategy(<span class="hl-keyword">new</span> <span class="hl-type">CreditCardPayment</span>());
+cart.checkout(<span class="hl-number">100</span>);  <span class="hl-comment">// Paid 100 with Credit Card</span>
+cart.setPaymentStrategy(<span class="hl-keyword">new</span> <span class="hl-type">PayPalPayment</span>());
+cart.checkout(<span class="hl-number">50</span>);   <span class="hl-comment">// Paid 50 with PayPal</span></code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> In interviews, pick patterns you can explain well. <strong>Singleton</strong> is the easiest creational pattern to explain. <strong>Strategy</strong> is great for behavioral — it's intuitive and widely used. For structural, <strong>Proxy</strong> or <strong>Adapter</strong> are good choices that are easy to explain with real-world examples.
+    </div>
+  </div>
+
+  <!-- Q89 -->
+  <div class="qa-block">
+    <div class="qa-number">Q89</div>
+    <div class="qa-title">Which three patterns do you most often see in Spring?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>The three most common design patterns in Spring are <strong>Singleton</strong> (beans are singleton by default), <strong>Factory</strong> (BeanFactory and ApplicationContext), and <strong>Proxy</strong> (AOP, transaction management, lazy loading).</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>1. Singleton Pattern — Spring Beans:</strong></p>
+      <ul>
+        <li><strong>Where:</strong> All Spring beans are <strong>singletons by default</strong></li>
+        <li><strong>How:</strong> Spring container creates exactly one instance per bean definition</li>
+        <li><strong>Why:</strong> Stateless services, repositories, controllers — no need for multiple instances</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Spring's default singleton scope</span>
+<span class="hl-annotation">@Service</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">UserService</span> {
+    <span class="hl-comment">// One instance per application context</span>
+    <span class="hl-comment">// Spring ensures only one instance exists</span>
+}</code></pre>
+
+      <p><strong>2. Factory Pattern — BeanFactory & ApplicationContext:</strong></p>
+      <ul>
+        <li><strong>Where:</strong> <code>BeanFactory</code> and <code>ApplicationContext</code> interfaces</li>
+        <li><strong>How:</strong> Spring acts as a factory that creates and manages beans</li>
+        <li><strong>Why:</strong> Abstract the bean creation process, support different creation strategies</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Spring's Factory Pattern in action</span>
+<span class="hl-annotation">@Configuration</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">AppConfig</span> {
+    <span class="hl-annotation">@Bean</span>
+    <span class="hl-keyword">public</span> <span class="hl-type">DataSource</span> <span class="hl-method">dataSource</span>() {
+        <span class="hl-comment">// Factory method that creates a bean</span>
+        <span class="hl-keyword">return</span> <span class="hl-type">DataSourceBuilder</span>.create().build();
+    }
+    
+    <span class="hl-annotation">@Bean</span>
+    <span class="hl-keyword">public</span> <span class="hl-type">UserService</span> <span class="hl-method">userService</span>() {
+        <span class="hl-comment">// Factory creates beans with dependencies</span>
+        <span class="hl-keyword">return</span> <span class="hl-keyword">new</span> <span class="hl-type">UserService</span>(userRepository());
+    }
+}</code></pre>
+
+      <p><strong>3. Proxy Pattern — AOP, Transactions, Lazy Loading:</strong></p>
+      <ul>
+        <li><strong>Where:</strong> Transaction management, security, caching, lazy loading</li>
+        <li><strong>How:</strong> Spring creates dynamic proxies around beans (JDK proxy or CGLIB)</li>
+        <li><strong>Why:</strong> Add cross-cutting concerns without modifying business logic</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Spring's Proxy Pattern with @Transactional</span>
+<span class="hl-annotation">@Service</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">OrderService</span> {
+    <span class="hl-annotation">@Transactional</span>  <span class="hl-comment">// Spring creates a proxy for transaction management</span>
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">createOrder</span>(<span class="hl-type">Order</span> order) {
+        <span class="hl-comment">// Business logic</span>
+        <span class="hl-comment">// Transaction is managed by the proxy</span>
+    }
+}</code></pre>
+
+      <p><strong>Other important patterns in Spring:</strong></p>
+      <table>
+        <thead><tr><th>Pattern</th><th>Where in Spring</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Template Method</strong></td><td><code>JdbcTemplate</code>, <code>RestTemplate</code>, <code>JmsTemplate</code></td></tr>
+          <tr><td><strong>Decorator</strong></td><td><code>HttpServletRequestWrapper</code>, <code>HttpServletResponseWrapper</code></td></tr>
+          <tr><td><strong>Observer</strong></td><td>Spring Events (<code>ApplicationEvent</code>, <code>@EventListener</code>)</td></tr>
+          <tr><td><strong>Strategy</strong></td><td>View resolvers, HandlerAdapters, MessageConverters</td></tr>
+          <tr><td><strong>Adapter</strong></td><td>Controller (Handles requests), HandlerAdapter</td></tr>
+          <tr><td><strong>Front Controller</strong></td><td><code>DispatcherServlet</code></td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>Spring-specific patterns:</strong></p>
+      <ul>
+        <li><strong>Dependency Injection (DI):</strong> Core principle of Spring (Inversion of Control)</li>
+        <li><strong>Inversion of Control (IoC):</strong> Container manages object lifecycle</li>
+        <li><strong>Template Method:</strong> Common in data access (JdbcTemplate, JpaTemplate)</li>
+        <li><strong>Front Controller:</strong> DispatcherServlet routes requests to appropriate handlers</li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> This is a very common Spring interview question. Remember the <strong>big three</strong>: <strong>Singleton</strong> (default bean scope), <strong>Factory</strong> (BeanFactory/ApplicationContext), and <strong>Proxy</strong> (AOP, transactions). Bonus points if you mention <strong>Template Method</strong> (JdbcTemplate) and <strong>Front Controller</strong> (DispatcherServlet).
+    </div>
+  </div>
+
+  <!-- CHEAT SHEET -->
+  <div class="qa-block" style="border-bottom:none;padding-bottom:0;margin-bottom:0">
+    <div class="qa-title" style="font-size:16px;color:var(--cyan)">📋 Quick-reference cheat sheet</div>
+    <div class="qa-section">
+      <pre style="background:var(--bg2);border-color:var(--border2);padding:1.2rem;border-radius:8px;font-size:13px;line-height:1.8"><code>GoF Pattern Groups:
+
+  Creational (object creation):
+    • Singleton → one instance
+    • Factory → create objects without exposing logic
+    • Builder → complex object construction
+    • Prototype → clone objects
+    • Abstract Factory → families of objects
+
+  Structural (composition):
+    • Proxy → placeholder for another object
+    • Adapter → incompatible interfaces
+    • Decorator → add responsibilities dynamically
+    • Facade → simplified interface
+    • Composite → tree structures
+    • Bridge → abstraction from implementation
+    • Flyweight → share objects efficiently
+
+  Behavioral (communication):
+    • Strategy → interchangeable algorithms
+    • Observer → publish/subscribe
+    • Command → encapsulate requests
+    • Chain of Responsibility → pipeline processing
+    • Iterator → traverse collections
+    • Template Method → define algorithm skeleton
+    • State → behavior based on state
+    • Mediator → centralize communication
+    • Memento → capture/restore state
+    • Visitor → separate algorithm from structure
+
+Spring Patterns:
+  Singleton   → beans are singleton by default
+  Factory     → BeanFactory, ApplicationContext
+  Proxy       → AOP, Transactions, Lazy Loading
+  Template    → JdbcTemplate, RestTemplate
+  Front Controller → DispatcherServlet
+  Observer    → ApplicationEvent, @EventListener
+  Strategy    → View resolvers, MessageConverters
+
+  ✅ Always mention Singleton + Factory + Proxy in Spring interviews!</code></pre>
+    </div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <div style="display:flex;justify-content:space-between;margin-top:2rem;padding-top:1.5rem;border-top:0.5px solid var(--border)">
+    <a href="09-jpa-databases.html" style="color:var(--text3);font-family:var(--mono);font-size:12px;text-decoration:none">← Previous: JPA & Databases</a>
+    <a href="index.html" class="back-top">🏠 Back to home</a>
+    <span style="color:var(--text3);font-family:var(--mono);font-size:12px">🎉 All theory files complete!</span>
+  </div>
+
+</div>
+
+<footer>
+  <span class="footer-meta">vbforge · java-interview-prep · Java 21</span>
+  <a class="footer-link" href="https://github.com/vbforge/java-interview-prep">github.com/vbforge/java-interview-prep</a>
+</footer>
+
+</body>
+</html>

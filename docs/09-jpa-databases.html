@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vbforge / java-interview-prep — JPA & Databases</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0e1a;
+  --bg2:#0f1629;
+  --bg3:#141d35;
+  --bg4:#1a2540;
+  --border:#1e2d50;
+  --border2:#243460;
+  --text:#e2e8f4;
+  --text2:#8899bb;
+  --text3:#4a5a7a;
+  --cyan:#00d9ff;
+  --cyan2:#00b8d9;
+  --cyan-dim:rgba(0,217,255,0.08);
+  --green:#22c55e;
+  --green-dim:rgba(34,197,94,0.08);
+  --amber:#f59e0b;
+  --amber-dim:rgba(245,158,11,0.08);
+  --red:#ef4444;
+  --red-dim:rgba(239,68,68,0.08);
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Inter',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;min-height:100vh}
+
+.page{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 1.5rem;border-bottom:0.5px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.nav-logo{width:28px;height:28px;flex-shrink:0}
+.nav-title{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--text)}
+.nav-title span{color:var(--cyan)}
+.nav-links{display:flex;gap:4px}
+.nav-link{font-family:var(--mono);font-size:11px;color:var(--text2);text-decoration:none;padding:4px 10px;border-radius:5px;border:0.5px solid transparent;transition:all .15s}
+.nav-link:hover{color:var(--text);border-color:var(--border2);background:var(--bg3)}
+.nav-link.active{color:var(--cyan);border-color:var(--border2)}
+
+.theory-header{
+  padding:2rem 0 1.5rem;
+  border-bottom:0.5px solid var(--border);
+  margin-bottom:2rem;
+}
+.theory-header h1{
+  font-family:var(--mono);
+  font-size:28px;
+  font-weight:600;
+  margin-bottom:0.5rem;
+  color:var(--text);
+}
+.theory-header h1 em{font-style:normal;color:var(--cyan)}
+.theory-meta{
+  display:flex;
+  gap:1.5rem;
+  flex-wrap:wrap;
+  color:var(--text3);
+  font-size:12px;
+  font-family:var(--mono);
+  margin-top:0.5rem;
+}
+.theory-meta a{color:var(--cyan2);text-decoration:none}
+.theory-meta a:hover{color:var(--cyan)}
+.badge-skip{
+  background:var(--amber-dim);
+  color:var(--amber);
+  padding:2px 10px;
+  border-radius:4px;
+  font-size:10px;
+  border:0.5px solid rgba(245,158,11,0.2);
+}
+
+.qa-block{
+  margin-bottom:2.5rem;
+  padding-bottom:2rem;
+  border-bottom:0.5px solid var(--border);
+}
+.qa-block:last-child{border-bottom:none}
+.qa-number{
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--cyan);
+  margin-bottom:0.3rem;
+}
+.qa-title{
+  font-size:18px;
+  font-weight:600;
+  color:var(--text);
+  margin-bottom:1rem;
+  font-family:var(--sans);
+}
+.qa-section{
+  margin-bottom:1rem;
+}
+.qa-section h3{
+  font-size:13px;
+  font-weight:600;
+  color:var(--text2);
+  margin-bottom:0.3rem;
+  font-family:var(--mono);
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+}
+.qa-section p{
+  color:var(--text2);
+  line-height:1.7;
+  font-size:14px;
+}
+.qa-section ul, .qa-section ol{
+  color:var(--text2);
+  line-height:1.7;
+  padding-left:1.5rem;
+  margin:0.5rem 0;
+}
+.qa-section li{
+  margin-bottom:0.3rem;
+}
+.qa-section code{
+  font-family:var(--mono);
+  font-size:13px;
+  background:var(--bg3);
+  padding:0.1rem 0.4rem;
+  border-radius:3px;
+  color:var(--cyan2);
+}
+.qa-section pre{
+  background:var(--bg3);
+  border:0.5px solid var(--border);
+  border-radius:6px;
+  padding:1rem 1.2rem;
+  overflow-x:auto;
+  margin:0.8rem 0;
+}
+.qa-section pre code{
+  font-family:var(--mono);
+  font-size:13px;
+  color:var(--text2);
+  background:transparent;
+  padding:0;
+  line-height:1.6;
+}
+.qa-section blockquote{
+  border-left:2px solid var(--cyan);
+  padding-left:1rem;
+  margin:0.8rem 0;
+  color:var(--text2);
+}
+.qa-section blockquote strong{
+  color:var(--cyan);
+}
+.qa-section table{
+  width:100%;
+  border-collapse:collapse;
+  margin:0.8rem 0;
+  font-size:13px;
+}
+.qa-section th{
+  background:var(--bg3);
+  color:var(--text);
+  padding:0.5rem 0.8rem;
+  text-align:left;
+  font-weight:500;
+  border:0.5px solid var(--border);
+}
+.qa-section td{
+  padding:0.5rem 0.8rem;
+  border:0.5px solid var(--border);
+  color:var(--text2);
+}
+.qa-section tr:nth-child(even){background:var(--bg2)}
+
+.junior-note{
+  background:var(--cyan-dim);
+  border:0.5px solid rgba(0,217,255,0.15);
+  border-radius:6px;
+  padding:0.8rem 1rem;
+  margin:1rem 0;
+  color:var(--text2);
+  font-size:13px;
+}
+.junior-note strong{
+  color:var(--cyan);
+}
+
+.hl-comment{color:#4a5a7a}
+.hl-keyword{color:var(--cyan2)}
+.hl-string{color:#a3e635}
+.hl-type{color:#c084fc}
+.hl-method{color:#f472b6}
+.hl-number{color:#f59e0b}
+.hl-annotation{color:#f472b6}
+
+footer{padding:1.5rem 1.5rem;border-top:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem}
+.footer-meta{font-family:var(--mono);font-size:11px;color:var(--text3)}
+.footer-link{font-family:var(--mono);font-size:11px;color:var(--text3);text-decoration:none}
+.footer-link:hover{color:var(--cyan)}
+
+.back-top{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--cyan2);
+  text-decoration:none;
+  padding:6px 12px;
+  border-radius:4px;
+  border:0.5px solid var(--border2);
+  transition:all .15s;
+}
+.back-top:hover{color:var(--cyan);border-color:var(--cyan)}
+
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <svg class="nav-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="70" fill="#0f172a" stroke="#64748b" stroke-width="1"/>
+      <text x="92" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="end" fill="#e2e8f0" letter-spacing="1px">VBF</text>
+      <circle cx="100" cy="99" r="8" fill="none" stroke="#00d9ff" stroke-width="2"/>
+      <path d="M 96 99 L 99 102 L 104 95" fill="none" stroke="#00d9ff" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="108" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="start" fill="#e2e8f0" letter-spacing="1px">RGE</text>
+    </svg>
+    <span class="nav-title">vbforge / <span>java-interview-prep</span></span>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">home</a>
+    <a class="nav-link active" href="#">theory</a>
+    <a class="nav-link" href="index.html#section-demos">demos</a>
+    <a class="nav-link" href="https://github.com/vbforge/java-interview-prep" target="_blank">github ↗</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="theory-header">
+    <h1>09 — <em>JPA & Databases</em></h1>
+    <div class="theory-meta">
+      <span>📚 Questions: <strong>Q78–Q87</strong></span>
+      <span>🧪 Demo: <a href="https://github.com/vbforge/java-interview-prep/tree/main/demo-06-spring-data">demo-06-spring-data</a></span>
+      <span class="badge-skip">⭐ Data access</span>
+    </div>
+  </div>
+
+  <!-- Q78 -->
+  <div class="qa-block">
+    <div class="qa-number">Q78</div>
+    <div class="qa-title">Hibernate fetch types — EAGER and LAZY</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>EAGER</strong> fetching loads the associated entity immediately (in the same query). <strong>LAZY</strong> fetching loads the associated entity only when accessed (on-demand). LAZY is the <strong>recommended</strong> default for performance.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <table>
+        <thead><tr><th>Feature</th><th>EAGER</th><th>LAZY</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Load timing</strong></td><td>Immediately (same query)</td><td>On-demand (when accessed)</td></tr>
+          <tr><td><strong>Performance</strong></td><td>Potentially slower (more data)</td><td>Faster initial load</td></tr>
+          <tr><td><strong>N+1 risk</strong></td><td>Lower</td><td>Higher (if not careful)</td></tr>
+          <tr><td><strong>Default for</strong></td><td><code>@ManyToOne</code>, <code>@OneToOne</code></td><td><code>@OneToMany</code>, <code>@ManyToMany</code></td></tr>
+          <tr><td><strong>Recommended</strong></td><td>Only when necessary</td><td>✅ Default preference</td></tr>
+        </tbody>
+      </table>
+
+      <pre><code><span class="hl-annotation">@Entity</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">User</span> {
+    <span class="hl-annotation">@Id</span>
+    <span class="hl-annotation">@GeneratedValue</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">Long</span> id;
+    
+    <span class="hl-comment">// LAZY fetch (default for OneToMany)</span>
+    <span class="hl-annotation">@OneToMany</span>(mappedBy = <span class="hl-string">"user"</span>, fetch = <span class="hl-type">FetchType</span>.LAZY)
+    <span class="hl-keyword">private</span> <span class="hl-type">List</span>&lt;<span class="hl-type">Order</span>&gt; orders;
+    
+    <span class="hl-comment">// EAGER fetch (default for ManyToOne)</span>
+    <span class="hl-annotation">@ManyToOne</span>(fetch = <span class="hl-type">FetchType</span>.EAGER)
+    <span class="hl-keyword">private</span> <span class="hl-type">Role</span> role;
+    
+    <span class="hl-comment">// Override to LAZY</span>
+    <span class="hl-annotation">@ManyToOne</span>(fetch = <span class="hl-type">FetchType</span>.LAZY)
+    <span class="hl-keyword">private</span> <span class="hl-type">Department</span> department;
+}
+
+<span class="hl-comment">// LAZY access - requires open Session</span>
+<span class="hl-type">User</span> user = userRepository.findById(<span class="hl-number">1L</span>).orElseThrow();
+<span class="hl-comment">// user.getOrders() returns proxy, not loaded yet</span>
+<span class="hl-type">List</span>&lt;<span class="hl-type">Order</span>&gt; orders = user.getOrders();  <span class="hl-comment">// Now loads from DB</span></code></pre>
+
+      <p><strong>LAZY initialization exceptions:</strong></p>
+      <ul>
+        <li><strong>LazyInitializationException:</strong> Occurs when accessing LAZY property outside of transaction</li>
+        <li><strong>Solution 1:</strong> Keep session open until data is accessed</li>
+        <li><strong>Solution 2:</strong> Use <code>@Transactional</code> to keep session open</li>
+        <li><strong>Solution 3:</strong> Use <code>JOIN FETCH</code> in JPQL</li>
+        <li><strong>Solution 4:</strong> Use EntityGraph to define loading strategy</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Fix: Use JOIN FETCH to load eagerly in query</span>
+<span class="hl-annotation">@Query</span>(<span class="hl-string">"SELECT u FROM User u JOIN FETCH u.orders WHERE u.id = :id"</span>)
+<span class="hl-type">User</span> <span class="hl-method">findByIdWithOrders</span>(<span class="hl-annotation">@Param</span>(<span class="hl-string">"id"</span>) <span class="hl-type">Long</span> id);</code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> <strong>Always prefer LAZY</strong> for associations unless you have a specific reason for EAGER. EAGER loading can cause performance issues and N+1 problems. If you need data, load it explicitly with <code>JOIN FETCH</code> or EntityGraph.
+    </div>
+  </div>
+
+  <!-- Q79 -->
+  <div class="qa-block">
+    <div class="qa-number">Q79</div>
+    <div class="qa-title">@OneToOne, @OneToMany, @ManyToMany</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>These JPA annotations define entity relationships: <strong>@OneToOne</strong> (single-to-single), <strong>@OneToMany</strong> (one-to-multiple), <strong>@ManyToOne</strong> (multiple-to-one), and <strong>@ManyToMany</strong> (multiple-to-multiple). The <strong>owning side</strong> has the foreign key.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code><span class="hl-comment">// @OneToOne - bidirectional with shared primary key</span>
+<span class="hl-annotation">@Entity</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">User</span> {
+    <span class="hl-annotation">@Id</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">Long</span> id;
+    
+    <span class="hl-annotation">@OneToOne</span>(cascade = <span class="hl-type">CascadeType</span>.ALL)
+    <span class="hl-annotation">@JoinColumn</span>(name = <span class="hl-string">"profile_id"</span>)  <span class="hl-comment">// Owning side</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">Profile</span> profile;
+}
+
+<span class="hl-annotation">@Entity</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">Profile</span> {
+    <span class="hl-annotation">@Id</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">Long</span> id;
+    
+    <span class="hl-annotation">@OneToOne</span>(mappedBy = <span class="hl-string">"profile"</span>)  <span class="hl-comment">// Inverse side</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">User</span> user;
+}
+
+<span class="hl-comment">// @OneToMany / @ManyToOne - bidirectional</span>
+<span class="hl-annotation">@Entity</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">Order</span> {
+    <span class="hl-annotation">@Id</span>
+    <span class="hl-annotation">@GeneratedValue</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">Long</span> id;
+    
+    <span class="hl-annotation">@ManyToOne</span>  <span class="hl-comment">// Owning side (has foreign key)</span>
+    <span class="hl-annotation">@JoinColumn</span>(name = <span class="hl-string">"user_id"</span>)
+    <span class="hl-keyword">private</span> <span class="hl-type">User</span> user;
+}
+
+<span class="hl-annotation">@Entity</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">User</span> {
+    <span class="hl-annotation">@OneToMany</span>(mappedBy = <span class="hl-string">"user"</span>)  <span class="hl-comment">// Inverse side</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">List</span>&lt;<span class="hl-type">Order</span>&gt; orders;
+}
+
+<span class="hl-comment">// @ManyToMany - requires join table</span>
+<span class="hl-annotation">@Entity</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">Student</span> {
+    <span class="hl-annotation">@Id</span>
+    <span class="hl-annotation">@GeneratedValue</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">Long</span> id;
+    
+    <span class="hl-annotation">@ManyToMany</span>
+    <span class="hl-annotation">@JoinTable</span>(
+        name = <span class="hl-string">"student_course"</span>,
+        joinColumns = <span class="hl-annotation">@JoinColumn</span>(name = <span class="hl-string">"student_id"</span>),
+        inverseJoinColumns = <span class="hl-annotation">@JoinColumn</span>(name = <span class="hl-string">"course_id"</span>)
+    )
+    <span class="hl-keyword">private</span> <span class="hl-type">Set</span>&lt;<span class="hl-type">Course</span>&gt; courses;
+}
+
+<span class="hl-annotation">@Entity</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">Course</span> {
+    <span class="hl-annotation">@Id</span>
+    <span class="hl-annotation">@GeneratedValue</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">Long</span> id;
+    
+    <span class="hl-annotation">@ManyToMany</span>(mappedBy = <span class="hl-string">"courses"</span>)  <span class="hl-comment">// Inverse side</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">Set</span>&lt;<span class="hl-type">Student</span>&gt; students;
+}</code></pre>
+
+      <p><strong>Relationship summary:</strong></p>
+      <table>
+        <thead><tr><th>Annotation</th><th>Cardinality</th><th>Foreign Key Side</th><th>Default Fetch</th></tr></thead>
+        <tbody>
+          <tr><td><code>@OneToOne</code></td><td>1 ↔ 1</td><td>Owning side</td><td>EAGER</td></tr>
+          <tr><td><code>@OneToMany</code></td><td>1 ↔ N</td><td>Many side (<code>@ManyToOne</code>)</td><td>LAZY</td></tr>
+          <tr><td><code>@ManyToOne</code></td><td>N ↔ 1</td><td>Many side</td><td>EAGER</td></tr>
+          <tr><td><code>@ManyToMany</code></td><td>N ↔ N</td><td>Join table</td><td>LAZY</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> The owning side has the foreign key. For bidirectional relationships, one side must be the <strong>owner</strong> (with <code>@JoinColumn</code>) and the other side is the <strong>inverse</strong> (with <code>mappedBy</code>). Only the owning side's changes are persisted automatically.
+    </div>
+  </div>
+
+  <!-- Q80 -->
+  <div class="qa-block">
+    <div class="qa-number">Q80</div>
+    <div class="qa-title">N+1 problem</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>The <strong>N+1 problem</strong> occurs when you fetch a list of entities (1 query) and then access a lazy association on each entity (N additional queries). This results in <strong>N+1</strong> database queries instead of a single optimized query.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code><span class="hl-comment">// ❌ N+1 problem example</span>
+<span class="hl-comment">// N+1 = 1 query for users + N queries for orders</span>
+
+<span class="hl-comment">// Query 1: Get all users</span>
+<span class="hl-type">List</span>&lt;<span class="hl-type">User</span>&gt; users = userRepository.findAll();  <span class="hl-comment">// 1 query</span>
+
+<span class="hl-comment">// Query N+1: For each user, get their orders</span>
+<span class="hl-keyword">for</span> (<span class="hl-type">User</span> user : users) {
+    <span class="hl-type">List</span>&lt;<span class="hl-type">Order</span>&gt; orders = user.getOrders();  <span class="hl-comment">// N queries!</span>
+    System.out.println(user.getName() + <span class="hl-string">": "</span> + orders.size());
+}
+
+<span class="hl-comment">// Total queries: 1 + N</span>
+<span class="hl-comment">// If 1000 users → 1001 database queries!</span></code></pre>
+
+      <p><strong>Solutions to N+1:</strong></p>
+      <pre><code><span class="hl-comment">// ✅ Solution 1: JOIN FETCH in JPQL</span>
+<span class="hl-annotation">@Query</span>(<span class="hl-string">"SELECT DISTINCT u FROM User u JOIN FETCH u.orders"</span>)
+<span class="hl-type">List</span>&lt;<span class="hl-type">User</span>&gt; findAllWithOrders();
+
+<span class="hl-comment">// ✅ Solution 2: EntityGraph</span>
+<span class="hl-annotation">@EntityGraph</span>(attributePaths = {<span class="hl-string">"orders"</span>})
+<span class="hl-annotation">@Query</span>(<span class="hl-string">"SELECT u FROM User u"</span>)
+<span class="hl-type">List</span>&lt;<span class="hl-type">User</span>&gt; findAllWithOrders();
+
+<span class="hl-comment">// ✅ Solution 3: @NamedEntityGraph</span>
+<span class="hl-annotation">@NamedEntityGraph</span>(
+    name = <span class="hl-string">"User.orders"</span>,
+    attributeNodes = <span class="hl-annotation">@NamedAttributeNode</span>(<span class="hl-string">"orders"</span>)
+)
+<span class="hl-annotation">@Entity</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">User</span> {
+    <span class="hl-comment">// ...</span>
+}
+
+<span class="hl-comment">// Usage with repository</span>
+<span class="hl-annotation">@EntityGraph</span>(<span class="hl-string">"User.orders"</span>)
+<span class="hl-type">List</span>&lt;<span class="hl-type">User</span>&gt; findAll();
+
+<span class="hl-comment">// ✅ Solution 4: EAGER fetch (not recommended)</span>
+<span class="hl-annotation">@OneToMany</span>(fetch = <span class="hl-type">FetchType</span>.EAGER)
+<span class="hl-keyword">private</span> <span class="hl-type">List</span>&lt;<span class="hl-type">Order</span>&gt; orders;  <span class="hl-comment">// Avoid! Causes other issues</span></code></pre>
+
+      <p><strong>Detecting N+1:</strong></p>
+      <ul>
+        <li><strong>Enable SQL logging:</strong> <code>spring.jpa.show-sql=true</code></li>
+        <li><strong>Use Hibernate statistics:</strong> <code>spring.jpa.properties.hibernate.generate_statistics=true</code></li>
+        <li><strong>Use tools:</strong> Hibernate Query Statistics, datasource-proxy</li>
+        <li><strong>Look for:</strong> Many similar queries executed in loops</li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> The N+1 problem is one of the most common performance issues in JPA applications. Always use <code>JOIN FETCH</code> or EntityGraph for collections you know you'll access. <strong>Don't rely on EAGER fetching</strong> — it can cause performance issues elsewhere.
+    </div>
+  </div>
+
+  <!-- Q81 -->
+  <div class="qa-block">
+    <div class="qa-number">Q81</div>
+    <div class="qa-title">What is optimistic locking? How is it implemented in databases?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>Optimistic locking</strong> assumes conflicts are rare. It uses a <strong>version number</strong> (or timestamp) that increments on each update. When updating, the database checks if the version matches the value read — if not, it throws an <code>OptimisticLockException</code>.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code><span class="hl-comment">// Optimistic locking with @Version</span>
+<span class="hl-annotation">@Entity</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">Product</span> {
+    <span class="hl-annotation">@Id</span>
+    <span class="hl-annotation">@GeneratedValue</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">Long</span> id;
+    
+    <span class="hl-keyword">private</span> <span class="hl-type">String</span> name;
+    <span class="hl-keyword">private</span> <span class="hl-type">Integer</span> quantity;
+    
+    <span class="hl-annotation">@Version</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">Integer</span> version;  <span class="hl-comment">// Automatically managed</span>
+}
+
+<span class="hl-comment">// How it works:</span>
+<span class="hl-comment">// 1. Read product: version = 1</span>
+<span class="hl-comment">// 2. Update product: WHERE id = ? AND version = 1</span>
+<span class="hl-comment">// 3. If version is still 1 → update succeeds, version becomes 2</span>
+<span class="hl-comment">// 4. If version changed → update fails, OptimisticLockException</span>
+
+<span class="hl-comment">// SQL generated:</span>
+<span class="hl-comment">// UPDATE product SET name=?, quantity=?, version=2</span>
+<span class="hl-comment">// WHERE id=? AND version=1</span></code></pre>
+
+      <p><strong>Optimistic locking mechanisms:</strong></p>
+      <table>
+        <thead><tr><th>Mechanism</th><th>Implementation</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Version number</strong></td><td><code>@Version</code> field (integer or long)</td></tr>
+          <tr><td><strong>Timestamp</strong></td><td><code>@Version</code> field (<code>Instant</code> or <code>Timestamp</code>)</td></tr>
+          <tr><td><strong>Manual check</strong></td><td>Explicit version check in query</td></tr>
+        </tbody>
+      </table>
+
+      <pre><code><span class="hl-comment">// Handling optimistic lock exception</span>
+<span class="hl-keyword">try</span> {
+    productRepository.save(product);
+} <span class="hl-keyword">catch</span> (<span class="hl-type">OptimisticLockException</span> e) {
+    <span class="hl-comment">// Refresh product and retry with new version</span>
+    <span class="hl-type">Product</span> freshProduct = productRepository.findById(product.getId()).orElseThrow();
+    freshProduct.setQuantity(product.getQuantity() - <span class="hl-number">1</span>);
+    productRepository.save(freshProduct);
+}</code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Optimistic locking is the <strong>recommended</strong> approach for most applications. It provides good performance without locking overhead. Use it when conflicts are rare (e.g., most web applications). The <code>@Version</code> annotation is all you need — Hibernate handles the rest.
+    </div>
+  </div>
+
+  <!-- Q82 -->
+  <div class="qa-block">
+    <div class="qa-number">Q82</div>
+    <div class="qa-title">What is pessimistic locking? How is it implemented?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>Pessimistic locking</strong> assumes conflicts are likely. It acquires a <strong>database lock</strong> on the record, preventing other transactions from modifying it until the lock is released. Implemented using <code>SELECT ... FOR UPDATE</code>.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code><span class="hl-comment">// Pessimistic locking in JPA</span>
+<span class="hl-annotation">@Lock</span>(<span class="hl-type">LockModeType</span>.PESSIMISTIC_WRITE)
+<span class="hl-annotation">@Query</span>(<span class="hl-string">"SELECT p FROM Product p WHERE p.id = :id"</span>)
+<span class="hl-type">Product</span> <span class="hl-method">findByIdForUpdate</span>(<span class="hl-annotation">@Param</span>(<span class="hl-string">"id"</span>) <span class="hl-type">Long</span> id);
+
+<span class="hl-comment">// Repository method with explicit lock</span>
+<span class="hl-annotation">@Lock</span>(<span class="hl-type">LockModeType</span>.PESSIMISTIC_WRITE)
+<span class="hl-annotation">@Query</span>(<span class="hl-string">"SELECT p FROM Product p WHERE p.id = :id"</span>)
+<span class="hl-type">Optional</span>&lt;<span class="hl-type">Product</span>&gt; <span class="hl-method">findByIdWithLock</span>(<span class="hl-annotation">@Param</span>(<span class="hl-string">"id"</span>) <span class="hl-type">Long</span> id);
+
+<span class="hl-comment">// Using in transaction</span>
+<span class="hl-annotation">@Transactional</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">updateProduct</span>(<span class="hl-type">Long</span> id, <span class="hl-type">Integer</span> quantity) {
+    <span class="hl-type">Product</span> product = productRepository.findByIdWithLock(id).orElseThrow();
+    <span class="hl-comment">// Lock is acquired on database row</span>
+    product.setQuantity(quantity);
+    <span class="hl-comment">// Lock is released at transaction commit</span>
+}</code></pre>
+
+      <p><strong>Lock mode types:</strong></p>
+      <table>
+        <thead><tr><th>Lock Mode</th><th>Description</th><th>When to use</th></tr></thead>
+        <tbody>
+          <tr><td><code>PESSIMISTIC_READ</code></td><td>Shared lock (others can read, not write)</td><td>When reading, prevent concurrent updates</td></tr>
+          <tr><td><code>PESSIMISTIC_WRITE</code></td><td>Exclusive lock (others cannot read or write)</td><td>When updating, prevent concurrent access</td></tr>
+          <tr><td><code>PESSIMISTIC_FORCE_INCREMENT</code></td><td>Like WRITE + version increment</td><td>When you want to ensure version changes</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>Database-specific:</strong></p>
+      <ul>
+        <li><strong>MySQL/PostgreSQL:</strong> <code>SELECT ... FOR UPDATE</code></li>
+        <li><strong>Oracle:</strong> <code>SELECT ... FOR UPDATE</code></li>
+        <li><strong>SQL Server:</strong> <code>SELECT ... WITH (UPDLOCK)</code></li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Pessimistic locking is powerful but can cause <strong>deadlocks</strong> and <strong>performance issues</strong>. Use it only when you have high contention or need guaranteed consistency. Always keep the lock duration short and use in transactions.
+    </div>
+  </div>
+
+  <!-- Q83 -->
+  <div class="qa-block">
+    <div class="qa-number">Q83</div>
+    <div class="qa-title">Which locking type to prefer and when?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>Optimistic locking</strong> is preferred for most applications (web, REST APIs) because it's performant and scalable. Use <strong>pessimistic locking</strong> only when conflicts are frequent or when you need guaranteed exclusive access.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <table>
+        <thead><tr><th>Scenario</th><th>Recommended</th><th>Reason</th></tr></thead>
+        <tbody>
+          <tr><td>Web applications with low conflict</td><td>✅ Optimistic</td><td>No locking overhead, scales well</td></tr>
+          <tr><td>Banking/Financial transactions</td><td>⚠️ Pessimistic</td><td>Guaranteed consistency needed</td></tr>
+          <tr><td>Inventory management</td><td>✅ Optimistic</td><td>Conflicts rare, retry on failure</td></tr>
+          <tr><td>Counters with high contention</td><td>⚠️ Pessimistic or Atomic</td><td>Optimistic would retry too often</td></tr>
+          <tr><td>Batch processing</td><td>⚠️ Pessimistic</td><td>Long-running, need data consistency</td></tr>
+          <tr><td>REST APIs (most cases)</td><td>✅ Optimistic</td><td>Stateless, scalable, easy to retry</td></tr>
+        </tbody>
+      </table>
+
+      <pre><code><span class="hl-comment">// Optimistic - for most cases</span>
+<span class="hl-keyword">try</span> {
+    userRepository.save(user);  <span class="hl-comment">// Retry if OptimisticLockException</span>
+} <span class="hl-keyword">catch</span> (<span class="hl-type">OptimisticLockException</span> e) {
+    <span class="hl-comment">// Retry logic</span>
+}
+
+<span class="hl-comment">// Pessimistic - only when needed</span>
+<span class="hl-annotation">@Transactional</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">transferMoney</span>(<span class="hl-type">Long</span> fromId, <span class="hl-type">Long</span> toId, <span class="hl-type">BigDecimal</span> amount) {
+    <span class="hl-type">Account</span> from = accountRepository.findByIdWithLock(fromId);
+    <span class="hl-type">Account</span> to = accountRepository.findByIdWithLock(toId);
+    from.setBalance(from.getBalance().subtract(amount));
+    to.setBalance(to.getBalance().add(amount));
+    <span class="hl-comment">// Locks released on transaction commit</span>
+}</code></pre>
+
+      <p><strong>Decision guide:</strong></p>
+      <ul>
+        <li><strong>High conflict rate:</strong> Pessimistic locking (retry overhead is worse)</li>
+        <li><strong>Low conflict rate:</strong> Optimistic locking (fast path)</li>
+        <li><strong>Long transactions:</strong> Optimistic locking (pessimistic holds locks too long)</li>
+        <li><strong>Short transactions:</strong> Pessimistic locking (acceptable)</li>
+        <li><strong>External systems:</strong> Optimistic locking (less risk of deadlocks)</li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Start with <strong>optimistic locking</strong> for 90% of cases. Only move to pessimistic locking when you have evidence of high contention. Pessimistic locking can cause deadlocks and performance issues that are harder to debug than optimistic lock failures.
+    </div>
+  </div>
+
+  <!-- Q84 -->
+  <div class="qa-block">
+    <div class="qa-number">Q84</div>
+    <div class="qa-title">What is a DB index?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>A <strong>database index</strong> is a data structure that improves the <strong>speed</strong> of data retrieval operations on a table. It's like an index in a book — it allows the database to find rows without scanning the entire table.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Index types:</strong></p>
+      <ul>
+        <li><strong>B-tree index:</strong> Default for most databases, good for equality and range queries</li>
+        <li><strong>Hash index:</strong> Only equality queries, faster than B-tree for equality</li>
+        <li><strong>Bitmap index:</strong> For low-cardinality columns (e.g., status, gender)</li>
+        <li><strong>Full-text index:</strong> For text search</li>
+        <li><strong>Unique index:</strong> Ensures uniqueness, used for primary keys</li>
+        <li><strong>Composite index:</strong> Multiple columns, order matters</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Creating indexes in SQL</span>
+<span class="hl-comment">-- B-tree index (default)</span>
+CREATE INDEX idx_user_email ON users(email);
+
+<span class="hl-comment">-- Unique index</span>
+CREATE UNIQUE INDEX idx_user_username ON users(username);
+
+<span class="hl-comment">-- Composite index (order matters!)</span>
+CREATE INDEX idx_order_user_date ON orders(user_id, created_date);
+
+<span class="hl-comment">// JPA index annotation</span>
+<span class="hl-annotation">@Entity</span>
+<span class="hl-annotation">@Table</span>(indexes = {
+    <span class="hl-annotation">@Index</span>(name = <span class="hl-string">"idx_user_email"</span>, columnList = <span class="hl-string">"email"</span>),
+    <span class="hl-annotation">@Index</span>(name = <span class="hl-string">"idx_user_username"</span>, columnList = <span class="hl-string">"username"</span>, unique = <span class="hl-keyword">true</span>),
+    <span class="hl-annotation">@Index</span>(name = <span class="hl-string">"idx_order_user_date"</span>, columnList = <span class="hl-string">"user_id, created_date"</span>)
+})
+<span class="hl-keyword">public</span> <span class="hl-keyword">class</span> <span class="hl-type">User</span> {
+    <span class="hl-annotation">@Id</span>
+    <span class="hl-annotation">@GeneratedValue</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">Long</span> id;
+    
+    <span class="hl-annotation">@Column</span>(unique = <span class="hl-keyword">true</span>)  <span class="hl-comment">// Automatically creates unique index</span>
+    <span class="hl-keyword">private</span> <span class="hl-type">String</span> email;
+}</code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Indexes are essential for performance but have costs. Every index adds overhead to INSERT, UPDATE, and DELETE operations. In JPA, <code>@Column(unique=true)</code> automatically creates a unique index.
+    </div>
+  </div>
+
+  <!-- Q85 -->
+  <div class="qa-block">
+    <div class="qa-number">Q85</div>
+    <div class="qa-title">Purpose of the index. Pros and cons. Why not create index for all possible combinations?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>Purpose: <strong>Speed up queries</strong> by reducing the amount of data scanned. <strong>Pros:</strong> Faster SELECT queries, unique constraints. <strong>Cons:</strong> Slower INSERT/UPDATE/DELETE, extra storage, maintenance overhead. <strong>You can't index all combinations</strong> because it would kill write performance and use too much storage.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Pros of indexes:</strong></p>
+      <ul>
+        <li>✅ <strong>Faster SELECT:</strong> Sub-second lookups on large tables</li>
+        <li>✅ <strong>Unique constraints:</strong> Enforces uniqueness</li>
+        <li>✅ <strong>ORDER BY optimization:</strong> Indexed columns sort faster</li>
+        <li>✅ <strong>JOIN optimization:</strong> Foreign key indexes speed up joins</li>
+        <li>✅ <strong>Covering indexes:</strong> Query can be satisfied from index alone</li>
+      </ul>
+
+      <p><strong>Cons of indexes:</strong></p>
+      <ul>
+        <li>❌ <strong>Write overhead:</strong> Every INSERT/UPDATE/DELETE must update all indexes</li>
+        <li>❌ <strong>Storage space:</strong> Indexes can be as large as the data itself</li>
+        <li>❌ <strong>Maintenance:</strong> Need to rebuild/update indexes periodically</li>
+        <li>❌ <strong>Complexity:</strong> Wrong index can hurt performance</li>
+        <li>❌ <strong>Query optimizer:</strong> May choose wrong index</li>
+      </ul>
+
+      <p><strong>Why not index all combinations:</strong></p>
+      <pre><code>For a table with 10 columns, possible combinations:
+- Single columns: 10
+- 2-column combos: 45
+- 3-column combos: 120
+- 4-column combos: 210
+- ...and so on
+Total: 2^10 - 1 = 1023 possible indexes
+
+Real example: 50 columns → 2^50 - 1 possible indexes (impossible!)
+
+Costs of all combinations:
+1. INSERT/UPDATE/DELETE: Each operation updates 1000+ indexes → SLOW
+2. Storage: Indexes = 10x-100x the data size
+3. Memory: Indexes in cache = less space for data
+4. Maintenance: Rebuilding indexes takes hours</code></pre>
+
+      <p><strong>Best practices:</strong></p>
+      <ul>
+        <li>✅ Index columns used in WHERE, JOIN, ORDER BY</li>
+        <li>✅ Index foreign keys</li>
+        <li>✅ Create composite indexes for multiple conditions</li>
+        <li>❌ Don't index low-cardinality columns (gender, status)</li>
+        <li>❌ Don't index columns rarely used in queries</li>
+        <li>❌ Don't create duplicate indexes</li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Indexes are a <strong>trade-off</strong>. Each index improves reads but hurts writes. Always ask: "Is this query run frequently enough to justify the cost?" Usually, 5-10 indexes per table is the sweet spot. More than that and you're probably over-indexing.
+    </div>
+  </div>
+
+  <!-- Q86 -->
+  <div class="qa-block">
+    <div class="qa-number">Q86</div>
+    <div class="qa-title">Explain briefly how a B-tree index works</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>A <strong>B-tree</strong> is a balanced tree data structure where each node contains multiple keys. It allows <strong>logarithmic</strong> search time and is optimized for <strong>disk access</strong>. It supports both equality and range queries efficiently.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code>B-tree structure (simplified):
+
+                    [30 | 60]
+                   /    |    \
+                  /     |     \
+          [10 | 20] [40 | 50] [70 | 80 | 90]
+          /   |   \   /   |   \   /   |   |   \
+        ...  ...  ... ...  ...  ... ...  ...  ...
+
+Key properties:
+1. Balanced: All leaves are at the same depth
+2. Each node: Contains multiple keys (K) and K+1 child pointers
+3. Keys are sorted: Left < Parent < Right
+4. Balanced automatically (splits/merges nodes)
+5. Typical node size = database page size (4KB-16KB)</code></pre>
+
+      <p><strong>How lookup works:</strong></p>
+      <pre><code>Search for value 45:
+1. Start at root: [30, 60]
+2. 30 < 45 < 60 → go to middle child
+3. Node: [40, 50]
+4. 40 < 45 < 50 → go to middle child
+5. Leaf node found → contains 45
+6. Follow pointer to data row
+
+Complexity: O(log n) disk I/O
+For a B-tree with 500 nodes, only ~3 disk reads</code></pre>
+
+      <p><strong>Why B-tree for databases:</strong></p>
+      <ul>
+        <li><strong>Low height:</strong> Even for millions of rows, height is small (3-5 levels)</li>
+        <li><strong>Block-oriented:</strong> Each node = one disk block → efficient I/O</li>
+        <li><strong>Supports range queries:</strong> <=, >, BETWEEN (unlike hash indexes)</li>
+        <li><strong>Good cache usage:</strong> Nodes fit in cache/pages</li>
+        <li><strong>Balanced:</strong> Predictable performance</li>
+      </ul>
+
+      <p><strong>B-tree vs B+tree:</strong></p>
+      <ul>
+        <li><strong>B-tree:</strong> Data in both internal and leaf nodes</li>
+        <li><strong>B+tree:</strong> Data only in leaf nodes (used by PostgreSQL, MySQL InnoDB)</li>
+        <li><strong>B+tree advantage:</strong> More keys per node → wider tree → shallower</li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> You don't need to implement a B-tree, but understanding how it works shows you understand database internals. Key takeaways: <strong>balanced</strong>, <strong>logarithmic search</strong>, <strong>range queries</strong>, and <strong>disk-optimized</strong>. This is why databases use B-trees for indexes.
+    </div>
+  </div>
+
+  <!-- Q87 -->
+  <div class="qa-block">
+    <div class="qa-number">Q87</div>
+    <div class="qa-title">Why not index all field combinations?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>Indexing all combinations leads to <strong>exponential growth</strong> in indexes, causing <strong>massive storage</strong> consumption and <strong>catastrophic write performance</strong>. The cost of maintaining indexes outweighs any read benefit.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>The math:</strong></p>
+      <pre><code>For n columns:
+- Single column indexes: n
+- Composite indexes: 2^n - 1
+
+For 10 columns: 1,023 indexes
+For 20 columns: 1,048,575 indexes
+For 50 columns: 1,125,899,906,842,623 indexes (impossible!)</code></pre>
+
+      <p><strong>Real costs:</strong></p>
+      <table>
+        <thead><tr><th>Cost</th><th>Impact</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Storage</strong></td><td>Each index can be as large as the table itself → 50 indexes = 50x storage</td></tr>
+          <tr><td><strong>Write performance</strong></td><td>Each INSERT/UPDATE must update every index → 10x-100x slower</td></tr>
+          <tr><td><strong>Memory</strong></td><td>Indexes in buffer pool → less space for data → more disk I/O</td></tr>
+          <tr><td><strong>Maintenance</strong></td><td>Index rebuilds, statistics updates take hours → downtime</td></tr>
+          <tr><td><strong>Query optimizer</strong></td><td>Too many choices → can choose wrong index → slower queries</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>Practical limits:</strong></p>
+      <ul>
+        <li>Typical tables: <strong>5-15 indexes</strong> total (single + composite)</li>
+        <li>Heavy writes: <strong>Fewer indexes</strong> (3-5)</li>
+        <li>Read-heavy: <strong>More indexes</strong> (10-20)</li>
+        <li>Composite indexes: <strong>3-4 columns max</strong> (beyond that, gains diminish)</li>
+      </ul>
+
+      <p><strong>Smart indexing strategy:</strong></p>
+      <ul>
+        <li>✅ Index columns used in WHERE, JOIN, ORDER BY</li>
+        <li>✅ Index foreign keys</li>
+        <li>✅ Create composite indexes for common query combinations</li>
+        <li>✅ Covering indexes for frequently executed queries</li>
+        <li>❌ Don't index columns with low cardinality (boolean, enum)</li>
+        <li>❌ Don't index columns you never query on</li>
+        <li>❌ Don't index very large text fields (use full-text search)</li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Think of indexes as a <strong>budget</strong>. Each index costs storage and write performance. You have limited budget, so spend it on the queries that matter most. Measure query performance, identify bottlenecks, and index strategically. Don't just add indexes "just in case."
+    </div>
+  </div>
+
+  <!-- CHEAT SHEET -->
+  <div class="qa-block" style="border-bottom:none;padding-bottom:0;margin-bottom:0">
+    <div class="qa-title" style="font-size:16px;color:var(--cyan)">📋 Quick-reference cheat sheet</div>
+    <div class="qa-section">
+      <pre style="background:var(--bg2);border-color:var(--border2);padding:1.2rem;border-radius:8px;font-size:13px;line-height:1.8"><code>Fetch Types:
+  EAGER → load immediately (default for ManyToOne, OneToOne)
+  LAZY  → load on-demand (default for OneToMany, ManyToMany)
+  ⚠️ Always prefer LAZY, use JOIN FETCH when needed
+
+Relationships:
+  @OneToOne   → 1:1, foreign key on owning side
+  @OneToMany  → 1:N, inverse of @ManyToOne
+  @ManyToOne  → N:1, owning side (has foreign key)
+  @ManyToMany → N:N, join table
+
+N+1 Problem:
+  1 query for list + N queries for each item
+  Fix: JOIN FETCH, EntityGraph, or EAGER (avoid)
+
+Optimistic Locking:
+  Uses @Version field (number or timestamp)
+  Checks version on update → OptimisticLockException on conflict
+  ✅ Preferred for most apps (performant, scalable)
+
+Pessimistic Locking:
+  Uses SELECT FOR UPDATE (database lock)
+  Blocks other transactions
+  ⚠️ Use only for high contention, short transactions
+
+Indexes:
+  Purpose: Speed up reads
+  Pros: Faster queries, unique constraints
+  Cons: Slower writes, storage, maintenance
+  Best: Index WHERE, JOIN, ORDER BY columns
+  ❌ Don't index all combinations (exponential growth!)
+
+B-tree:
+  Balanced tree with multiple keys per node
+  O(log n) search, supports range queries
+  Optimized for disk I/O</code></pre>
+    </div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <div style="display:flex;justify-content:space-between;margin-top:2rem;padding-top:1.5rem;border-top:0.5px solid var(--border)">
+    <a href="08-spring-core-web.html" style="color:var(--text3);font-family:var(--mono);font-size:12px;text-decoration:none">← Previous: Spring Core & Web</a>
+    <a href="index.html" class="back-top">🏠 Back to home</a>
+    <a href="10-design-patterns.html" style="color:var(--text3);font-family:var(--mono);font-size:12px;text-decoration:none">Next: Design Patterns →</a>
+  </div>
+
+</div>
+
+<footer>
+  <span class="footer-meta">vbforge · java-interview-prep · Java 21</span>
+  <a class="footer-link" href="https://github.com/vbforge/java-interview-prep">github.com/vbforge/java-interview-prep</a>
+</footer>
+
+</body>
+</html>
