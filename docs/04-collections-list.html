@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vbforge / java-interview-prep — Collections — List</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0e1a;
+  --bg2:#0f1629;
+  --bg3:#141d35;
+  --bg4:#1a2540;
+  --border:#1e2d50;
+  --border2:#243460;
+  --text:#e2e8f4;
+  --text2:#8899bb;
+  --text3:#4a5a7a;
+  --cyan:#00d9ff;
+  --cyan2:#00b8d9;
+  --cyan-dim:rgba(0,217,255,0.08);
+  --green:#22c55e;
+  --green-dim:rgba(34,197,94,0.08);
+  --amber:#f59e0b;
+  --amber-dim:rgba(245,158,11,0.08);
+  --red:#ef4444;
+  --red-dim:rgba(239,68,68,0.08);
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Inter',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;min-height:100vh}
+
+.page{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 1.5rem;border-bottom:0.5px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.nav-logo{width:28px;height:28px;flex-shrink:0}
+.nav-title{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--text)}
+.nav-title span{color:var(--cyan)}
+.nav-links{display:flex;gap:4px}
+.nav-link{font-family:var(--mono);font-size:11px;color:var(--text2);text-decoration:none;padding:4px 10px;border-radius:5px;border:0.5px solid transparent;transition:all .15s}
+.nav-link:hover{color:var(--text);border-color:var(--border2);background:var(--bg3)}
+.nav-link.active{color:var(--cyan);border-color:var(--border2)}
+
+.theory-header{
+  padding:2rem 0 1.5rem;
+  border-bottom:0.5px solid var(--border);
+  margin-bottom:2rem;
+}
+.theory-header h1{
+  font-family:var(--mono);
+  font-size:28px;
+  font-weight:600;
+  margin-bottom:0.5rem;
+  color:var(--text);
+}
+.theory-header h1 em{font-style:normal;color:var(--cyan)}
+.theory-meta{
+  display:flex;
+  gap:1.5rem;
+  flex-wrap:wrap;
+  color:var(--text3);
+  font-size:12px;
+  font-family:var(--mono);
+  margin-top:0.5rem;
+}
+.theory-meta a{color:var(--cyan2);text-decoration:none}
+.theory-meta a:hover{color:var(--cyan)}
+.badge-skip{
+  background:var(--amber-dim);
+  color:var(--amber);
+  padding:2px 10px;
+  border-radius:4px;
+  font-size:10px;
+  border:0.5px solid rgba(245,158,11,0.2);
+}
+
+.qa-block{
+  margin-bottom:2.5rem;
+  padding-bottom:2rem;
+  border-bottom:0.5px solid var(--border);
+}
+.qa-block:last-child{border-bottom:none}
+.qa-number{
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--cyan);
+  margin-bottom:0.3rem;
+}
+.qa-title{
+  font-size:18px;
+  font-weight:600;
+  color:var(--text);
+  margin-bottom:1rem;
+  font-family:var(--sans);
+}
+.qa-section{
+  margin-bottom:1rem;
+}
+.qa-section h3{
+  font-size:13px;
+  font-weight:600;
+  color:var(--text2);
+  margin-bottom:0.3rem;
+  font-family:var(--mono);
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+}
+.qa-section p{
+  color:var(--text2);
+  line-height:1.7;
+  font-size:14px;
+}
+.qa-section ul, .qa-section ol{
+  color:var(--text2);
+  line-height:1.7;
+  padding-left:1.5rem;
+  margin:0.5rem 0;
+}
+.qa-section li{
+  margin-bottom:0.3rem;
+}
+.qa-section code{
+  font-family:var(--mono);
+  font-size:13px;
+  background:var(--bg3);
+  padding:0.1rem 0.4rem;
+  border-radius:3px;
+  color:var(--cyan2);
+}
+.qa-section pre{
+  background:var(--bg3);
+  border:0.5px solid var(--border);
+  border-radius:6px;
+  padding:1rem 1.2rem;
+  overflow-x:auto;
+  margin:0.8rem 0;
+}
+.qa-section pre code{
+  font-family:var(--mono);
+  font-size:13px;
+  color:var(--text2);
+  background:transparent;
+  padding:0;
+  line-height:1.6;
+}
+.qa-section blockquote{
+  border-left:2px solid var(--cyan);
+  padding-left:1rem;
+  margin:0.8rem 0;
+  color:var(--text2);
+}
+.qa-section blockquote strong{
+  color:var(--cyan);
+}
+.qa-section table{
+  width:100%;
+  border-collapse:collapse;
+  margin:0.8rem 0;
+  font-size:13px;
+}
+.qa-section th{
+  background:var(--bg3);
+  color:var(--text);
+  padding:0.5rem 0.8rem;
+  text-align:left;
+  font-weight:500;
+  border:0.5px solid var(--border);
+}
+.qa-section td{
+  padding:0.5rem 0.8rem;
+  border:0.5px solid var(--border);
+  color:var(--text2);
+}
+.qa-section tr:nth-child(even){background:var(--bg2)}
+
+.junior-note{
+  background:var(--cyan-dim);
+  border:0.5px solid rgba(0,217,255,0.15);
+  border-radius:6px;
+  padding:0.8rem 1rem;
+  margin:1rem 0;
+  color:var(--text2);
+  font-size:13px;
+}
+.junior-note strong{
+  color:var(--cyan);
+}
+
+.hl-comment{color:#4a5a7a}
+.hl-keyword{color:var(--cyan2)}
+.hl-string{color:#a3e635}
+.hl-type{color:#c084fc}
+.hl-method{color:#f472b6}
+.hl-number{color:#f59e0b}
+.hl-annotation{color:#f472b6}
+
+footer{padding:1.5rem 1.5rem;border-top:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem}
+.footer-meta{font-family:var(--mono);font-size:11px;color:var(--text3)}
+.footer-link{font-family:var(--mono);font-size:11px;color:var(--text3);text-decoration:none}
+.footer-link:hover{color:var(--cyan)}
+
+.back-top{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--cyan2);
+  text-decoration:none;
+  padding:6px 12px;
+  border-radius:4px;
+  border:0.5px solid var(--border2);
+  transition:all .15s;
+}
+.back-top:hover{color:var(--cyan);border-color:var(--cyan)}
+
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <svg class="nav-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="70" fill="#0f172a" stroke="#64748b" stroke-width="1"/>
+      <text x="92" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="end" fill="#e2e8f0" letter-spacing="1px">VBF</text>
+      <circle cx="100" cy="99" r="8" fill="none" stroke="#00d9ff" stroke-width="2"/>
+      <path d="M 96 99 L 99 102 L 104 95" fill="none" stroke="#00d9ff" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="108" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="start" fill="#e2e8f0" letter-spacing="1px">RGE</text>
+    </svg>
+    <span class="nav-title">vbforge / <span>java-interview-prep</span></span>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">home</a>
+    <a class="nav-link active" href="#">theory</a>
+    <a class="nav-link" href="index.html#section-demos">demos</a>
+    <a class="nav-link" href="https://github.com/vbforge/java-interview-prep" target="_blank">github ↗</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="theory-header">
+    <h1>04 — <em>Collections — List</em></h1>
+    <div class="theory-meta">
+      <span>📚 Questions: <strong>Q28–Q33</strong></span>
+      <span>🧪 Demo: <a href="https://github.com/vbforge/java-interview-prep/tree/main/demo-02-collections">demo-02-collections</a></span>
+      <span class="badge-skip">⭐ Core topic</span>
+    </div>
+  </div>
+
+  <!-- Q28 -->
+  <div class="qa-block">
+    <div class="qa-number">Q28</div>
+    <div class="qa-title">What kinds of collections exist in Java?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>Java collections framework includes three main types: <strong>List</strong> (ordered, allows duplicates), <strong>Set</strong> (no duplicates, unordered), and <strong>Map</strong> (key-value pairs). Each has multiple implementations with different performance characteristics.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code>Java Collections Framework Hierarchy:
+
+        --------------------------------------------------------
+        │               Iterable                               |
+        │                  |                                   |
+        │             Collection                               |
+        │          /       |      \                            |
+        │        List     Set      Queue                       |
+        │         |        |           |                       |
+        │    ArrayList    HashSet     LinkedList               |
+        │    LinkedList   TreeSet     PriorityQueue            |
+        │    Vector       LinkedHashSet                        |
+        │                                                      |
+        │              Map (separate hierarchy)                |
+        │            /           |                \            |
+        │   HashMap            TreeMap          LinkedHashMap  |
+        │   Hashtable          ConcurrentHashMap               |
+        --------------------------------------------------------</code></pre>
+
+      <table>
+        <thead><tr><th>Interface</th><th>Characteristics</th><th>Common Implementations</th></tr></thead>
+        <tbody>
+          <tr><td><strong>List</strong></td><td>Ordered, allows duplicates, index-based access</td><td><code>ArrayList</code>, <code>LinkedList</code>, <code>Vector</code></td></tr>
+          <tr><td><strong>Set</strong></td><td>No duplicates, no guaranteed order</td><td><code>HashSet</code>, <code>TreeSet</code>, <code>LinkedHashSet</code></td></tr>
+          <tr><td><strong>Queue</strong></td><td>FIFO (or priority) ordering</td><td><code>LinkedList</code>, <code>PriorityQueue</code>, <code>ArrayDeque</code></td></tr>
+          <tr><td><strong>Map</strong></td><td>Key-value pairs, unique keys</td><td><code>HashMap</code>, <code>TreeMap</code>, <code>LinkedHashMap</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> <code>Map</code> does <em>not</em> extend <code>Collection</code> — it's a separate interface in the hierarchy. This is because maps store key-value pairs, not individual elements like collections do.
+    </div>
+  </div>
+
+  <!-- Q29 -->
+  <div class="qa-block">
+    <div class="qa-number">Q29</div>
+    <div class="qa-title">Describe List</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>A <strong>List</strong> is an ordered collection that allows duplicate elements. It provides <strong>index-based access</strong> to elements, meaning you can get, set, insert, and remove elements by their position (0-based index).</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Key characteristics of List:</strong></p>
+      <ul>
+        <li><strong>Ordered</strong> — elements are stored in the order they were inserted</li>
+        <li><strong>Duplicates allowed</strong> — can contain the same element multiple times</li>
+        <li><strong>Index-based</strong> — access elements by position: <code>get(index)</code>, <code>set(index, element)</code></li>
+        <li><strong>Positional access</strong> — insert at specific position: <code>add(index, element)</code></li>
+        <li><strong>Search</strong> — find position of element: <code>indexOf(element)</code></li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// List interface methods</span>
+<span class="hl-type">List</span>&lt;<span class="hl-type">String</span>&gt; list = <span class="hl-keyword">new</span> <span class="hl-type">ArrayList</span>&lt;&gt;();
+list.add(<span class="hl-string">"Apple"</span>);          <span class="hl-comment">// [Apple]</span>
+list.add(<span class="hl-string">"Banana"</span>);         <span class="hl-comment">// [Apple, Banana]</span>
+list.add(<span class="hl-number">1</span>, <span class="hl-string">"Cherry"</span>);      <span class="hl-comment">// [Apple, Cherry, Banana]</span>
+<span class="hl-type">String</span> fruit = list.get(<span class="hl-number">1</span>);  <span class="hl-comment">// "Cherry"</span>
+list.set(<span class="hl-number">0</span>, <span class="hl-string">"Apricot"</span>);     <span class="hl-comment">// [Apricot, Cherry, Banana]</span>
+<span class="hl-type">int</span> index = list.indexOf(<span class="hl-string">"Cherry"</span>);  <span class="hl-comment">// 1</span>
+list.remove(<span class="hl-number">1</span>);               <span class="hl-comment">// [Apricot, Banana]</span></code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> <code>List</code> is an <em>interface</em>, not a class. You can't instantiate <code>List</code> directly — you always use one of its implementations like <code>ArrayList</code> or <code>LinkedList</code>.
+    </div>
+  </div>
+
+  <!-- Q30 -->
+  <div class="qa-block">
+    <div class="qa-number">Q30</div>
+    <div class="qa-title">Time complexity of insertion and read/access</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>ArrayList:</strong> Access/read is <code>O(1)</code>, insertion at end is <code>O(1)</code> (amortized), insertion at beginning/middle is <code>O(n)</code>.<br>
+      <strong>LinkedList:</strong> Access/read is <code>O(n)</code>, insertion at beginning/end is <code>O(1)</code>, insertion at middle is <code>O(n)</code> (due to traversal).</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <table>
+        <thead><tr><th>Operation</th><th>ArrayList</th><th>LinkedList</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Get by index</strong></td><td>O(1) — direct array access</td><td>O(n) — traverse from head/tail</td></tr>
+          <tr><td><strong>Set by index</strong></td><td>O(1) — direct array assignment</td><td>O(n) — traverse then set</td></tr>
+          <tr><td><strong>Add at end</strong></td><td>O(1) amortized*</td><td>O(1) — add to tail</td></tr>
+          <tr><td><strong>Add at beginning</strong></td><td>O(n) — shift all elements</td><td>O(1) — add to head</td></tr>
+          <tr><td><strong>Add at middle</strong></td><td>O(n) — shift elements</td><td>O(n) — traverse to position</td></tr>
+          <tr><td><strong>Remove at end</strong></td><td>O(1) — remove last</td><td>O(1) — remove from tail</td></tr>
+          <tr><td><strong>Remove at beginning</strong></td><td>O(n) — shift all elements</td><td>O(1) — remove from head</td></tr>
+          <tr><td><strong>Remove at middle</strong></td><td>O(n) — shift elements</td><td>O(n) — traverse to position</td></tr>
+          <tr><td><strong>Search (indexOf)</strong></td><td>O(n) — linear scan</td><td>O(n) — linear scan</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>*ArrayList add amortized O(1):</strong> When the internal array is full, it grows by 50% (doubles in older versions). This resize operation is O(n) but happens infrequently, so the <em>amortized</em> cost is O(1).</p>
+
+      <pre><code><span class="hl-comment">// ArrayList size management</span>
+<span class="hl-type">ArrayList</span>&lt;<span class="hl-type">String</span>&gt; list = <span class="hl-keyword">new</span> <span class="hl-type">ArrayList</span>&lt;&gt;();  <span class="hl-comment">// Initial capacity: 10</span>
+<span class="hl-comment">// When adding element 11, array grows to capacity 15 (50% increase in Java 8+)</span></code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> The amortized O(1) for <code>ArrayList.add()</code> is important to understand. While a single add might trigger a resize (O(n)), the <em>average</em> cost over many adds is O(1). This is why <code>ArrayList</code> is usually the default choice.
+    </div>
+  </div>
+
+  <!-- Q31 -->
+  <div class="qa-block">
+    <div class="qa-number">Q31</div>
+    <div class="qa-title">When is an array-based list better, when is a linked list better?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>ArrayList</strong> is better when you need frequent <strong>random access</strong> (reading by index) and most modifications are at the <strong>end</strong>.<br>
+      <strong>LinkedList</strong> is better when you need frequent <strong>insertions/deletions at the beginning</strong> or when you're using it as a <strong>queue/stack</strong>.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Choose ArrayList when:</strong></p>
+      <ul>
+        <li>You need fast <code>get()</code> and <code>set()</code> operations (O(1))</li>
+        <li>You're mostly adding elements at the end</li>
+        <li>You need to iterate over the list frequently (better cache locality)</li>
+        <li>Memory overhead is a concern (less memory per element)</li>
+        <li>You know the approximate size in advance (can set initial capacity)</li>
+      </ul>
+
+      <p><strong>Choose LinkedList when:</strong></p>
+      <ul>
+        <li>You need frequent insertions/deletions at the beginning or middle</li>
+        <li>You're using the list as a queue or stack (<code>addFirst()</code>, <code>removeFirst()</code>)</li>
+        <li>You don't need random access (or it's rare)</li>
+        <li>The list size changes dramatically and frequently</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Good use of ArrayList: reading data, adding at end</span>
+<span class="hl-type">List</span>&lt;<span class="hl-type">User</span>&gt; users = <span class="hl-keyword">new</span> <span class="hl-type">ArrayList</span>&lt;&gt;();
+users.add(<span class="hl-keyword">new</span> <span class="hl-type">User</span>(<span class="hl-string">"Alice"</span>));  <span class="hl-comment">// Add at end → O(1)</span>
+users.add(<span class="hl-keyword">new</span> <span class="hl-type">User</span>(<span class="hl-string">"Bob"</span>));    <span class="hl-comment">// Add at end → O(1)</span>
+<span class="hl-type">User</span> first = users.get(<span class="hl-number">0</span>);        <span class="hl-comment">// Random access → O(1)</span>
+
+<span class="hl-comment">// Good use of LinkedList: queue operations</span>
+<span class="hl-type">Queue</span>&lt;<span class="hl-type">Task</span>&gt; queue = <span class="hl-keyword">new</span> <span class="hl-type">LinkedList</span>&lt;&gt;();
+queue.add(<span class="hl-keyword">new</span> <span class="hl-type">Task</span>());       <span class="hl-comment">// Add to tail → O(1)</span>
+<span class="hl-type">Task</span> task = queue.poll();     <span class="hl-comment">// Remove from head → O(1)</span></code></pre>
+
+      <p><strong>Memory comparison:</strong></p>
+      <ul>
+        <li><strong>ArrayList:</strong> Stores elements contiguously in an array. Overhead is minimal.</li>
+        <li><strong>LinkedList:</strong> Each element is a separate node with two pointers (prev/next). Much higher memory overhead (~40 bytes per element).</li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> In most real-world applications, <code>ArrayList</code> is the better choice. <code>LinkedList</code> is overused by juniors who think "linked list = better for insertion." But unless you're inserting at the beginning, <code>ArrayList</code> often performs better due to cache locality and lower memory overhead.
+    </div>
+  </div>
+
+  <!-- Q32 -->
+  <div class="qa-block">
+    <div class="qa-number">Q32</div>
+    <div class="qa-title">How does a list differ from a plain array?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>A <strong>List</strong> is a dynamic, resizable collection with utility methods, while an <strong>array</strong> is a fixed-size, primitive-level data structure. Lists are part of the Collections Framework and provide more functionality and flexibility.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <table>
+        <thead><tr><th>Feature</th><th>Array</th><th>List (ArrayList)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Size</strong></td><td>Fixed — cannot change after creation</td><td>Dynamic — grows/shrinks automatically</td></tr>
+          <tr><td><strong>Type</strong></td><td>Can hold primitives and objects</td><td>Only objects (wrappers for primitives)</td></tr>
+          <tr><td><strong>Syntax</strong></td><td><code>String[] arr = new String[10];</code></td><td><code>List&lt;String&gt; list = new ArrayList&lt;&gt;();</code></td></tr>
+          <tr><td><strong>Access</strong></td><td><code>arr[0]</code> (bracket notation)</td><td><code>list.get(0)</code> (method call)</td></tr>
+          <tr><td><strong>Utility methods</strong></td><td>Minimal (<code>Arrays.toString()</code>, <code>Arrays.sort()</code>)</td><td>Rich (<code>add()</code>, <code>remove()</code>, <code>contains()</code>, <code>indexOf()</code>, etc.)</td></tr>
+          <tr><td><strong>Performance</strong></td><td>Fastest, lowest overhead</td><td>Slightly more overhead due to method calls</td></tr>
+          <tr><td><strong>Generics</strong></td><td>Limited (reified types, can't have generic arrays)</td><td>Full generic support</td></tr>
+          <tr><td><strong>Iteration</strong></td><td>Enhanced for loop, manual index</td><td>Enhanced for loop, iterator, stream, forEach</td></tr>
+        </tbody>
+      </table>
+
+      <pre><code><span class="hl-comment">// Array — fixed size</span>
+<span class="hl-type">String</span>[] arr = <span class="hl-keyword">new</span> <span class="hl-type">String</span>[<span class="hl-number">3</span>];
+arr[<span class="hl-number">0</span>] = <span class="hl-string">"A"</span>;
+arr[<span class="hl-number">1</span>] = <span class="hl-string">"B"</span>;
+arr[<span class="hl-number">2</span>] = <span class="hl-string">"C"</span>;
+<span class="hl-comment">// arr[3] = "D"; // ArrayIndexOutOfBoundsException</span>
+
+<span class="hl-comment">// List — dynamic size</span>
+<span class="hl-type">List</span>&lt;<span class="hl-type">String</span>&gt; list = <span class="hl-keyword">new</span> <span class="hl-type">ArrayList</span>&lt;&gt;();
+list.add(<span class="hl-string">"A"</span>);
+list.add(<span class="hl-string">"B"</span>);
+list.add(<span class="hl-string">"C"</span>);
+list.add(<span class="hl-string">"D"</span>);  <span class="hl-comment">// Automatically grows</span>
+list.remove(<span class="hl-number">1</span>);   <span class="hl-comment">// Remove "B"</span>
+list.contains(<span class="hl-string">"A"</span>); <span class="hl-comment">// true</span></code></pre>
+
+      <p><strong>Converting between arrays and lists:</strong></p>
+      <pre><code><span class="hl-comment">// Array → List</span>
+<span class="hl-type">String</span>[] arr = {<span class="hl-string">"A"</span>, <span class="hl-string">"B"</span>, <span class="hl-string">"C"</span>};
+<span class="hl-type">List</span>&lt;<span class="hl-type">String</span>&gt; list = <span class="hl-type">Arrays</span>.asList(arr);  <span class="hl-comment">// Fixed-size view</span>
+<span class="hl-type">List</span>&lt;<span class="hl-type">String</span>&gt; mutableList = <span class="hl-keyword">new</span> <span class="hl-type">ArrayList</span>&lt;&gt;(<span class="hl-type">Arrays</span>.asList(arr));  <span class="hl-comment">// Full copy</span>
+
+<span class="hl-comment">// List → Array</span>
+<span class="hl-type">List</span>&lt;<span class="hl-type">String</span>&gt; list = <span class="hl-keyword">new</span> <span class="hl-type">ArrayList</span>&lt;&gt;();
+<span class="hl-type">String</span>[] arr = list.toArray(<span class="hl-keyword">new</span> <span class="hl-type">String</span>[<span class="hl-number">0</span>]);  <span class="hl-comment">// Preferred approach</span></code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> <code>Arrays.asList()</code> returns a <em>fixed-size</em> list backed by the original array. You can't <code>add()</code> or <code>remove()</code> from it — that will throw <code>UnsupportedOperationException</code>. If you need a mutable list, wrap it in <code>new ArrayList&lt;&gt;()</code>.
+    </div>
+  </div>
+
+  <!-- Q33 -->
+  <div class="qa-block">
+    <div class="qa-number">Q33</div>
+    <div class="qa-title">What is an iterator?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>An <strong>Iterator</strong> is an object that enables traversal of a collection. It provides <code>hasNext()</code> to check if there are more elements, <code>next()</code> to get the next element, and <code>remove()</code> to remove the current element.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code><span class="hl-comment">// Basic Iterator usage</span>
+<span class="hl-type">List</span>&lt;<span class="hl-type">String</span>&gt; list = <span class="hl-keyword">new</span> <span class="hl-type">ArrayList</span>&lt;&gt;();
+list.add(<span class="hl-string">"A"</span>);
+list.add(<span class="hl-string">"B"</span>);
+list.add(<span class="hl-string">"C"</span>);
+
+<span class="hl-type">Iterator</span>&lt;<span class="hl-type">String</span>&gt; iterator = list.iterator();
+<span class="hl-keyword">while</span> (iterator.hasNext()) {
+    <span class="hl-type">String</span> element = iterator.next();
+    System.out.println(element);
+}</code></pre>
+
+      <p><strong>Key Iterator methods:</strong></p>
+      <table>
+        <thead><tr><th>Method</th><th>Description</th><th>Throws</th></tr></thead>
+        <tbody>
+          <tr><td><code>hasNext()</code></td><td>Returns <code>true</code> if there are more elements</td><td>—</td></tr>
+          <tr><td><code>next()</code></td><td>Returns the next element and advances</td><td><code>NoSuchElementException</code></td></tr>
+          <tr><td><code>remove()</code></td><td>Removes the last element returned by <code>next()</code></td><td><code>IllegalStateException</code></td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>Why use Iterator over enhanced for loop?</strong></p>
+      <ul>
+        <li><strong>Remove elements safely:</strong> You can remove elements during iteration without <code>ConcurrentModificationException</code></li>
+        <li><strong>Multiple iterations:</strong> You can have multiple iterators over the same collection</li>
+        <li><strong>Generic collections:</strong> Works with any <code>Collection</code> type</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Safe removal with Iterator</span>
+<span class="hl-type">List</span>&lt;<span class="hl-type">String</span>&gt; names = <span class="hl-keyword">new</span> <span class="hl-type">ArrayList</span>&lt;&gt;();
+names.add(<span class="hl-string">"Alice"</span>);
+names.add(<span class="hl-string">"Bob"</span>);
+names.add(<span class="hl-string">"Charlie"</span>);
+
+<span class="hl-type">Iterator</span>&lt;<span class="hl-type">String</span>&gt; it = names.iterator();
+<span class="hl-keyword">while</span> (it.hasNext()) {
+    <span class="hl-type">String</span> name = it.next();
+    <span class="hl-keyword">if</span> (name.startsWith(<span class="hl-string">"A"</span>)) {
+        it.remove();  <span class="hl-comment">// Safe! No ConcurrentModificationException</span>
+    }
+}
+<span class="hl-comment">// names now contains: [Bob, Charlie]</span>
+
+<span class="hl-comment">// ❌ Wrong — causes ConcurrentModificationException</span>
+<span class="hl-keyword">for</span> (<span class="hl-type">String</span> name : names) {
+    <span class="hl-keyword">if</span> (name.startsWith(<span class="hl-string">"A"</span>)) {
+        names.remove(name);  <span class="hl-comment">// ConcurrentModificationException!</span>
+    }
+}</code></pre>
+
+      <p><strong>ListIterator — bidirectional iterator:</strong></p>
+      <pre><code><span class="hl-type">ListIterator</span>&lt;<span class="hl-type">String</span>&gt; listIt = list.listIterator();
+<span class="hl-keyword">while</span> (listIt.hasNext()) {
+    <span class="hl-type">String</span> element = listIt.next();
+    <span class="hl-comment">// Can also go backwards</span>
+}
+<span class="hl-keyword">while</span> (listIt.hasPrevious()) {
+    <span class="hl-type">String</span> element = listIt.previous();  <span class="hl-comment">// Traverse backwards</span>
+}</code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> The most common iterator mistake is trying to modify a collection while iterating over it with an enhanced for loop. Always use an <code>Iterator</code> (or <code>ListIterator</code>) when you need to remove elements during iteration. The enhanced for loop uses an iterator internally but doesn't expose the <code>remove()</code> method.
+    </div>
+  </div>
+
+  <!-- CHEAT SHEET -->
+  <div class="qa-block" style="border-bottom:none;padding-bottom:0;margin-bottom:0">
+    <div class="qa-title" style="font-size:16px;color:var(--cyan)">📋 Quick-reference cheat sheet</div>
+    <div class="qa-section">
+      <pre style="background:var(--bg2);border-color:var(--border2);padding:1.2rem;border-radius:8px;font-size:13px;line-height:1.8"><code>Collections:
+  List    → Ordered, duplicates allowed, index-based
+  Set     → No duplicates, unordered
+  Map     → Key-value pairs (NOT a Collection)
+  Queue   → FIFO/priority ordering
+
+ArrayList vs LinkedList:
+  ArrayList  → O(1) get, O(1) add at end (amortized)
+             → Best for: random access, iteration, add at end
+  LinkedList → O(1) add/remove at beginning/end
+             → Best for: queue/stack, frequent head modifications
+             → Worst for: random access (O(n))
+
+Array vs List:
+  Array    → Fixed size, can hold primitives, fastest
+  List     → Dynamic size, utility methods, flexible
+
+Iterator:
+  hasNext() → check if more elements
+  next()    → get next element
+  remove()  → safely remove current element
+  ListIterator → bidirectional iteration
+
+⚠️ Always use Iterator.remove() to remove during iteration!</code></pre>
+    </div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <div style="display:flex;justify-content:space-between;margin-top:2rem;padding-top:1.5rem;border-top:0.5px solid var(--border)">
+    <a href="03-oop-generics.html" style="color:var(--text3);font-family:var(--mono);font-size:12px;text-decoration:none">← Previous: OOP & Generics</a>
+    <a href="index.html" class="back-top">🏠 Back to home</a>
+    <a href="05-collections-hashmap.html" style="color:var(--text3);font-family:var(--mono);font-size:12px;text-decoration:none">Next: Collections — HashMap →</a>
+  </div>
+
+</div>
+
+<footer>
+  <span class="footer-meta">vbforge · java-interview-prep · Java 21</span>
+  <a class="footer-link" href="https://github.com/vbforge/java-interview-prep">github.com/vbforge/java-interview-prep</a>
+</footer>
+
+</body>
+</html>
