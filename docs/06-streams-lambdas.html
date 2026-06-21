@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vbforge / java-interview-prep — Streams & Lambdas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0e1a;
+  --bg2:#0f1629;
+  --bg3:#141d35;
+  --bg4:#1a2540;
+  --border:#1e2d50;
+  --border2:#243460;
+  --text:#e2e8f4;
+  --text2:#8899bb;
+  --text3:#4a5a7a;
+  --cyan:#00d9ff;
+  --cyan2:#00b8d9;
+  --cyan-dim:rgba(0,217,255,0.08);
+  --green:#22c55e;
+  --green-dim:rgba(34,197,94,0.08);
+  --amber:#f59e0b;
+  --amber-dim:rgba(245,158,11,0.08);
+  --red:#ef4444;
+  --red-dim:rgba(239,68,68,0.08);
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Inter',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;min-height:100vh}
+
+.page{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 1.5rem;border-bottom:0.5px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.nav-logo{width:28px;height:28px;flex-shrink:0}
+.nav-title{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--text)}
+.nav-title span{color:var(--cyan)}
+.nav-links{display:flex;gap:4px}
+.nav-link{font-family:var(--mono);font-size:11px;color:var(--text2);text-decoration:none;padding:4px 10px;border-radius:5px;border:0.5px solid transparent;transition:all .15s}
+.nav-link:hover{color:var(--text);border-color:var(--border2);background:var(--bg3)}
+.nav-link.active{color:var(--cyan);border-color:var(--border2)}
+
+.theory-header{
+  padding:2rem 0 1.5rem;
+  border-bottom:0.5px solid var(--border);
+  margin-bottom:2rem;
+}
+.theory-header h1{
+  font-family:var(--mono);
+  font-size:28px;
+  font-weight:600;
+  margin-bottom:0.5rem;
+  color:var(--text);
+}
+.theory-header h1 em{font-style:normal;color:var(--cyan)}
+.theory-meta{
+  display:flex;
+  gap:1.5rem;
+  flex-wrap:wrap;
+  color:var(--text3);
+  font-size:12px;
+  font-family:var(--mono);
+  margin-top:0.5rem;
+}
+.theory-meta a{color:var(--cyan2);text-decoration:none}
+.theory-meta a:hover{color:var(--cyan)}
+.badge-skip{
+  background:var(--amber-dim);
+  color:var(--amber);
+  padding:2px 10px;
+  border-radius:4px;
+  font-size:10px;
+  border:0.5px solid rgba(245,158,11,0.2);
+}
+
+.qa-block{
+  margin-bottom:2.5rem;
+  padding-bottom:2rem;
+  border-bottom:0.5px solid var(--border);
+}
+.qa-block:last-child{border-bottom:none}
+.qa-number{
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--cyan);
+  margin-bottom:0.3rem;
+}
+.qa-title{
+  font-size:18px;
+  font-weight:600;
+  color:var(--text);
+  margin-bottom:1rem;
+  font-family:var(--sans);
+}
+.qa-section{
+  margin-bottom:1rem;
+}
+.qa-section h3{
+  font-size:13px;
+  font-weight:600;
+  color:var(--text2);
+  margin-bottom:0.3rem;
+  font-family:var(--mono);
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+}
+.qa-section p{
+  color:var(--text2);
+  line-height:1.7;
+  font-size:14px;
+}
+.qa-section ul, .qa-section ol{
+  color:var(--text2);
+  line-height:1.7;
+  padding-left:1.5rem;
+  margin:0.5rem 0;
+}
+.qa-section li{
+  margin-bottom:0.3rem;
+}
+.qa-section code{
+  font-family:var(--mono);
+  font-size:13px;
+  background:var(--bg3);
+  padding:0.1rem 0.4rem;
+  border-radius:3px;
+  color:var(--cyan2);
+}
+.qa-section pre{
+  background:var(--bg3);
+  border:0.5px solid var(--border);
+  border-radius:6px;
+  padding:1rem 1.2rem;
+  overflow-x:auto;
+  margin:0.8rem 0;
+}
+.qa-section pre code{
+  font-family:var(--mono);
+  font-size:13px;
+  color:var(--text2);
+  background:transparent;
+  padding:0;
+  line-height:1.6;
+}
+.qa-section blockquote{
+  border-left:2px solid var(--cyan);
+  padding-left:1rem;
+  margin:0.8rem 0;
+  color:var(--text2);
+}
+.qa-section blockquote strong{
+  color:var(--cyan);
+}
+.qa-section table{
+  width:100%;
+  border-collapse:collapse;
+  margin:0.8rem 0;
+  font-size:13px;
+}
+.qa-section th{
+  background:var(--bg3);
+  color:var(--text);
+  padding:0.5rem 0.8rem;
+  text-align:left;
+  font-weight:500;
+  border:0.5px solid var(--border);
+}
+.qa-section td{
+  padding:0.5rem 0.8rem;
+  border:0.5px solid var(--border);
+  color:var(--text2);
+}
+.qa-section tr:nth-child(even){background:var(--bg2)}
+
+.junior-note{
+  background:var(--cyan-dim);
+  border:0.5px solid rgba(0,217,255,0.15);
+  border-radius:6px;
+  padding:0.8rem 1rem;
+  margin:1rem 0;
+  color:var(--text2);
+  font-size:13px;
+}
+.junior-note strong{
+  color:var(--cyan);
+}
+
+.hl-comment{color:#4a5a7a}
+.hl-keyword{color:var(--cyan2)}
+.hl-string{color:#a3e635}
+.hl-type{color:#c084fc}
+.hl-method{color:#f472b6}
+.hl-number{color:#f59e0b}
+.hl-annotation{color:#f472b6}
+
+footer{padding:1.5rem 1.5rem;border-top:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem}
+.footer-meta{font-family:var(--mono);font-size:11px;color:var(--text3)}
+.footer-link{font-family:var(--mono);font-size:11px;color:var(--text3);text-decoration:none}
+.footer-link:hover{color:var(--cyan)}
+
+.back-top{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--cyan2);
+  text-decoration:none;
+  padding:6px 12px;
+  border-radius:4px;
+  border:0.5px solid var(--border2);
+  transition:all .15s;
+}
+.back-top:hover{color:var(--cyan);border-color:var(--cyan)}
+
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <svg class="nav-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="70" fill="#0f172a" stroke="#64748b" stroke-width="1"/>
+      <text x="92" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="end" fill="#e2e8f0" letter-spacing="1px">VBF</text>
+      <circle cx="100" cy="99" r="8" fill="none" stroke="#00d9ff" stroke-width="2"/>
+      <path d="M 96 99 L 99 102 L 104 95" fill="none" stroke="#00d9ff" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="108" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="start" fill="#e2e8f0" letter-spacing="1px">RGE</text>
+    </svg>
+    <span class="nav-title">vbforge / <span>java-interview-prep</span></span>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">home</a>
+    <a class="nav-link active" href="#">theory</a>
+    <a class="nav-link" href="index.html#section-demos">demos</a>
+    <a class="nav-link" href="https://github.com/vbforge/java-interview-prep" target="_blank">github ↗</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="theory-header">
+    <h1>06 — <em>Streams & Lambdas</em></h1>
+    <div class="theory-meta">
+      <span>📚 Questions: <strong>Q45–Q52</strong></span>
+      <span>🧪 Demo: <a href="https://github.com/vbforge/java-interview-prep/tree/main/demo-03-streams">demo-03-streams</a></span>
+      <span class="badge-skip">⭐ Functional programming</span>
+    </div>
+  </div>
+
+  <!-- Q45 -->
+  <div class="qa-block">
+    <div class="qa-number">Q45</div>
+    <div class="qa-title">In Java, what is a Stream?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>A <strong>Stream</strong> is a sequence of elements supporting sequential and parallel aggregate operations. It's not a data structure — it doesn't store data. Instead, it <strong>carries data</strong> from a source (collection, array, generator) through a pipeline of operations.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Key characteristics of Streams:</strong></p>
+      <ul>
+        <li><strong>Not a data structure:</strong> Doesn't store elements, only processes them</li>
+        <li><strong>Functional:</strong> Operations don't modify the source</li>
+        <li><strong>Lazy:</strong> Intermediate operations are not executed until a terminal operation is called</li>
+        <li><strong>Single use:</strong> A stream can only be consumed once</li>
+        <li><strong>Pipelined:</strong> Operations are chained together</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Stream pipeline structure</span>
+<span class="hl-type">List</span>&lt;<span class="hl-type">String</span>&gt; names = <span class="hl-type">Arrays</span>.asList(<span class="hl-string">"Alice"</span>, <span class="hl-string">"Bob"</span>, <span class="hl-string">"Charlie"</span>, <span class="hl-string">"David"</span>);
+
+<span class="hl-type">List</span>&lt;<span class="hl-type">String</span>&gt; result = names.stream()          <span class="hl-comment">// 1. Create stream from source</span>
+    .filter(name -> name.length() > <span class="hl-number">3</span>)    <span class="hl-comment">// 2. Intermediate: filter</span>
+    .map(String::toUpperCase)                 <span class="hl-comment">// 3. Intermediate: transform</span>
+    .sorted()                                  <span class="hl-comment">// 4. Intermediate: sort</span>
+    .collect(Collectors.toList());            <span class="hl-comment">// 5. Terminal: collect to list</span>
+
+<span class="hl-comment">// result: [ALICE, CHARLIE, DAVID]</span></code></pre>
+
+      <p><strong>Stream sources:</strong></p>
+      <ul>
+        <li><code>Collection.stream()</code> — from any collection</li>
+        <li><code>Stream.of()</code> — from elements</li>
+        <li><code>Arrays.stream()</code> — from arrays</li>
+        <li><code>Stream.iterate()</code> / <code>Stream.generate()</code> — infinite streams</li>
+        <li><code>Files.lines()</code> — from files</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Creating streams from different sources</span>
+<span class="hl-type">Stream</span>&lt;<span class="hl-type">Integer</span>&gt; s1 = <span class="hl-type">Stream</span>.of(<span class="hl-number">1</span>, <span class="hl-number">2</span>, <span class="hl-number">3</span>);
+<span class="hl-type">Stream</span>&lt;<span class="hl-type">Integer</span>&gt; s2 = <span class="hl-type">Arrays</span>.stream(<span class="hl-keyword">new</span> <span class="hl-type">Integer</span>[]{<span class="hl-number">1</span>, <span class="hl-number">2</span>, <span class="hl-number">3</span>});
+<span class="hl-type">Stream</span>&lt;<span class="hl-type">Integer</span>&gt; s3 = <span class="hl-type">List</span>.of(<span class="hl-number">1</span>, <span class="hl-number">2</span>, <span class="hl-number">3</span>).stream();
+<span class="hl-type">Stream</span>&lt;<span class="hl-type">Double</span>&gt; s4 = <span class="hl-type">Stream</span>.generate(Math::random).limit(<span class="hl-number">10</span>);
+<span class="hl-type">Stream</span>&lt;<span class="hl-type">Integer</span>&gt; s5 = <span class="hl-type">Stream</span>.iterate(<span class="hl-number">0</span>, n -> n + <span class="hl-number">2</span>).limit(<span class="hl-number">5</span>);  <span class="hl-comment">// 0, 2, 4, 6, 8</span></code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> A common mistake is trying to reuse a Stream after a terminal operation. Streams are <strong>single-use</strong> — once you call a terminal operation, the stream is consumed and cannot be reused. You must create a new stream for each pipeline.
+    </div>
+  </div>
+
+  <!-- Q46 -->
+  <div class="qa-block">
+    <div class="qa-number">Q46</div>
+    <div class="qa-title">What is the difference between intermediate and terminal stream operations? Give two examples of each.</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>Intermediate operations</strong> are <strong>lazy</strong> — they return a new stream and don't execute until a terminal operation is called. <strong>Terminal operations</strong> are <strong>eager</strong> — they execute the pipeline and produce a result or side effect.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <table>
+        <thead><tr><th>Type</th><th>Characteristics</th><th>Examples</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Intermediate</strong></td><td>Lazy, returns Stream, can be chained</td><td><code>filter()</code>, <code>map()</code>, <code>flatMap()</code>, <code>sorted()</code>, <code>distinct()</code>, <code>limit()</code>, <code>skip()</code>, <code>peek()</code></td></tr>
+          <tr><td><strong>Terminal</strong></td><td>Eager, doesn't return Stream, executes pipeline</td><td><code>collect()</code>, <code>forEach()</code>, <code>count()</code>, <code>reduce()</code>, <code>findFirst()</code>, <code>anyMatch()</code>, <code>toList()</code></td></tr>
+        </tbody>
+      </table>
+
+      <pre><code><span class="hl-comment">// Intermediate operations (lazy) — nothing executes here</span>
+<span class="hl-type">Stream</span>&lt;<span class="hl-type">String</span>&gt; stream = names.stream()
+    .filter(name -> {                     <span class="hl-comment">// Intermediate: filter</span>
+        System.out.println(<span class="hl-string">"Filtering: "</span> + name);
+        <span class="hl-keyword">return</span> name.length() > <span class="hl-number">3</span>;
+    })
+    .map(name -> {                        <span class="hl-comment">// Intermediate: map</span>
+        System.out.println(<span class="hl-string">"Mapping: "</span> + name);
+        <span class="hl-keyword">return</span> name.toUpperCase();
+    })
+    .sorted();                            <span class="hl-comment">// Intermediate: sorted</span>
+
+<span class="hl-comment">// Nothing printed yet! Stream is just built, not executed.</span>
+
+<span class="hl-comment">// Terminal operation (eager) — executes the entire pipeline</span>
+<span class="hl-type">List</span>&lt;<span class="hl-type">String</span>&gt; result = stream.collect(Collectors.toList());
+<span class="hl-comment">// Now all the operations execute!</span></code></pre>
+
+      <p><strong>More examples:</strong></p>
+      <pre><code><span class="hl-comment">// Intermediate examples</span>
+stream.filter(s -> s.startsWith(<span class="hl-string">"A"</span>))    <span class="hl-comment">// Keep only elements starting with "A"</span>
+stream.map(String::length)                <span class="hl-comment">// Transform strings to their lengths</span>
+stream.distinct()                         <span class="hl-comment">// Remove duplicates</span>
+stream.skip(<span class="hl-number">5</span>)                         <span class="hl-comment">// Skip first 5 elements</span>
+stream.limit(<span class="hl-number">10</span>)                        <span class="hl-comment">// Limit to 10 elements</span>
+
+<span class="hl-comment">// Terminal examples</span>
+stream.forEach(System.out::println)       <span class="hl-comment">// Print each element</span>
+stream.count()                            <span class="hl-comment">// Count elements</span>
+stream.findFirst()                        <span class="hl-comment">// Get first element</span>
+stream.allMatch(s -> s.length() > <span class="hl-number">0</span>)   <span class="hl-comment">// Check all elements match</span>
+stream.toList()                           <span class="hl-comment">// Collect to List (Java 16+)</span></code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Remember <strong>lazy evaluation</strong> — intermediate operations don't execute until a terminal operation is called. This allows optimizations like <strong>short-circuiting</strong> (e.g., <code>findFirst()</code> stops processing as soon as it finds a match). This is why Streams are efficient.
+    </div>
+  </div>
+
+  <!-- Q47 -->
+  <div class="qa-block">
+    <div class="qa-number">Q47</div>
+    <div class="qa-title">After you call a terminal operation on a Stream, can you run another terminal operation on the same Stream reference?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>No.</strong> A Stream can only be <strong>consumed once</strong>. After a terminal operation is called, the stream is considered <strong>consumed</strong> and cannot be reused. Attempting to call another operation will throw <code>IllegalStateException</code>.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code><span class="hl-type">Stream</span>&lt;<span class="hl-type">String</span>&gt; stream = <span class="hl-type">List</span>.of(<span class="hl-string">"A"</span>, <span class="hl-string">"B"</span>, <span class="hl-string">"C"</span>).stream();
+
+<span class="hl-comment">// Terminal operation #1</span>
+<span class="hl-type">long</span> count = stream.count();  <span class="hl-comment">// Consumes the stream</span>
+System.out.println(count);     <span class="hl-comment">// 3</span>
+
+<span class="hl-comment">// ❌ Attempt to reuse the stream — throws IllegalStateException</span>
+<span class="hl-type">List</span>&lt;<span class="hl-type">String</span>&gt; list = stream.collect(Collectors.toList());
+<span class="hl-comment">// Exception: java.lang.IllegalStateException: stream has already been operated upon or closed</span></code></pre>
+
+      <p><strong>Why streams are single-use:</strong></p>
+      <ul>
+        <li><strong>Stateful:</strong> The stream maintains state about position, operations, etc.</li>
+        <li><strong>Performance:</strong> Allows optimizations and short-circuiting</li>
+        <li><strong>Design:</strong> Streams are designed as a pipeline, not a reusable data structure</li>
+      </ul>
+
+      <p><strong>Correct approach — create a new stream:</strong></p>
+      <pre><code><span class="hl-comment">// ✅ Always create a new stream for each pipeline</span>
+<span class="hl-type">List</span>&lt;<span class="hl-type">String</span>&gt; source = <span class="hl-type">List</span>.of(<span class="hl-string">"A"</span>, <span class="hl-string">"B"</span>, <span class="hl-string">"C"</span>);
+
+<span class="hl-type">long</span> count = source.stream().count();
+<span class="hl-type">List</span>&lt;<span class="hl-type">String</span>&gt; result = source.stream().map(String::toLowerCase).toList();
+
+<span class="hl-comment">// Or use a Supplier to get a fresh stream each time</span>
+<span class="hl-type">Supplier</span>&lt;<span class="hl-type">Stream</span>&lt;<span class="hl-type">String</span>&gt;&gt; streamSupplier = () -> <span class="hl-type">List</span>.of(<span class="hl-string">"A"</span>, <span class="hl-string">"B"</span>, <span class="hl-string">"C"</span>).stream();
+<span class="hl-type">long</span> count2 = streamSupplier.get().count();
+<span class="hl-type">List</span>&lt;<span class="hl-type">String</span>&gt; result2 = streamSupplier.get().map(String::toLowerCase).toList();</code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> This is a common interview question! The answer is simple: <strong>no</strong>, you cannot reuse a stream. The stream is consumed after the terminal operation. Always create a new stream from the source if you need to perform multiple operations.
+    </div>
+  </div>
+
+  <!-- Q48 -->
+  <div class="qa-block">
+    <div class="qa-number">Q48</div>
+    <div class="qa-title">Does Optional have terminal/intermediate operations like a stream, or is it a one-shot container for zero or one value?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><code>Optional</code> is a <strong>one-shot container</strong> for zero or one value. It has methods for working with the value (like <code>ifPresent()</code>, <code>map()</code>, <code>orElse()</code>) but does NOT have intermediate/terminal operations like a Stream. <code>Optional</code> is for <strong>handling nulls</strong>, not for processing sequences.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Optional vs Stream:</strong></p>
+      <table>
+        <thead><tr><th>Feature</th><th>Optional</th><th>Stream</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Purpose</strong></td><td>Handle null, represent absence</td><td>Process sequences of data</td></tr>
+          <tr><td><strong>Values</strong></td><td>Zero or one</td><td>Zero or more</td></tr>
+          <tr><td><strong>Operations</strong></td><td>Map, flatMap, filter (return Optional)</td><td>Many intermediate operations (return Stream)</td></tr>
+          <tr><td><strong>Lazy evaluation</strong></td><td>No (eager)</td><td>Yes (lazy)</td></tr>
+          <tr><td><strong>Terminal operations</strong></td><td>orElse(), orElseGet(), ifPresent()</td><td>collect(), forEach(), count(), etc.</td></tr>
+        </tbody>
+      </table>
+
+      <pre><code><span class="hl-comment">// Optional operations</span>
+<span class="hl-type">Optional</span>&lt;<span class="hl-type">String</span>&gt; optional = <span class="hl-type">Optional</span>.of(<span class="hl-string">"hello"</span>);
+
+<span class="hl-comment">// 🔄 Map transforms the value if present</span>
+<span class="hl-type">Optional</span>&lt;<span class="hl-type">String</span>&gt; mapped = optional.map(String::toUpperCase);
+<span class="hl-comment">// mapped = Optional[HELLO]</span>
+
+<span class="hl-comment">// ⚠️ Filter returns Optional — can be empty</span>
+<span class="hl-type">Optional</span>&lt;<span class="hl-type">String</span>&gt; filtered = optional.filter(s -> s.length() > <span class="hl-number">5</span>);
+<span class="hl-comment">// filtered = Optional.empty()</span>
+
+<span class="hl-comment">// 🔧 Terminal operations</span>
+<span class="hl-type">String</span> result1 = optional.orElse(<span class="hl-string">"default"</span>);           <span class="hl-comment">// "hello"</span>
+<span class="hl-type">String</span> result2 = optional.orElseGet(() -> <span class="hl-string">"generated"</span>);  <span class="hl-comment">// "hello"</span>
+optional.ifPresent(System.out::println);               <span class="hl-comment">// prints "hello"</span>
+
+<span class="hl-comment">// 📦 Converting Optional to Stream (Java 9+)</span>
+<span class="hl-type">Stream</span>&lt;<span class="hl-type">String</span>&gt; stream = optional.stream();  <span class="hl-comment">// Stream with 0 or 1 element</span></code></pre>
+
+      <p><strong>Optional is NOT a stream:</strong></p>
+      <ul>
+        <li>No intermediate operations that return a Stream</li>
+        <li>No terminal operations like collect() or count()</li>
+        <li>No lazy evaluation</li>
+        <li>Purpose is null safety, not sequence processing</li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> <code>Optional</code> is not for general-purpose processing — it's for handling <em>one</em> nullable value. If you have a collection, use Stream. If you have a single value that might be null, use Optional. <strong>Don't use Optional to wrap collections!</strong> Use <code>Stream</code> directly.
+    </div>
+  </div>
+
+  <!-- Q49 -->
+  <div class="qa-block">
+    <div class="qa-number">Q49</div>
+    <div class="qa-title">Besides Stream&lt;T&gt;, which primitive-specialized stream types exist?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>IntStream</strong>, <strong>LongStream</strong>, and <strong>DoubleStream</strong>. These specializations avoid the overhead of boxing/unboxing and provide specialized operations like <code>sum()</code>, <code>average()</code>, and <code>range()</code>.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Why primitive streams?</strong></p>
+      <ul>
+        <li><strong>Performance:</strong> Avoid boxing/unboxing overhead</li>
+        <li><strong>Memory:</strong> Less memory usage</li>
+        <li><strong>Specialized operations:</strong> <code>sum()</code>, <code>average()</code>, <code>range()</code>, <code>summaryStatistics()</code></li>
+      </ul>
+
+      <table>
+        <thead><tr><th>Primitive Stream</th><th>Boxed Alternative</th><th>Specialized Methods</th></tr></thead>
+        <tbody>
+          <tr><td><code>IntStream</code></td><td><code>Stream&lt;Integer&gt;</code></td><td><code>sum()</code>, <code>average()</code>, <code>range()</code>, <code>rangeClosed()</code></td></tr>
+          <tr><td><code>LongStream</code></td><td><code>Stream&lt;Long&gt;</code></td><td><code>sum()</code>, <code>average()</code>, <code>range()</code></td></tr>
+          <tr><td><code>DoubleStream</code></td><td><code>Stream&lt;Double&gt;</code></td><td><code>sum()</code>, <code>average()</code></td></tr>
+        </tbody>
+      </table>
+
+      <pre><code><span class="hl-comment">// Creating IntStream</span>
+<span class="hl-type">IntStream</span> intStream1 = <span class="hl-type">IntStream</span>.of(<span class="hl-number">1</span>, <span class="hl-number">2</span>, <span class="hl-number">3</span>, <span class="hl-number">4</span>, <span class="hl-number">5</span>);
+<span class="hl-type">IntStream</span> intStream2 = <span class="hl-type">IntStream</span>.range(<span class="hl-number">1</span>, <span class="hl-number">10</span>);        <span class="hl-comment">// 1-9 (exclusive end)</span>
+<span class="hl-type">IntStream</span> intStream3 = <span class="hl-type">IntStream</span>.rangeClosed(<span class="hl-number">1</span>, <span class="hl-number">10</span>);  <span class="hl-comment">// 1-10 (inclusive end)</span>
+<span class="hl-type">IntStream</span> intStream4 = <span class="hl-type">List</span>.of(<span class="hl-number">1</span>, <span class="hl-number">2</span>, <span class="hl-number">3</span>).stream().mapToInt(Integer::intValue);
+
+<span class="hl-comment">// Specialized operations</span>
+<span class="hl-type">int</span> sum = <span class="hl-type">IntStream</span>.range(<span class="hl-number">1</span>, <span class="hl-number">100</span>).sum();                    <span class="hl-comment">// 4950</span>
+<span class="hl-type">double</span> avg = <span class="hl-type">IntStream</span>.of(<span class="hl-number">1</span>, <span class="hl-number">2</span>, <span class="hl-number">3</span>, <span class="hl-number">4</span>).average().orElse(<span class="hl-number">0</span>);  <span class="hl-comment">// 2.5</span>
+<span class="hl-type">IntSummaryStatistics</span> stats = <span class="hl-type">IntStream</span>.range(<span class="hl-number">1</span>, <span class="hl-number">10</span>).summaryStatistics();
+System.out.println(stats);  <span class="hl-comment">// IntSummaryStatistics{count=9, sum=45, min=1, average=5.0, max=9}</span>
+
+<span class="hl-comment">// Converting between primitive and boxed streams</span>
+<span class="hl-type">IntStream</span> ints = <span class="hl-type">IntStream</span>.range(<span class="hl-number">1</span>, <span class="hl-number">5</span>);
+<span class="hl-type">Stream</span>&lt;<span class="hl-type">Integer</span>&gt; boxed = ints.boxed();          <span class="hl-comment">// Boxed → Stream&lt;Integer&gt;</span>
+<span class="hl-type">IntStream</span> unboxed = boxed.mapToInt(i -> i);  <span class="hl-comment">// Unboxed → IntStream</span>
+
+<span class="hl-comment">// Performance comparison</span>
+<span class="hl-comment">// ❌ Avoid: boxing overhead</span>
+<span class="hl-type">int</span> sumBoxed = <span class="hl-type">List</span>.of(<span class="hl-number">1</span>, <span class="hl-number">2</span>, <span class="hl-number">3</span>, <span class="hl-number">4</span>, <span class="hl-number">5</span>)
+    .stream()
+    .mapToInt(Integer::intValue)  <span class="hl-comment">// Boxing → IntStream</span>
+    .sum();
+
+<span class="hl-comment">// ✅ Better: use IntStream directly</span>
+<span class="hl-type">int</span> sumPrimitive = <span class="hl-type">IntStream</span>.rangeClosed(<span class="hl-number">1</span>, <span class="hl-number">5</span>).sum();</code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Always use primitive streams (<code>IntStream</code>, <code>LongStream</code>, <code>DoubleStream</code>) when working with primitives. It's more efficient and provides convenient methods like <code>sum()</code> and <code>average()</code>. This is especially important in performance-critical code.
+    </div>
+  </div>
+
+  <!-- Q50 -->
+  <div class="qa-block">
+    <div class="qa-number">Q50</div>
+    <div class="qa-title">Difference between map and flatMap on a stream</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>map()</strong> transforms each element into <strong>one</strong> new element (1:1 mapping). <strong>flatMap()</strong> transforms each element into <strong>zero or more</strong> elements (1:N mapping) and flattens the result into a single stream.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code>map()     → 1 input → 1 output
+flatMap() → 1 input → 0..N outputs (flattened)
+
+Visual example:
+
+map(String::toUpperCase):
+["hello", "world"] → ["HELLO", "WORLD"]  (same size)
+
+flatMap(String::toCharArray):
+["hello", "world"] → ['h','e','l','l','o','w','o','r','l','d']  (different size)</code></pre>
+
+      <pre><code><span class="hl-comment">// map() — one-to-one</span>
+<span class="hl-type">List</span>&lt;<span class="hl-type">String</span>&gt; words = <span class="hl-type">List</span>.of(<span class="hl-string">"hello"</span>, <span class="hl-string">"world"</span>);
+<span class="hl-type">List</span>&lt;<span class="hl-type">Integer</span>&gt; lengths = words.stream()
+    .map(String::length)        <span class="hl-comment">// "hello" → 5, "world" → 5</span>
+    .collect(Collectors.toList());
+<span class="hl-comment">// lengths: [5, 5]</span>
+
+<span class="hl-comment">// flatMap() — one-to-many</span>
+<span class="hl-type">List</span>&lt;<span class="hl-type">String</span>&gt; words = <span class="hl-type">List</span>.of(<span class="hl-string">"hello"</span>, <span class="hl-string">"world"</span>);
+<span class="hl-type">List</span>&lt;<span class="hl-type">Character</span>&gt; chars = words.stream()
+    .flatMap(word -> word.chars().mapToObj(c -> (<span class="hl-keyword">char</span>) c))  <span class="hl-comment">// "hello" → ['h','e','l','l','o']</span>
+    .collect(Collectors.toList());
+<span class="hl-comment">// chars: ['h','e','l','l','o','w','o','r','l','d']</span>
+
+<span class="hl-comment">// Real-world example: handling nested collections</span>
+<span class="hl-type">List</span>&lt;<span class="hl-type">List</span>&lt;<span class="hl-type">String</span>&gt;&gt; nested = <span class="hl-type">List</span>.of(
+    <span class="hl-type">List</span>.of(<span class="hl-string">"A"</span>, <span class="hl-string">"B"</span>),
+    <span class="hl-type">List</span>.of(<span class="hl-string">"C"</span>, <span class="hl-string">"D"</span>)
+);
+
+<span class="hl-comment">// ❌ map gives nested structure</span>
+<span class="hl-type">List</span>&lt;<span class="hl-type">Stream</span>&lt;<span class="hl-type">String</span>&gt;&gt; nestedStreams = nested.stream()
+    .map(List::stream)           <span class="hl-comment">// List → Stream (nested)</span>
+    .collect(Collectors.toList());
+
+<span class="hl-comment">// ✅ flatMap flattens the structure</span>
+<span class="hl-type">List</span>&lt;<span class="hl-type">String</span>&gt; flat = nested.stream()
+    .flatMap(List::stream)        <span class="hl-comment">// Flattens to single stream</span>
+    .collect(Collectors.toList());
+<span class="hl-comment">// flat: [A, B, C, D]</span>
+
+<span class="hl-comment">// Another example: handling Optional values</span>
+<span class="hl-type">List</span>&lt;<span class="hl-type">Optional</span>&lt;<span class="hl-type">String</span>&gt;&gt; optionals = <span class="hl-type">List</span>.of(
+    <span class="hl-type">Optional</span>.of(<span class="hl-string">"A"</span>),
+    <span class="hl-type">Optional</span>.empty(),
+    <span class="hl-type">Optional</span>.of(<span class="hl-string">"C"</span>)
+);
+
+<span class="hl-comment">// flatMap with Optional (Java 9+)</span>
+<span class="hl-type">List</span>&lt;<span class="hl-type">String</span>&gt; values = optionals.stream()
+    .flatMap(Optional::stream)     <span class="hl-comment">// Filters out empty Optionals</span>
+    .collect(Collectors.toList());
+<span class="hl-comment">// values: [A, C]</span></code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Remember: <code>map()</code> is for transforming each element to exactly one new element. <code>flatMap()</code> is for transforming each element to a stream of elements, then flattening all those streams into one. A common use case for <code>flatMap()</code> is flattening nested collections.
+    </div>
+  </div>
+
+  <!-- Q51 -->
+  <div class="qa-block">
+    <div class="qa-number">Q51</div>
+    <div class="qa-title">What is a lambda expression in Java? What is it compiled to?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>A <strong>lambda expression</strong> is a concise way to represent an anonymous function. It provides a clear and concise way to implement <strong>functional interfaces</strong> (interfaces with a single abstract method). At compile time, lambdas are compiled to <strong>synthetic methods</strong> using <code>invokedynamic</code> bytecode instruction.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Lambda syntax:</strong></p>
+      <pre><code>(parameters) -> { body }
+
+// Examples:
+() -> <span class="hl-number">42</span>                                    <span class="hl-comment">// No parameters, returns 42</span>
+x -> x * <span class="hl-number">2</span>                                <span class="hl-comment">// Single parameter, returns x*2</span>
+(x, y) -> x + y                              <span class="hl-comment">// Two parameters, returns sum</span>
+(String s) -> s.length()                     <span class="hl-comment">// Explicit parameter type</span>
+() -> { System.out.println(<span class="hl-string">"Hello"</span>); }      <span class="hl-comment">// Multiple statements</span></code></pre>
+
+      <p><strong>What it compiles to:</strong></p>
+      <ul>
+        <li><strong>Not an anonymous inner class:</strong> Lambdas are NOT compiled to anonymous classes</li>
+        <li><strong>invokedynamic:</strong> Uses the <code>invokedynamic</code> bytecode instruction (Java 7+)</li>
+        <li><strong>Bootstrap method:</strong> At runtime, the JVM creates a <code>CallSite</code> that points to the implementation</li>
+        <li><strong>Method handles:</strong> Uses <code>MethodHandle</code> for efficient invocation</li>
+        <li><strong>No separate class files:</strong> Doesn't create additional .class files like anonymous classes</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Lambda</span>
+<span class="hl-type">Runnable</span> r = () -> System.out.println(<span class="hl-string">"Hello"</span>);
+
+<span class="hl-comment">// Equivalent anonymous inner class (NOT how lambdas work!)</span>
+<span class="hl-type">Runnable</span> r2 = <span class="hl-keyword">new</span> <span class="hl-type">Runnable</span>() {
+    <span class="hl-annotation">@Override</span>
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">run</span>() {
+        System.out.println(<span class="hl-string">"Hello"</span>);
+    }
+};
+
+<span class="hl-comment">// Lambda is syntactic sugar for functional interface implementation</span>
+<span class="hl-type">Function</span>&lt;<span class="hl-type">String</span>, <span class="hl-type">Integer</span>&gt; func = s -> s.length();  <span class="hl-comment">// Function&lt;T,R&gt;</span>
+<span class="hl-type">Predicate</span>&lt;<span class="hl-type">Integer</span>&gt; pred = i -> i > <span class="hl-number">5</span>;             <span class="hl-comment">// Predicate&lt;T&gt;</span>
+<span class="hl-type">Supplier</span>&lt;<span class="hl-type">String</span>&gt; sup = () -> <span class="hl-string">"Hello"</span>;          <span class="hl-comment">// Supplier&lt;T&gt;</span></code></pre>
+
+      <p><strong>Method references — even more concise:</strong></p>
+      <pre><code><span class="hl-comment">// Lambda</span>
+<span class="hl-type">List</span>&lt;<span class="hl-type">String</span>&gt; names = <span class="hl-type">List</span>.of(<span class="hl-string">"Alice"</span>, <span class="hl-string">"Bob"</span>);
+names.forEach(name -> System.out.println(name));
+
+<span class="hl-comment">// Method reference (even shorter)</span>
+names.forEach(System.out::println);
+
+<span class="hl-comment">// Types of method references:</span>
+<span class="hl-type">Function</span>&lt;<span class="hl-type">String</span>, <span class="hl-type">Integer</span>&gt; ref1 = String::length;         <span class="hl-comment">// Class::instanceMethod</span>
+<span class="hl-type">Supplier</span>&lt;<span class="hl-type">List</span>&lt;<span class="hl-type">String</span>&gt;&gt; ref2 = ArrayList::new;          <span class="hl-comment">// Class::new (constructor)</span>
+<span class="hl-type">Predicate</span>&lt;<span class="hl-type">String</span>&gt; ref3 = <span class="hl-type">String</span>.isEmpty();              <span class="hl-comment">// Instance::instanceMethod</span>
+<span class="hl-type">Function</span>&lt;<span class="hl-type">String</span>, <span class="hl-type">String</span>&gt; ref4 = <span class="hl-type">String</span>.toUpperCase;        <span class="hl-comment">// Class::instanceMethod</span></code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Many juniors think lambdas are just "anonymous inner classes with shorter syntax." That's <strong>incorrect</strong>. Lambdas are much more efficient — they don't create extra class files and use <code>invokedynamic</code> for performance. This is why lambdas were introduced in Java 8 — to enable functional programming efficiently.
+    </div>
+  </div>
+
+  <!-- Q52 -->
+  <div class="qa-block">
+    <div class="qa-number">Q52</div>
+    <div class="qa-title">Standard functional interfaces</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>Java provides built-in functional interfaces in the <code>java.util.function</code> package. The most common are <code>Function&lt;T,R&gt;</code>, <code>Predicate&lt;T&gt;</code>, <code>Consumer&lt;T&gt;</code>, <code>Supplier&lt;T&gt;</code>, <code>UnaryOperator&lt;T&gt;</code>, and <code>BinaryOperator&lt;T&gt;</code>.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <table>
+        <thead><tr><th>Interface</th><th>Method</th><th>Input</th><th>Output</th><th>Use Case</th></tr></thead>
+        <tbody>
+          <tr><td><code>Function&lt;T,R&gt;</code></td><td><code>R apply(T t)</code></td><td>1</td><td>1</td><td>Transform T to R</td></tr>
+          <tr><td><code>Predicate&lt;T&gt;</code></td><td><code>boolean test(T t)</code></td><td>1</td><td>boolean</td><td>Test condition</td></tr>
+          <tr><td><code>Consumer&lt;T&gt;</code></td><td><code>void accept(T t)</code></td><td>1</td><td>void</td><td>Consume value</td></tr>
+          <tr><td><code>Supplier&lt;T&gt;</code></td><td><code>T get()</code></td><td>0</td><td>1</td><td>Supply value</td></tr>
+          <tr><td><code>UnaryOperator&lt;T&gt;</code></td><td><code>T apply(T t)</code></td><td>1</td><td>1</td><td>Operate on T</td></tr>
+          <tr><td><code>BinaryOperator&lt;T&gt;</code></td><td><code>T apply(T t1, T t2)</code></td><td>2</td><td>1</td><td>Combine T values</td></tr>
+        </tbody>
+      </table>
+
+      <pre><code><span class="hl-comment">// Function — transform</span>
+<span class="hl-type">Function</span>&lt;<span class="hl-type">String</span>, <span class="hl-type">Integer</span>&gt; toLength = String::length;
+<span class="hl-type">Integer</span> len = toLength.apply(<span class="hl-string">"hello"</span>);  <span class="hl-comment">// 5</span>
+
+<span class="hl-comment">// Predicate — test condition</span>
+<span class="hl-type">Predicate</span>&lt;<span class="hl-type">String</span>&gt; isLong = s -> s.length() > <span class="hl-number">3</span>;
+<span class="hl-keyword">boolean</span> result = isLong.test(<span class="hl-string">"hello"</span>);  <span class="hl-comment">// true</span>
+
+<span class="hl-comment">// Consumer — consume value (side effect)</span>
+<span class="hl-type">Consumer</span>&lt;<span class="hl-type">String</span>&gt; printer = System.out::println;
+printer.accept(<span class="hl-string">"Hello"</span>);  <span class="hl-comment">// prints "Hello"</span>
+
+<span class="hl-comment">// Supplier — produce value</span>
+<span class="hl-type">Supplier</span>&lt;<span class="hl-type">Double</span>&gt; random = Math::random;
+<span class="hl-type">Double</span> value = random.get();  <span class="hl-comment">// random number</span>
+
+<span class="hl-comment">// UnaryOperator — operate on same type</span>
+<span class="hl-type">UnaryOperator</span>&lt;<span class="hl-type">String</span>&gt; upper = String::toUpperCase;
+<span class="hl-type">String</span> s = upper.apply(<span class="hl-string">"hello"</span>);  <span class="hl-comment">// "HELLO"</span>
+
+<span class="hl-comment">// BinaryOperator — combine two values</span>
+<span class="hl-type">BinaryOperator</span>&lt;<span class="hl-type">Integer</span>&gt; sum = (a, b) -> a + b;
+<span class="hl-type">Integer</span> total = sum.apply(<span class="hl-number">5</span>, <span class="hl-number">3</span>);  <span class="hl-comment">// 8</span></code></pre>
+
+      <p><strong>Primitive-specialized functional interfaces:</strong></p>
+      <table>
+        <thead><tr><th>Interface</th><th>Use Case</th></tr></thead>
+        <tbody>
+          <tr><td><code>IntFunction&lt;R&gt;</code></td><td>Takes int, returns R</td></tr>
+          <tr><td><code>IntPredicate</code></td><td>Takes int, returns boolean</td></tr>
+          <tr><td><code>IntSupplier</code></td><td>Returns int</td></tr>
+          <tr><td><code>IntConsumer</code></td><td>Consumes int</td></tr>
+          <tr><td><code>ToIntFunction&lt;T&gt;</code></td><td>Takes T, returns int</td></tr>
+          <tr><td><code>IntUnaryOperator</code></td><td>Takes int, returns int</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>Chaining functional interfaces:</strong></p>
+      <pre><code><span class="hl-comment">// Function composition</span>
+<span class="hl-type">Function</span>&lt;<span class="hl-type">String</span>, <span class="hl-type">String</span>&gt; toUpper = String::toUpperCase;
+<span class="hl-type">Function</span>&lt;<span class="hl-type">String</span>, <span class="hl-type">String</span>&gt; addExclamation = s -> s + <span class="hl-string">"!"</span>;
+<span class="hl-type">Function</span>&lt;<span class="hl-type">String</span>, <span class="hl-type">String</span>&gt; combined = toUpper.andThen(addExclamation);
+<span class="hl-type">String</span> result = combined.apply(<span class="hl-string">"hello"</span>);  <span class="hl-comment">// "HELLO!"</span>
+
+<span class="hl-comment">// Predicate composition</span>
+<span class="hl-type">Predicate</span>&lt;<span class="hl-type">String</span>&gt; startsWithA = s -> s.startsWith(<span class="hl-string">"A"</span>);
+<span class="hl-type">Predicate</span>&lt;<span class="hl-type">String</span>&gt; endsWithZ = s -> s.endsWith(<span class="hl-string">"z"</span>);
+<span class="hl-type">Predicate</span>&lt;<span class="hl-type">String</span>&gt; startsAEndsZ = startsWithA.and(endsWithZ);
+<span class="hl-keyword">boolean</span> test = startsAEndsZ.test(<span class="hl-string">"Alphabeta"</span>);  <span class="hl-comment">// false</span></code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> These functional interfaces are the foundation of Java's functional programming support. They're used everywhere in Streams, CompletableFuture, and many other APIs. Memorize the core ones: <code>Function</code>, <code>Predicate</code>, <code>Consumer</code>, and <code>Supplier</code>. The others are just variations.
+    </div>
+  </div>
+
+  <!-- CHEAT SHEET -->
+  <div class="qa-block" style="border-bottom:none;padding-bottom:0;margin-bottom:0">
+    <div class="qa-title" style="font-size:16px;color:var(--cyan)">📋 Quick-reference cheat sheet</div>
+    <div class="qa-section">
+      <pre style="background:var(--bg2);border-color:var(--border2);padding:1.2rem;border-radius:8px;font-size:13px;line-height:1.8"><code>Stream:
+  - Sequence of elements, not a data structure
+  - Lazy evaluation (intermediate operations)
+  - Single use (cannot reuse after terminal)
+  - Functional (doesn't modify source)
+
+Intermediate Operations (lazy):
+  filter(), map(), flatMap(), sorted(), distinct()
+  limit(), skip(), peek()
+
+Terminal Operations (eager):
+  collect(), forEach(), count(), reduce()
+  findFirst(), findAny(), anyMatch(), allMatch()
+
+map() vs flatMap():
+  map()     → 1 input → 1 output (one-to-one)
+  flatMap() → 1 input → 0..N outputs (one-to-many, flattened)
+
+Primitive Streams:
+  IntStream, LongStream, DoubleStream
+  Specialized: sum(), average(), range(), summaryStatistics()
+
+Lambda:
+  (parameters) -> { body }
+  Compiled using invokedynamic (not anonymous class!)
+  Method references: Class::method, Class::new
+
+Functional Interfaces (java.util.function):
+  Function<T,R>   → apply(T) → R
+  Predicate<T>    → test(T) → boolean
+  Consumer<T>     → accept(T) → void
+  Supplier<T>     → get() → T
+  UnaryOperator<T> → apply(T) → T
+  BinaryOperator<T> → apply(T, T) → T</code></pre>
+    </div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <div style="display:flex;justify-content:space-between;margin-top:2rem;padding-top:1.5rem;border-top:0.5px solid var(--border)">
+    <a href="05-collections-hashmap.html" style="color:var(--text3);font-family:var(--mono);font-size:12px;text-decoration:none">← Previous: Collections — HashMap</a>
+    <a href="index.html" class="back-top">🏠 Back to home</a>
+    <a href="07-concurrency.html" style="color:var(--text3);font-family:var(--mono);font-size:12px;text-decoration:none">Next: Concurrency →</a>
+  </div>
+
+</div>
+
+<footer>
+  <span class="footer-meta">vbforge · java-interview-prep · Java 21</span>
+  <a class="footer-link" href="https://github.com/vbforge/java-interview-prep">github.com/vbforge/java-interview-prep</a>
+</footer>
+
+</body>
+</html>
