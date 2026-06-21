@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vbforge / java-interview-prep — Concurrency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0e1a;
+  --bg2:#0f1629;
+  --bg3:#141d35;
+  --bg4:#1a2540;
+  --border:#1e2d50;
+  --border2:#243460;
+  --text:#e2e8f4;
+  --text2:#8899bb;
+  --text3:#4a5a7a;
+  --cyan:#00d9ff;
+  --cyan2:#00b8d9;
+  --cyan-dim:rgba(0,217,255,0.08);
+  --green:#22c55e;
+  --green-dim:rgba(34,197,94,0.08);
+  --amber:#f59e0b;
+  --amber-dim:rgba(245,158,11,0.08);
+  --red:#ef4444;
+  --red-dim:rgba(239,68,68,0.08);
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Inter',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;min-height:100vh}
+
+.page{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 1.5rem;border-bottom:0.5px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.nav-logo{width:28px;height:28px;flex-shrink:0}
+.nav-title{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--text)}
+.nav-title span{color:var(--cyan)}
+.nav-links{display:flex;gap:4px}
+.nav-link{font-family:var(--mono);font-size:11px;color:var(--text2);text-decoration:none;padding:4px 10px;border-radius:5px;border:0.5px solid transparent;transition:all .15s}
+.nav-link:hover{color:var(--text);border-color:var(--border2);background:var(--bg3)}
+.nav-link.active{color:var(--cyan);border-color:var(--border2)}
+
+.theory-header{
+  padding:2rem 0 1.5rem;
+  border-bottom:0.5px solid var(--border);
+  margin-bottom:2rem;
+}
+.theory-header h1{
+  font-family:var(--mono);
+  font-size:28px;
+  font-weight:600;
+  margin-bottom:0.5rem;
+  color:var(--text);
+}
+.theory-header h1 em{font-style:normal;color:var(--cyan)}
+.theory-meta{
+  display:flex;
+  gap:1.5rem;
+  flex-wrap:wrap;
+  color:var(--text3);
+  font-size:12px;
+  font-family:var(--mono);
+  margin-top:0.5rem;
+}
+.theory-meta a{color:var(--cyan2);text-decoration:none}
+.theory-meta a:hover{color:var(--cyan)}
+.badge-skip{
+  background:var(--amber-dim);
+  color:var(--amber);
+  padding:2px 10px;
+  border-radius:4px;
+  font-size:10px;
+  border:0.5px solid rgba(245,158,11,0.2);
+}
+
+.qa-block{
+  margin-bottom:2.5rem;
+  padding-bottom:2rem;
+  border-bottom:0.5px solid var(--border);
+}
+.qa-block:last-child{border-bottom:none}
+.qa-number{
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--cyan);
+  margin-bottom:0.3rem;
+}
+.qa-title{
+  font-size:18px;
+  font-weight:600;
+  color:var(--text);
+  margin-bottom:1rem;
+  font-family:var(--sans);
+}
+.qa-section{
+  margin-bottom:1rem;
+}
+.qa-section h3{
+  font-size:13px;
+  font-weight:600;
+  color:var(--text2);
+  margin-bottom:0.3rem;
+  font-family:var(--mono);
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+}
+.qa-section p{
+  color:var(--text2);
+  line-height:1.7;
+  font-size:14px;
+}
+.qa-section ul, .qa-section ol{
+  color:var(--text2);
+  line-height:1.7;
+  padding-left:1.5rem;
+  margin:0.5rem 0;
+}
+.qa-section li{
+  margin-bottom:0.3rem;
+}
+.qa-section code{
+  font-family:var(--mono);
+  font-size:13px;
+  background:var(--bg3);
+  padding:0.1rem 0.4rem;
+  border-radius:3px;
+  color:var(--cyan2);
+}
+.qa-section pre{
+  background:var(--bg3);
+  border:0.5px solid var(--border);
+  border-radius:6px;
+  padding:1rem 1.2rem;
+  overflow-x:auto;
+  margin:0.8rem 0;
+}
+.qa-section pre code{
+  font-family:var(--mono);
+  font-size:13px;
+  color:var(--text2);
+  background:transparent;
+  padding:0;
+  line-height:1.6;
+}
+.qa-section blockquote{
+  border-left:2px solid var(--cyan);
+  padding-left:1rem;
+  margin:0.8rem 0;
+  color:var(--text2);
+}
+.qa-section blockquote strong{
+  color:var(--cyan);
+}
+.qa-section table{
+  width:100%;
+  border-collapse:collapse;
+  margin:0.8rem 0;
+  font-size:13px;
+}
+.qa-section th{
+  background:var(--bg3);
+  color:var(--text);
+  padding:0.5rem 0.8rem;
+  text-align:left;
+  font-weight:500;
+  border:0.5px solid var(--border);
+}
+.qa-section td{
+  padding:0.5rem 0.8rem;
+  border:0.5px solid var(--border);
+  color:var(--text2);
+}
+.qa-section tr:nth-child(even){background:var(--bg2)}
+
+.junior-note{
+  background:var(--cyan-dim);
+  border:0.5px solid rgba(0,217,255,0.15);
+  border-radius:6px;
+  padding:0.8rem 1rem;
+  margin:1rem 0;
+  color:var(--text2);
+  font-size:13px;
+}
+.junior-note strong{
+  color:var(--cyan);
+}
+
+.hl-comment{color:#4a5a7a}
+.hl-keyword{color:var(--cyan2)}
+.hl-string{color:#a3e635}
+.hl-type{color:#c084fc}
+.hl-method{color:#f472b6}
+.hl-number{color:#f59e0b}
+.hl-annotation{color:#f472b6}
+
+footer{padding:1.5rem 1.5rem;border-top:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem}
+.footer-meta{font-family:var(--mono);font-size:11px;color:var(--text3)}
+.footer-link{font-family:var(--mono);font-size:11px;color:var(--text3);text-decoration:none}
+.footer-link:hover{color:var(--cyan)}
+
+.back-top{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--cyan2);
+  text-decoration:none;
+  padding:6px 12px;
+  border-radius:4px;
+  border:0.5px solid var(--border2);
+  transition:all .15s;
+}
+.back-top:hover{color:var(--cyan);border-color:var(--cyan)}
+
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <svg class="nav-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="70" fill="#0f172a" stroke="#64748b" stroke-width="1"/>
+      <text x="92" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="end" fill="#e2e8f0" letter-spacing="1px">VBF</text>
+      <circle cx="100" cy="99" r="8" fill="none" stroke="#00d9ff" stroke-width="2"/>
+      <path d="M 96 99 L 99 102 L 104 95" fill="none" stroke="#00d9ff" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="108" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="start" fill="#e2e8f0" letter-spacing="1px">RGE</text>
+    </svg>
+    <span class="nav-title">vbforge / <span>java-interview-prep</span></span>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">home</a>
+    <a class="nav-link active" href="#">theory</a>
+    <a class="nav-link" href="index.html#section-demos">demos</a>
+    <a class="nav-link" href="https://github.com/vbforge/java-interview-prep" target="_blank">github ↗</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="theory-header">
+    <h1>07 — <em>Concurrency</em></h1>
+    <div class="theory-meta">
+      <span>📚 Questions: <strong>Q53–Q63</strong></span>
+      <span>🧪 Demo: <a href="https://github.com/vbforge/java-interview-prep/tree/main/demo-04-concurrency">demo-04-concurrency</a></span>
+      <span class="badge-skip">⭐ Critical topic</span>
+    </div>
+  </div>
+
+  <!-- Q53 -->
+  <div class="qa-block">
+    <div class="qa-number">Q53</div>
+    <div class="qa-title">How do you safely share mutable state across threads?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>Safely share mutable state across threads using <strong>synchronization</strong>, <strong>volatile</strong>, <strong>atomic classes</strong>, or <strong>thread-safe collections</strong> from <code>java.util.concurrent</code>. The simplest approach is <code>synchronized</code> blocks or methods.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Options for thread-safe sharing:</strong></p>
+      <table>
+        <thead><tr><th>Method</th><th>When to use</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><strong>synchronized</strong></td><td>Simple mutual exclusion, fine-grained control</td><td><code>synchronized (lock) { }</code></td></tr>
+          <tr><td><strong>Atomic classes</strong></td><td>Single variables, CAS operations</td><td><code>AtomicInteger</code>, <code>AtomicReference</code></td></tr>
+          <tr><td><strong>volatile</strong></td><td>Visibility without atomicity (read/write only)</td><td><code>volatile boolean flag</code></td></tr>
+          <tr><td><strong>Concurrent collections</strong></td><td>Thread-safe collections</td><td><code>ConcurrentHashMap</code>, <code>CopyOnWriteArrayList</code></td></tr>
+          <tr><td><strong>Locks</strong></td><td>Advanced synchronization needs</td><td><code>ReentrantLock</code></td></tr>
+        </tbody>
+      </table>
+
+      <pre><code><span class="hl-comment">// ❌ NOT thread-safe</span>
+<span class="hl-keyword">class</span> <span class="hl-type">Counter</span> {
+    <span class="hl-keyword">private</span> <span class="hl-type">int</span> count = <span class="hl-number">0</span>;
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">increment</span>() { count++; }  <span class="hl-comment">// Race condition!</span>
+    <span class="hl-keyword">public</span> <span class="hl-type">int</span> <span class="hl-method">get</span>() { <span class="hl-keyword">return</span> count; }
+}
+
+<span class="hl-comment">// ✅ Thread-safe with synchronized</span>
+<span class="hl-keyword">class</span> <span class="hl-type">ThreadSafeCounter</span> {
+    <span class="hl-keyword">private</span> <span class="hl-type">int</span> count = <span class="hl-number">0</span>;
+    <span class="hl-keyword">public</span> <span class="hl-keyword">synchronized</span> <span class="hl-keyword">void</span> <span class="hl-method">increment</span>() { count++; }
+    <span class="hl-keyword">public</span> <span class="hl-keyword">synchronized</span> <span class="hl-type">int</span> <span class="hl-method">get</span>() { <span class="hl-keyword">return</span> count; }
+}
+
+<span class="hl-comment">// ✅ Thread-safe with AtomicInteger (best for counters)</span>
+<span class="hl-keyword">class</span> <span class="hl-type">AtomicCounter</span> {
+    <span class="hl-keyword">private</span> <span class="hl-type">AtomicInteger</span> count = <span class="hl-keyword">new</span> <span class="hl-type">AtomicInteger</span>(<span class="hl-number">0</span>);
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">increment</span>() { count.incrementAndGet(); }
+    <span class="hl-keyword">public</span> <span class="hl-type">int</span> <span class="hl-method">get</span>() { <span class="hl-keyword">return</span> count.get(); }
+}
+
+<span class="hl-comment">// ✅ Thread-safe with ConcurrentHashMap</span>
+<span class="hl-type">Map</span>&lt;<span class="hl-type">String</span>, <span class="hl-type">Integer</span>&gt; map = <span class="hl-keyword">new</span> <span class="hl-type">ConcurrentHashMap</span>&lt;&gt;();
+map.compute(<span class="hl-string">"key"</span>, (k, v) -> v == <span class="hl-keyword">null</span> ? <span class="hl-number">1</span> : v + <span class="hl-number">1</span>);  <span class="hl-comment">// Atomic update</span></code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> The most common mistake is using <code>HashMap</code> or <code>ArrayList</code> in multi-threaded code without synchronization. Always use <code>ConcurrentHashMap</code> instead of <code>HashMap</code> when multiple threads access it.
+    </div>
+  </div>
+
+  <!-- Q54 -->
+  <div class="qa-block">
+    <div class="qa-number">Q54</div>
+    <div class="qa-title">What goes wrong if two threads read-modify-write a shared variable without coordination?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>You get a <strong>race condition</strong>. The result becomes unpredictable because operations interleave unpredictably. The classic example is the <strong>lost update</strong> problem where increments are lost.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>The lost update problem:</strong></p>
+      <pre><code>Thread 1: read count (0) → increment → write count (1)
+Thread 2: read count (0) → increment → write count (1)
+
+Expected: 2
+Actual: 1 (one increment was lost!)
+
+Timeline:
+┌─────────────────────────────────────────────────────────────┐
+│ Time  │ Thread 1         │ Thread 2         │ count       │
+│───────┼──────────────────┼──────────────────┼─────────────│
+│ t1    │ read count (0)   │                  │ 0           │
+│ t2    │                  │ read count (0)   │ 0           │
+│ t3    │ increment        │                  │ 0           │
+│ t4    │                  │ increment        │ 0           │
+│ t5    │ write count (1)  │                  │ 1           │
+│ t6    │                  │ write count (1)  │ 1           │
+└─────────────────────────────────────────────────────────────┘</code></pre>
+
+      <pre><code><span class="hl-comment">// Classic race condition example</span>
+<span class="hl-keyword">class</span> <span class="hl-type">Counter</span> {
+    <span class="hl-keyword">private</span> <span class="hl-type">int</span> count = <span class="hl-number">0</span>;
+    
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">increment</span>() {
+        count++;  <span class="hl-comment">// Read-modify-write: NOT atomic!</span>
+    }
+}
+
+<span class="hl-comment">// 1000 threads each calling increment() 1000 times</span>
+<span class="hl-comment">// Expected: 1,000,000</span>
+<span class="hl-comment">// Actual: random value less than 1,000,000 (lost updates)</span>
+
+<span class="hl-comment">// Other problems:</span>
+<span class="hl-comment">// 1. Invalid state — inconsistent object state</span>
+<span class="hl-comment">// 2. Infinite loops — stale values in while loops</span>
+<span class="hl-comment">// 3. Memory consistency errors — missing updates</span></code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> The lost update problem is the classic concurrency bug. Even if you run the code 1000 times and it works, it can fail on the 1001st run. This is why concurrency bugs are so hard to find — they're non-deterministic.
+    </div>
+  </div>
+
+  <!-- Q55 -->
+  <div class="qa-block">
+    <div class="qa-number">Q55</div>
+    <div class="qa-title">What is a data race? Is the outcome always obviously wrong?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>A <strong>data race</strong> occurs when two threads access the same variable concurrently, at least one access is a <strong>write</strong>, and there is no proper synchronization. The outcome is <strong>not always obviously wrong</strong> — it can produce correct-looking results intermittently, making it very hard to debug.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Data race characteristics:</strong></p>
+      <ul>
+        <li><strong>Unpredictable:</strong> Order of execution is non-deterministic</li>
+        <li><strong>Reproducibility issues:</strong> May fail in production but work in tests</li>
+        <li><strong>Subtle corruption:</strong> Values may be partially updated (e.g., torn reads/writes)</li>
+        <li><strong>Hard to detect:</strong> No compiler warnings, no runtime exceptions</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Data race example</span>
+<span class="hl-keyword">class</span> <span class="hl-type">SharedData</span> {
+    <span class="hl-keyword">private</span> <span class="hl-type">int</span> value = <span class="hl-number">0</span>;
+    <span class="hl-keyword">private</span> <span class="hl-keyword">boolean</span> ready = <span class="hl-keyword">false</span>;
+    
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">writer</span>() {
+        value = <span class="hl-number">42</span>;       <span class="hl-comment">// Write</span>
+        ready = <span class="hl-keyword">true</span>;    <span class="hl-comment">// Write — data race with reader</span>
+    }
+    
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">reader</span>() {
+        <span class="hl-keyword">if</span> (ready) {          <span class="hl-comment">// Read — data race with writer</span>
+            System.out.println(value);  <span class="hl-comment">// Might print 0 or 42!</span>
+        }
+    }
+}
+
+<span class="hl-comment">// Why outcome isn't obviously wrong:</span>
+<span class="hl-comment">// - Threads might execute in a "lucky" order (works 99% of the time)</span>
+<span class="hl-comment">// - Different CPUs have different memory models</span>
+<span class="hl-comment">// - JIT compiler can reorder instructions</span>
+
+<span class="hl-comment">// ✅ Fix: use volatile or synchronized</span>
+<span class="hl-keyword">class</span> <span class="hl-type">FixedData</span> {
+    <span class="hl-keyword">private</span> <span class="hl-keyword">volatile</span> <span class="hl-type">int</span> value = <span class="hl-number">0</span>;
+    <span class="hl-keyword">private</span> <span class="hl-keyword">volatile</span> <span class="hl-keyword">boolean</span> ready = <span class="hl-keyword">false</span>;
+    <span class="hl-comment">// volatile ensures visibility and prevents reordering</span>
+}</code></pre>
+
+      <p><strong>Why data races are dangerous:</strong></p>
+      <ul>
+        <li><strong>Heisenbugs:</strong> Bugs that disappear when you try to debug them</li>
+        <li><strong>Production only:</strong> May only occur under specific load patterns</li>
+        <li><strong>Hard to reproduce:</strong> Different environments behave differently</li>
+        <li><strong>Security issues:</strong> Can lead to inconsistent state and vulnerabilities</li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> This is why we use tools like <code>ThreadSanitizer</code> and static analysis to detect data races. In interviews, emphasize that data races are <strong>not always obvious</strong> — they can appear correct 99% of the time but fail catastrophically in production.
+    </div>
+  </div>
+
+  <!-- Q56 -->
+  <div class="qa-block">
+    <div class="qa-number">Q56</div>
+    <div class="qa-title">Why doesn't making a field volatile alone make i++ atomic?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><code>volatile</code> ensures <strong>visibility</strong> (all threads see the latest value) but <strong>does not</strong> provide atomicity for compound operations. <code>i++</code> is three operations: <strong>read → increment → write</strong>, and these can interleave between threads.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Why volatile is not enough:</strong></p>
+      <pre><code><span class="hl-keyword">class</span> <span class="hl-type">Counter</span> {
+    <span class="hl-keyword">private</span> <span class="hl-keyword">volatile</span> <span class="hl-type">int</span> count = <span class="hl-number">0</span>;
+    
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">increment</span>() {
+        count++;  <span class="hl-comment">// STILL NOT ATOMIC!</span>
+    }
+}
+
+<span class="hl-comment">// count++ expands to three operations:</span>
+<span class="hl-comment">// 1. int temp = count;     // Read</span>
+<span class="hl-comment">// 2. temp = temp + 1;       // Increment</span>
+<span class="hl-comment">// 3. count = temp;          // Write</span>
+
+<span class="hl-comment">// Two threads interleaving:</span>
+<span class="hl-comment">// Thread 1: read count (0) → temp=0</span>
+<span class="hl-comment">// Thread 2: read count (0) → temp=0</span>
+<span class="hl-comment">// Thread 1: increment → temp=1 → write count=1</span>
+<span class="hl-comment">// Thread 2: increment → temp=1 → write count=1</span>
+<span class="hl-comment">// Result: lost update! Expected: 2, Actual: 1</span></code></pre>
+
+      <p><strong>volatile guarantees:</strong></p>
+      <ul>
+        <li><strong>Visibility:</strong> Writes to volatile are immediately visible to all threads</li>
+        <li><strong>Ordering:</strong> Operations are not reordered by JIT or CPU</li>
+        <li><strong>But NOT atomicity:</strong> Compound operations still need synchronization</li>
+      </ul>
+
+      <p><strong>When volatile IS sufficient:</strong></p>
+      <pre><code><span class="hl-comment">// ✅ Single read/write operation is safe with volatile</span>
+<span class="hl-keyword">class</span> <span class="hl-type">Flag</span> {
+    <span class="hl-keyword">private</span> <span class="hl-keyword">volatile</span> <span class="hl-keyword">boolean</span> running = <span class="hl-keyword">true</span>;
+    
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">stop</span>() {
+        running = <span class="hl-keyword">false</span>;  <span class="hl-comment">// Single write → safe!</span>
+    }
+    
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">work</span>() {
+        <span class="hl-keyword">while</span> (running) {    <span class="hl-comment">// Single read → safe!</span>
+            <span class="hl-comment">// do work</span>
+        }
+    }
+}</code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Many juniors think <code>volatile</code> makes operations atomic. It doesn't. For atomic increments, use <code>AtomicInteger</code> or <code>synchronized</code>. <code>volatile</code> is for visibility, not atomicity.
+    </div>
+  </div>
+
+  <!-- Q57 -->
+  <div class="qa-block">
+    <div class="qa-number">Q57</div>
+    <div class="qa-title">How does CAS in AtomicInteger differ from i++ under synchronized?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>CAS (Compare-And-Swap)</strong> is a hardware-level atomic instruction that updates a variable if it still has the expected value. It's <strong>non-blocking</strong> and more lightweight than <code>synchronized</code>, which uses <strong>blocking</strong> mutual exclusion with locks.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <table>
+        <thead><tr><th>Feature</th><th>AtomicInteger (CAS)</th><th>synchronized</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Mechanism</strong></td><td>Hardware-level atomic compare-and-swap</td><td>Monitor lock (blocking)</td></tr>
+          <tr><td><strong>Thread blocking</strong></td><td>No blocking (spin-wait)</td><td>Blocks threads (context switch)</td></tr>
+          <tr><td><strong>Performance</strong></td><td>Faster for low contention</td><td>Better for high contention</td></tr>
+          <tr><td><strong>Scalability</strong></td><td>Scales better (no context switching)</td><td>Can suffer from contention</td></tr>
+          <tr><td><strong>Complexity</strong></td><td>Simple for single variables</td><td>Can protect multiple variables</td></tr>
+        </tbody>
+      </table>
+
+      <pre><code><span class="hl-comment">// AtomicInteger uses CAS internally</span>
+<span class="hl-keyword">class</span> <span class="hl-type">AtomicCounter</span> {
+    <span class="hl-keyword">private</span> <span class="hl-type">AtomicInteger</span> count = <span class="hl-keyword">new</span> <span class="hl-type">AtomicInteger</span>(<span class="hl-number">0</span>);
+    
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">increment</span>() {
+        count.incrementAndGet();  <span class="hl-comment">// CAS in a loop (retry on failure)</span>
+    }
+}
+
+<span class="hl-comment">// CAS algorithm (simplified):</span>
+<span class="hl-comment">// while (true) {</span>
+<span class="hl-comment">//     int current = value;</span>
+<span class="hl-comment">//     int next = current + 1;</span>
+<span class="hl-comment">//     if (compareAndSwap(current, next)) {</span>
+<span class="hl-comment">//         break;  // Success</span>
+<span class="hl-comment">//     }</span>
+<span class="hl-comment">//     // Retry with new current value</span>
+<span class="hl-comment">// }</span>
+
+<span class="hl-comment">// Synchronized uses blocking lock</span>
+<span class="hl-keyword">class</span> <span class="hl-type">SynchronizedCounter</span> {
+    <span class="hl-keyword">private</span> <span class="hl-type">int</span> count = <span class="hl-number">0</span>;
+    
+    <span class="hl-keyword">public</span> <span class="hl-keyword">synchronized</span> <span class="hl-keyword">void</span> <span class="hl-method">increment</span>() {
+        count++;  <span class="hl-comment">// Thread blocks on lock</span>
+    }
+}
+
+<span class="hl-comment">// Performance comparison:</span>
+<span class="hl-comment">// CAS:  → No context switching, fast path, retries on failure</span>
+<span class="hl-comment">// Lock: → Acquire lock, block, context switch, release lock</span></code></pre>
+
+      <p><strong>CAS advantages:</strong></p>
+      <ul>
+        <li><strong>Non-blocking:</strong> No thread suspension</li>
+        <li><strong>No deadlocks:</strong> No lock hierarchy issues</li>
+        <li><strong>Better scalability:</strong> Works well with many threads</li>
+        <li><strong>Low overhead:</strong> For single variables</li>
+      </ul>
+
+      <p><strong>CAS disadvantages:</strong></p>
+      <ul>
+        <li><strong>ABA problem:</strong> Value changes A→B→A, CAS succeeds incorrectly</li>
+        <li><strong>Spin-waste:</strong> CPU spins on high contention</li>
+        <li><strong>Limited scope:</strong> Only works for single variables</li>
+        <li><strong>Complex retry logic:</strong> Need to handle failures</li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> CAS is the foundation of Java's non-blocking algorithms. <code>AtomicInteger</code>, <code>AtomicLong</code>, and most <code>java.util.concurrent</code> classes use CAS internally. It's what makes them so fast and scalable compared to <code>synchronized</code>.
+    </div>
+  </div>
+
+  <!-- Q58 -->
+  <div class="qa-block">
+    <div class="qa-number">Q58</div>
+    <div class="qa-title">When prefer atomics vs locks / synchronized?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>Atomics</strong> are preferred for <strong>single variables</strong> and <strong>low contention</strong> scenarios. <strong>Locks</strong> are preferred for <strong>complex operations</strong>, <strong>multiple variables</strong>, or <strong>high contention</strong> situations.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Prefer atomics when:</strong></p>
+      <ul>
+        <li>Operating on a single variable (counter, flag, reference)</li>
+        <li>Operation is simple (increment, compare-and-set)</li>
+        <li>Contention is low to moderate</li>
+        <li>Need high performance and scalability</li>
+        <li>Want to avoid blocking threads</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Good use of atomics</span>
+<span class="hl-keyword">class</span> <span class="hl-type">Counter</span> {
+    <span class="hl-keyword">private</span> <span class="hl-type">AtomicInteger</span> count = <span class="hl-keyword">new</span> <span class="hl-type">AtomicInteger</span>(<span class="hl-number">0</span>);
+    
+    <span class="hl-keyword">public</span> <span class="hl-keyword">int</span> <span class="hl-method">incrementAndGet</span>() {
+        <span class="hl-keyword">return</span> count.incrementAndGet();  <span class="hl-comment">// Single variable, simple op</span>
+    }
+}</code></pre>
+
+      <p><strong>Prefer locks when:</strong></p>
+      <ul>
+        <li>Operation involves multiple variables (consistent state)</li>
+        <li>Need to perform complex updates</li>
+        <li>Contention is high (CAS retries would waste CPU)</li>
+        <li>Need additional features (condition variables, tryLock, etc.)</li>
+        <li>Operation is long-running (avoid spin-waste)</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Good use of locks</span>
+<span class="hl-keyword">class</span> <span class="hl-type">BankAccount</span> {
+    <span class="hl-keyword">private</span> <span class="hl-type">double</span> balance;
+    <span class="hl-keyword">private</span> <span class="hl-type">ReentrantLock</span> lock = <span class="hl-keyword">new</span> <span class="hl-type">ReentrantLock</span>();
+    
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">transfer</span>(<span class="hl-type">double</span> amount, <span class="hl-type">BankAccount</span> target) {
+        lock.lock();          <span class="hl-comment">// Multiple variables involved</span>
+        <span class="hl-keyword">try</span> {
+            <span class="hl-keyword">if</span> (balance >= amount) {
+                balance -= amount;
+                target.balance += amount;
+            }
+        } <span class="hl-keyword">finally</span> {
+            lock.unlock();
+        }
+    }
+}</code></pre>
+
+      <p><strong>Decision matrix:</strong></p>
+      <table>
+        <thead><tr><th>Scenario</th><th>Recommendation</th></tr></thead>
+        <tbody>
+          <tr><td>Simple counter increment</td><td>✅ AtomicInteger</td></tr>
+          <tr><td>Multiple variables update</td><td>✅ synchronized/ReentrantLock</td></tr>
+          <tr><td>High contention</td><td>✅ Lock (avoids spin-waste)</td></tr>
+          <tr><td>Low contention, simple op</td><td>✅ Atomic (faster)</td></tr>
+          <tr><td>Need waiting/notification</td><td>✅ Lock with Condition</td></tr>
+          <tr><td>Need tryLock timeout</td><td>✅ ReentrantLock</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> A common mistake is using <code>synchronized</code> for simple counters when <code>AtomicInteger</code> would be faster and simpler. Conversely, using atomics for complex operations leads to inconsistent state. Choose based on the operation, not habit.
+    </div>
+  </div>
+
+  <!-- Q59 -->
+  <div class="qa-block">
+    <div class="qa-number">Q59</div>
+    <div class="qa-title">ReentrantLock — what does reentrant mean here?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>Reentrant</strong> means that a thread that already holds the lock can <strong>re-enter</strong> the same lock <strong>multiple times</strong> without blocking itself. The lock maintains a <strong>hold count</strong> that increments on each <code>lock()</code> and decrements on each <code>unlock()</code>.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code><span class="hl-comment">// Reentrancy in action</span>
+<span class="hl-keyword">class</span> <span class="hl-type">ReentrantExample</span> {
+    <span class="hl-keyword">private</span> <span class="hl-type">ReentrantLock</span> lock = <span class="hl-keyword">new</span> <span class="hl-type">ReentrantLock</span>();
+    
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">methodA</span>() {
+        lock.lock();                    <span class="hl-comment">// Hold count: 1</span>
+        <span class="hl-keyword">try</span> {
+            System.out.println(<span class="hl-string">"Method A"</span>);
+            methodB();                  <span class="hl-comment">// Re-enters the same lock</span>
+        } <span class="hl-keyword">finally</span> {
+            lock.unlock();              <span class="hl-comment">// Hold count: 0</span>
+        }
+    }
+    
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">methodB</span>() {
+        lock.lock();                    <span class="hl-comment">// Hold count: 2</span>
+        <span class="hl-keyword">try</span> {
+            System.out.println(<span class="hl-string">"Method B"</span>);
+        } <span class="hl-keyword">finally</span> {
+            lock.unlock();              <span class="hl-comment">// Hold count: 1</span>
+        }
+    }
+}
+
+<span class="hl-comment">// Hold count tracking:</span>
+<span class="hl-comment">// 1. lock.lock()  → holdCount = 1</span>
+<span class="hl-comment">// 2. methodA calls methodB</span>
+<span class="hl-comment">// 3. lock.lock()  → holdCount = 2 (reentrant!)</span>
+<span class="hl-comment">// 4. lock.unlock() → holdCount = 1</span>
+<span class="hl-comment">// 5. lock.unlock() → holdCount = 0 (lock released)</span></code></pre>
+
+      <p><strong>Why reentrancy matters:</strong></p>
+      <ul>
+        <li><strong>Self-block prevention:</strong> Thread can call synchronized methods recursively</li>
+        <li><strong>Cleaner code:</strong> Methods can call each other without deadlock</li>
+        <li><strong>Same behavior as synchronized:</strong> <code>synchronized</code> is also reentrant</li>
+        <li><strong>Hold count:</strong> Lock is released only when hold count reaches 0</li>
+      </ul>
+
+      <p><strong>Reentrant vs non-reentrant lock:</strong></p>
+      <pre><code><span class="hl-comment">// ❌ Non-reentrant lock would deadlock here</span>
+<span class="hl-comment">// methodA() acquires lock → calls methodB() → tries to acquire same lock</span>
+<span class="hl-comment">// → DEADLOCK (thread blocks waiting for itself)</span>
+
+<span class="hl-comment">// ✅ Reentrant lock allows this pattern safely</span></code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> "Reentrant" is often confused with "recursive." They're related but different. Reentrant locks are designed to be safe for recursive calls. The same thread can lock the same lock multiple times, preventing self-deadlock.
+    </div>
+  </div>
+
+  <!-- Q60 -->
+  <div class="qa-block">
+    <div class="qa-number">Q60</div>
+    <div class="qa-title">Why must unlock run in finally?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><code>unlock()</code> must be in a <strong>finally</strong> block to ensure the lock is <strong>always released</strong>, even if an exception is thrown. If an exception occurs and the lock isn't released, the lock remains held, causing <strong>deadlocks</strong> and thread starvation.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code><span class="hl-comment">// ❌ WRONG — lock can leak</span>
+<span class="hl-keyword">class</span> <span class="hl-type">Dangerous</span> {
+    <span class="hl-keyword">private</span> <span class="hl-type">ReentrantLock</span> lock = <span class="hl-keyword">new</span> <span class="hl-type">ReentrantLock</span>();
+    
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">dangerous</span>() {
+        lock.lock();
+        <span class="hl-comment">// If exception occurs here, lock is never released!</span>
+        <span class="hl-keyword">if</span> (someCondition) {
+            <span class="hl-keyword">throw</span> <span class="hl-keyword">new</span> <span class="hl-type">RuntimeException</span>(<span class="hl-string">"Error!"</span>);
+        }
+        lock.unlock();  <span class="hl-comment">// This line may never execute</span>
+    }
+}
+
+<span class="hl-comment">// ✅ CORRECT — lock always released</span>
+<span class="hl-keyword">class</span> <span class="hl-type">Safe</span> {
+    <span class="hl-keyword">private</span> <span class="hl-type">ReentrantLock</span> lock = <span class="hl-keyword">new</span> <span class="hl-type">ReentrantLock</span>();
+    
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">safe</span>() {
+        lock.lock();
+        <span class="hl-keyword">try</span> {
+            <span class="hl-comment">// Critical section</span>
+            <span class="hl-keyword">if</span> (someCondition) {
+                <span class="hl-keyword">throw</span> <span class="hl-keyword">new</span> <span class="hl-type">RuntimeException</span>(<span class="hl-string">"Error!"</span>);
+            }
+        } <span class="hl-keyword">finally</span> {
+            lock.unlock();  <span class="hl-comment">// Always executes!</span>
+        }
+    }
+}</code></pre>
+
+      <p><strong>Consequences of not using finally:</strong></p>
+      <ul>
+        <li><strong>Deadlock:</strong> Other threads wait forever for the lock</li>
+        <li><strong>Thread starvation:</strong> Threads pile up waiting</li>
+        <li><strong>Resource exhaustion:</strong> Threads cannot proceed</li>
+        <li><strong>System hangs:</strong> Application becomes unresponsive</li>
+        <li><strong>Hard to debug:</strong> Symptoms appear unrelated</li>
+      </ul>
+
+      <p><strong>Best practice pattern:</strong></p>
+      <pre><code><span class="hl-comment">// ✅ Standard lock pattern</span>
+lock.lock();
+<span class="hl-keyword">try</span> {
+    <span class="hl-comment">// Do work safely</span>
+} <span class="hl-keyword">finally</span> {
+    lock.unlock();
+}
+
+<span class="hl-comment">// ✅ Try with multiple locks (avoid deadlock)</span>
+<span class="hl-type">ReentrantLock</span> lock1 = <span class="hl-keyword">new</span> <span class="hl-type">ReentrantLock</span>();
+<span class="hl-type">ReentrantLock</span> lock2 = <span class="hl-keyword">new</span> <span class="hl-type">ReentrantLock</span>();
+
+lock1.lock();
+<span class="hl-keyword">try</span> {
+    lock2.lock();
+    <span class="hl-keyword">try</span> {
+        <span class="hl-comment">// Both locks held</span>
+    } <span class="hl-keyword">finally</span> {
+        lock2.unlock();
+    }
+} <span class="hl-keyword">finally</span> {
+    lock1.unlock();
+}</code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> This is a critical pattern in concurrent programming. <strong>Always use finally for unlock()</strong>. It's one of the most common causes of production deadlocks. <code>synchronized</code> handles this automatically, but with <code>ReentrantLock</code> you must do it yourself.
+    </div>
+  </div>
+
+  <!-- Q61 -->
+  <div class="qa-block">
+    <div class="qa-number">Q61</div>
+    <div class="qa-title">What do synchronized and ReentrantLock share regarding mutual exclusion?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>Both <code>synchronized</code> and <code>ReentrantLock</code> provide <strong>mutual exclusion</strong> — only one thread can hold the lock at a time. Both are <strong>reentrant</strong>, meaning the same thread can acquire the lock multiple times. Both ensure <strong>happens-before</strong> relationships for visibility.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <table>
+        <thead><tr><th>Feature</th><th>synchronized</th><th>ReentrantLock</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Mutual exclusion</strong></td><td>✅ Yes</td><td>✅ Yes</td></tr>
+          <tr><td><strong>Reentrant</strong></td><td>✅ Yes</td><td>✅ Yes</td></tr>
+          <tr><td><strong>Visibility guarantees</strong></td><td>✅ Happens-before</td><td>✅ Happens-before</td></tr>
+          <tr><td><strong>Memory consistency</strong></td><td>✅ Same as lock</td><td>✅ Same as synchronized</td></tr>
+        </tbody>
+      </table>
+
+      <pre><code><span class="hl-comment">// Both provide mutual exclusion and reentrancy</span>
+
+<span class="hl-comment">// synchronized — automatic</span>
+<span class="hl-keyword">class</span> <span class="hl-type">SyncExample</span> {
+    <span class="hl-keyword">public</span> <span class="hl-keyword">synchronized</span> <span class="hl-keyword">void</span> <span class="hl-method">method</span>() {
+        <span class="hl-comment">// Only one thread at a time</span>
+        <span class="hl-keyword">this</span>.method2();  <span class="hl-comment">// Reentrant — same lock</span>
+    }
+    
+    <span class="hl-keyword">public</span> <span class="hl-keyword">synchronized</span> <span class="hl-keyword">void</span> <span class="hl-method">method2</span>() {
+        <span class="hl-comment">// Same lock, reentrant</span>
+    }
+}
+
+<span class="hl-comment">// ReentrantLock — manual</span>
+<span class="hl-keyword">class</span> <span class="hl-type">LockExample</span> {
+    <span class="hl-keyword">private</span> <span class="hl-type">ReentrantLock</span> lock = <span class="hl-keyword">new</span> <span class="hl-type">ReentrantLock</span>();
+    
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">method</span>() {
+        lock.lock();
+        <span class="hl-keyword">try</span> {
+            <span class="hl-comment">// Only one thread at a time</span>
+            method2();  <span class="hl-comment">// Reentrant — same lock</span>
+        } <span class="hl-keyword">finally</span> {
+            lock.unlock();
+        }
+    }
+    
+    <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">method2</span>() {
+        lock.lock();  <span class="hl-comment">// Reentrant — same thread can re-enter</span>
+        <span class="hl-keyword">try</span> {
+            <span class="hl-comment">// Critical section</span>
+        } <span class="hl-keyword">finally</span> {
+            lock.unlock();
+        }
+    }
+}</code></pre>
+
+      <p><strong>Shared properties — why they matter:</strong></p>
+      <ul>
+        <li><strong>Mutual exclusion:</strong> Prevents race conditions</li>
+        <li><strong>Reentrancy:</strong> Prevents self-deadlock</li>
+        <li><strong>Visibility:</strong> Threads see the most up-to-date values</li>
+        <li><strong>Atomicity:</strong> Operations inside the lock are atomic as a group</li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Both <code>synchronized</code> and <code>ReentrantLock</code> provide the same fundamental guarantees. The difference is in flexibility, features, and syntax. <code>synchronized</code> is simpler; <code>ReentrantLock</code> is more powerful.
+    </div>
+  </div>
+
+  <!-- Q62 -->
+  <div class="qa-block">
+    <div class="qa-number">Q62</div>
+    <div class="qa-title">What can ReentrantLock do that synchronized cannot?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><code>ReentrantLock</code> provides advanced features: <strong>tryLock</strong> (non-blocking attempt), <strong>timed lock</strong> (timeout), <strong>interruptible lock</strong>, <strong>multiple condition variables</strong>, and <strong>fairness</strong> (FIFO ordering).</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <table>
+        <thead><tr><th>Feature</th><th>synchronized</th><th>ReentrantLock</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Non-blocking attempt</strong></td><td>❌ No</td><td>✅ <code>tryLock()</code></td></tr>
+          <tr><td><strong>Timed lock</strong></td><td>❌ No</td><td>✅ <code>tryLock(timeout, unit)</code></td></tr>
+          <tr><td><strong>Interruptible lock</strong></td><td>❌ No (wait() only)</td><td>✅ <code>lockInterruptibly()</code></td></tr>
+          <tr><td><strong>Multiple conditions</strong></td><td>❌ One wait set</td><td>✅ Multiple <code>Condition</code> objects</td></tr>
+          <tr><td><strong>Fairness</strong></td><td>❌ Not guaranteed</td><td>✅ Fair mode available</td></tr>
+          <tr><td><strong>Lock state inspection</strong></td><td>❌ No</td><td>✅ <code>getHoldCount()</code>, <code>isLocked()</code></td></tr>
+        </tbody>
+      </table>
+
+      <pre><code><span class="hl-comment">// tryLock — non-blocking attempt</span>
+<span class="hl-keyword">if</span> (lock.tryLock()) {
+    <span class="hl-keyword">try</span> {
+        <span class="hl-comment">// Got the lock, do work</span>
+    } <span class="hl-keyword">finally</span> {
+        lock.unlock();
+    }
+} <span class="hl-keyword">else</span> {
+    <span class="hl-comment">// Lock was busy, do something else</span>
+}
+
+<span class="hl-comment">// tryLock with timeout — timed attempt</span>
+<span class="hl-keyword">try</span> {
+    <span class="hl-keyword">if</span> (lock.tryLock(<span class="hl-number">5</span>, <span class="hl-type">TimeUnit</span>.SECONDS)) {
+        <span class="hl-keyword">try</span> {
+            <span class="hl-comment">// Got the lock within 5 seconds</span>
+        } <span class="hl-keyword">finally</span> {
+            lock.unlock();
+        }
+    } <span class="hl-keyword">else</span> {
+        <span class="hl-comment">// Timeout, couldn't acquire lock</span>
+    }
+} <span class="hl-keyword">catch</span> (<span class="hl-type">InterruptedException</span> e) {
+    <span class="hl-comment">// Interrupted while waiting</span>
+}
+
+<span class="hl-comment">// lockInterruptibly — interruptible lock</span>
+lock.lockInterruptibly();
+<span class="hl-keyword">try</span> {
+    <span class="hl-comment">// Can be interrupted while waiting for lock</span>
+} <span class="hl-keyword">catch</span> (<span class="hl-type">InterruptedException</span> e) {
+    <span class="hl-comment">// Handle interruption</span>
+} <span class="hl-keyword">finally</span> {
+    lock.unlock();
+}
+
+<span class="hl-comment">// Multiple conditions — like wait/notify for different events</span>
+<span class="hl-type">Condition</span> notFull = lock.newCondition();
+<span class="hl-type">Condition</span> notEmpty = lock.newCondition();
+
+<span class="hl-comment">// Producer</span>
+lock.lock();
+<span class="hl-keyword">try</span> {
+    <span class="hl-keyword">while</span> (queue.isFull()) {
+        notFull.await();  <span class="hl-comment">// Wait for not full</span>
+    }
+    queue.add(item);
+    notEmpty.signal();    <span class="hl-comment">// Signal not empty</span>
+} <span class="hl-keyword">finally</span> {
+    lock.unlock();
+}
+
+<span class="hl-comment">// Consumer</span>
+lock.lock();
+<span class="hl-keyword">try</span> {
+    <span class="hl-keyword">while</span> (queue.isEmpty()) {
+        notEmpty.await();  <span class="hl-comment">// Wait for not empty</span>
+    }
+    <span class="hl-type">Item</span> item = queue.remove();
+    notFull.signal();      <span class="hl-comment">// Signal not full</span>
+} <span class="hl-keyword">finally</span> {
+    lock.unlock();
+}
+
+<span class="hl-comment">// Fairness — FIFO order</span>
+<span class="hl-type">ReentrantLock</span> fairLock = <span class="hl-keyword">new</span> <span class="hl-type">ReentrantLock</span>(<span class="hl-keyword">true</span>);  <span class="hl-comment">// Fair mode</span>
+<span class="hl-comment">// Waiting threads acquire lock in FIFO order</span></code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> The extra features of <code>ReentrantLock</code> come with complexity. Use <code>synchronized</code> for simple cases. Only use <code>ReentrantLock</code> when you need its advanced features. And <strong>always</strong> unlock in finally!
+    </div>
+  </div>
+
+  <!-- Q63 -->
+  <div class="qa-block">
+    <div class="qa-number">Q63</div>
+    <div class="qa-title">Can the same thread re-enter synchronized on the same monitor? Why?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>Yes.</strong> <code>synchronized</code> is <strong>reentrant</strong>. The same thread can re-enter a synchronized block on the same monitor because the JVM tracks <strong>hold count</strong> per thread. This prevents <strong>self-deadlock</strong> when a synchronized method calls another synchronized method on the same object.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <pre><code><span class="hl-comment">// Reentrancy demonstration</span>
+<span class="hl-keyword">class</span> <span class="hl-type">ReentrantDemo</span> {
+    <span class="hl-keyword">public</span> <span class="hl-keyword">synchronized</span> <span class="hl-keyword">void</span> <span class="hl-method">methodA</span>() {
+        System.out.println(<span class="hl-string">"Method A"</span>);
+        methodB();  <span class="hl-comment">// Calls another synchronized method</span>
+        <span class="hl-comment">// Thread already holds the lock, so re-entrance is allowed</span>
+    }
+    
+    <span class="hl-keyword">public</span> <span class="hl-keyword">synchronized</span> <span class="hl-keyword">void</span> <span class="hl-method">methodB</span>() {
+        System.out.println(<span class="hl-string">"Method B"</span>);
+    }
+}
+
+<span class="hl-comment">// How it works internally:</span>
+<span class="hl-comment">// 1. Thread T enters methodA() → acquires monitor</span>
+<span class="hl-comment">//    → monitor.owner = T, monitor.count = 1</span>
+<span class="hl-comment">// 2. methodA() calls methodB()</span>
+<span class="hl-comment">//    → T already owns monitor → count++ → monitor.count = 2</span>
+<span class="hl-comment">// 3. methodB() returns → count-- → monitor.count = 1</span>
+<span class="hl-comment">// 4. methodA() returns → count-- → monitor.count = 0 → lock released</span></code></pre>
+
+      <p><strong>Why reentrancy is essential:</strong></p>
+      <ul>
+        <li><strong>Recursive methods:</strong> Synchronized recursive calls would deadlock</li>
+        <li><strong>Method chains:</strong> Calling synchronized methods from synchronized methods</li>
+        <li><strong>Inheritance:</strong> Superclass methods calling subclass methods</li>
+        <li><strong>Interfaces:</strong> Default methods calling other synchronized methods</li>
+      </ul>
+
+      <p><strong>What if synchronized was NOT reentrant?</strong></p>
+      <pre><code><span class="hl-comment">// ❌ Non-reentrant lock would cause deadlock</span>
+<span class="hl-keyword">class</span> <span class="hl-type">NonReentrantDemo</span> {
+    <span class="hl-keyword">public</span> <span class="hl-keyword">synchronized</span> <span class="hl-keyword">void</span> <span class="hl-method">methodA</span>() {
+        <span class="hl-comment">// Lock acquired by thread T</span>
+        methodB();  <span class="hl-comment">// DEADLOCK! T tries to acquire lock it already holds</span>
+        <span class="hl-comment">// Thread T would block forever waiting for itself</span>
+    }
+    
+    <span class="hl-keyword">public</span> <span class="hl-keyword">synchronized</span> <span class="hl-keyword">void</span> <span class="hl-method">methodB</span>() {
+        <span class="hl-comment">// Would need to acquire the same lock</span>
+    }
+}</code></pre>
+
+      <p><strong>Monitor implementation:</strong></p>
+      <ul>
+        <li>Each object has a monitor (lock)</li>
+        <li>Monitor tracks: <strong>owner thread</strong> and <strong>entry count</strong></li>
+        <li>On lock: if owner == current → count++</li>
+        <li>On unlock: count-- → if count == 0 → release</li>
+        <li>If owner != current → thread blocks</li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> This is why you can safely have synchronized methods calling each other. The JVM tracks reentrant locks automatically. Without reentrancy, Java's concurrency model would be much harder to use. This is one of the core features of Java's synchronization.
+    </div>
+  </div>
+
+  <!-- CHEAT SHEET -->
+  <div class="qa-block" style="border-bottom:none;padding-bottom:0;margin-bottom:0">
+    <div class="qa-title" style="font-size:16px;color:var(--cyan)">📋 Quick-reference cheat sheet</div>
+    <div class="qa-section">
+      <pre style="background:var(--bg2);border-color:var(--border2);padding:1.2rem;border-radius:8px;font-size:13px;line-height:1.8"><code>Thread Safety Mechanisms:
+  synchronized  → Mutual exclusion, reentrant, simple
+  volatile      → Visibility only (no atomicity)
+  Atomic        → CAS, non-blocking, fast for single variables
+  Concurrent    → Thread-safe collections
+
+Race Condition:
+  Two+ threads access shared data without synchronization
+  Read-modify-write is NOT atomic
+  → Lost updates, inconsistent state
+
+Data Race:
+  Unsynchronized concurrent access (at least one write)
+  Outcome is non-deterministic, can appear correct
+  → Hard to debug, may fail in production
+
+CAS (Compare-And-Swap):
+  Hardware atomic instruction
+  Non-blocking, retry on failure
+  → AtomicInteger, AtomicLong, AtomicReference
+
+volatile:
+  Visibility → all threads see latest value
+  Ordering → prevents instruction reordering
+  NOT atomic → i++ still needs synchronized/atomic
+
+ReentrantLock vs synchronized:
+  same: mutual exclusion, reentrant, visibility
+  different: tryLock, timeout, interruptible, conditions, fairness
+
+Reentrant meaning:
+  Same thread can acquire lock multiple times
+  Hold count tracks acquisitions
+  Prevents self-deadlock
+
+Lock pattern:
+  lock.lock();
+  try {
+    // critical section
+  } finally {
+    lock.unlock();  // ALWAYS!
+  }</code></pre>
+    </div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <div style="display:flex;justify-content:space-between;margin-top:2rem;padding-top:1.5rem;border-top:0.5px solid var(--border)">
+    <a href="06-streams-lambdas.html" style="color:var(--text3);font-family:var(--mono);font-size:12px;text-decoration:none">← Previous: Streams & Lambdas</a>
+    <a href="index.html" class="back-top">🏠 Back to home</a>
+    <a href="08-spring-core-web.html" style="color:var(--text3);font-family:var(--mono);font-size:12px;text-decoration:none">Next: Spring Core & Web →</a>
+  </div>
+
+</div>
+
+<footer>
+  <span class="footer-meta">vbforge · java-interview-prep · Java 21</span>
+  <a class="footer-link" href="https://github.com/vbforge/java-interview-prep">github.com/vbforge/java-interview-prep</a>
+</footer>
+
+</body>
+</html>
