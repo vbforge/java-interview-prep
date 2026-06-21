@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vbforge / java-interview-prep — Collections — HashMap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0e1a;
+  --bg2:#0f1629;
+  --bg3:#141d35;
+  --bg4:#1a2540;
+  --border:#1e2d50;
+  --border2:#243460;
+  --text:#e2e8f4;
+  --text2:#8899bb;
+  --text3:#4a5a7a;
+  --cyan:#00d9ff;
+  --cyan2:#00b8d9;
+  --cyan-dim:rgba(0,217,255,0.08);
+  --green:#22c55e;
+  --green-dim:rgba(34,197,94,0.08);
+  --amber:#f59e0b;
+  --amber-dim:rgba(245,158,11,0.08);
+  --red:#ef4444;
+  --red-dim:rgba(239,68,68,0.08);
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Inter',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;min-height:100vh}
+
+.page{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 1.5rem;border-bottom:0.5px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.nav-logo{width:28px;height:28px;flex-shrink:0}
+.nav-title{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--text)}
+.nav-title span{color:var(--cyan)}
+.nav-links{display:flex;gap:4px}
+.nav-link{font-family:var(--mono);font-size:11px;color:var(--text2);text-decoration:none;padding:4px 10px;border-radius:5px;border:0.5px solid transparent;transition:all .15s}
+.nav-link:hover{color:var(--text);border-color:var(--border2);background:var(--bg3)}
+.nav-link.active{color:var(--cyan);border-color:var(--border2)}
+
+.theory-header{
+  padding:2rem 0 1.5rem;
+  border-bottom:0.5px solid var(--border);
+  margin-bottom:2rem;
+}
+.theory-header h1{
+  font-family:var(--mono);
+  font-size:28px;
+  font-weight:600;
+  margin-bottom:0.5rem;
+  color:var(--text);
+}
+.theory-header h1 em{font-style:normal;color:var(--cyan)}
+.theory-meta{
+  display:flex;
+  gap:1.5rem;
+  flex-wrap:wrap;
+  color:var(--text3);
+  font-size:12px;
+  font-family:var(--mono);
+  margin-top:0.5rem;
+}
+.theory-meta a{color:var(--cyan2);text-decoration:none}
+.theory-meta a:hover{color:var(--cyan)}
+.badge-skip{
+  background:var(--amber-dim);
+  color:var(--amber);
+  padding:2px 10px;
+  border-radius:4px;
+  font-size:10px;
+  border:0.5px solid rgba(245,158,11,0.2);
+}
+
+.qa-block{
+  margin-bottom:2.5rem;
+  padding-bottom:2rem;
+  border-bottom:0.5px solid var(--border);
+}
+.qa-block:last-child{border-bottom:none}
+.qa-number{
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--cyan);
+  margin-bottom:0.3rem;
+}
+.qa-title{
+  font-size:18px;
+  font-weight:600;
+  color:var(--text);
+  margin-bottom:1rem;
+  font-family:var(--sans);
+}
+.qa-section{
+  margin-bottom:1rem;
+}
+.qa-section h3{
+  font-size:13px;
+  font-weight:600;
+  color:var(--text2);
+  margin-bottom:0.3rem;
+  font-family:var(--mono);
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+}
+.qa-section p{
+  color:var(--text2);
+  line-height:1.7;
+  font-size:14px;
+}
+.qa-section ul, .qa-section ol{
+  color:var(--text2);
+  line-height:1.7;
+  padding-left:1.5rem;
+  margin:0.5rem 0;
+}
+.qa-section li{
+  margin-bottom:0.3rem;
+}
+.qa-section code{
+  font-family:var(--mono);
+  font-size:13px;
+  background:var(--bg3);
+  padding:0.1rem 0.4rem;
+  border-radius:3px;
+  color:var(--cyan2);
+}
+.qa-section pre{
+  background:var(--bg3);
+  border:0.5px solid var(--border);
+  border-radius:6px;
+  padding:1rem 1.2rem;
+  overflow-x:auto;
+  margin:0.8rem 0;
+}
+.qa-section pre code{
+  font-family:var(--mono);
+  font-size:13px;
+  color:var(--text2);
+  background:transparent;
+  padding:0;
+  line-height:1.6;
+}
+.qa-section blockquote{
+  border-left:2px solid var(--cyan);
+  padding-left:1rem;
+  margin:0.8rem 0;
+  color:var(--text2);
+}
+.qa-section blockquote strong{
+  color:var(--cyan);
+}
+.qa-section table{
+  width:100%;
+  border-collapse:collapse;
+  margin:0.8rem 0;
+  font-size:13px;
+}
+.qa-section th{
+  background:var(--bg3);
+  color:var(--text);
+  padding:0.5rem 0.8rem;
+  text-align:left;
+  font-weight:500;
+  border:0.5px solid var(--border);
+}
+.qa-section td{
+  padding:0.5rem 0.8rem;
+  border:0.5px solid var(--border);
+  color:var(--text2);
+}
+.qa-section tr:nth-child(even){background:var(--bg2)}
+
+.junior-note{
+  background:var(--cyan-dim);
+  border:0.5px solid rgba(0,217,255,0.15);
+  border-radius:6px;
+  padding:0.8rem 1rem;
+  margin:1rem 0;
+  color:var(--text2);
+  font-size:13px;
+}
+.junior-note strong{
+  color:var(--cyan);
+}
+
+.hl-comment{color:#4a5a7a}
+.hl-keyword{color:var(--cyan2)}
+.hl-string{color:#a3e635}
+.hl-type{color:#c084fc}
+.hl-method{color:#f472b6}
+.hl-number{color:#f59e0b}
+.hl-annotation{color:#f472b6}
+
+footer{padding:1.5rem 1.5rem;border-top:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem}
+.footer-meta{font-family:var(--mono);font-size:11px;color:var(--text3)}
+.footer-link{font-family:var(--mono);font-size:11px;color:var(--text3);text-decoration:none}
+.footer-link:hover{color:var(--cyan)}
+
+.back-top{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--cyan2);
+  text-decoration:none;
+  padding:6px 12px;
+  border-radius:4px;
+  border:0.5px solid var(--border2);
+  transition:all .15s;
+}
+.back-top:hover{color:var(--cyan);border-color:var(--cyan)}
+
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <svg class="nav-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="70" fill="#0f172a" stroke="#64748b" stroke-width="1"/>
+      <text x="92" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="end" fill="#e2e8f0" letter-spacing="1px">VBF</text>
+      <circle cx="100" cy="99" r="8" fill="none" stroke="#00d9ff" stroke-width="2"/>
+      <path d="M 96 99 L 99 102 L 104 95" fill="none" stroke="#00d9ff" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="108" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="start" fill="#e2e8f0" letter-spacing="1px">RGE</text>
+    </svg>
+    <span class="nav-title">vbforge / <span>java-interview-prep</span></span>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">home</a>
+    <a class="nav-link active" href="#">theory</a>
+    <a class="nav-link" href="index.html#section-demos">demos</a>
+    <a class="nav-link" href="https://github.com/vbforge/java-interview-prep" target="_blank">github ↗</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="theory-header">
+    <h1>05 — <em>Collections — HashMap</em></h1>
+    <div class="theory-meta">
+      <span>📚 Questions: <strong>Q34–Q44</strong></span>
+      <span>🧪 Demo: <a href="https://github.com/vbforge/java-interview-prep/tree/main/demo-02-collections">demo-02-collections</a></span>
+      <span class="badge-skip">⭐ Core topic</span>
+    </div>
+  </div>
+
+  <!-- Q34 -->
+  <div class="qa-block">
+    <div class="qa-number">Q34</div>
+    <div class="qa-title">Describe HashMap</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>HashMap</strong> is a hash table-based implementation of the <code>Map</code> interface. It stores key-value pairs and provides O(1) average-time performance for <code>get()</code> and <code>put()</code> operations. It allows one <code>null</code> key and multiple <code>null</code> values.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Key characteristics:</strong></p>
+      <ul>
+        <li><strong>No ordering:</strong> Does not guarantee any order of elements</li>
+        <li><strong>Not thread-safe:</strong> Not synchronized; use <code>Collections.synchronizedMap()</code> or <code>ConcurrentHashMap</code> for thread safety</li>
+        <li><strong>Null support:</strong> Allows one <code>null</code> key and many <code>null</code> values</li>
+        <li><strong>Performance:</strong> O(1) average time for <code>put()</code>, <code>get()</code>, <code>remove()</code></li>
+        <li><strong>Load factor:</strong> Default 0.75, controls when to resize</li>
+        <li><strong>Initial capacity:</strong> Default 16 buckets</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Basic HashMap usage</span>
+<span class="hl-type">Map</span>&lt;<span class="hl-type">String</span>, <span class="hl-type">Integer</span>&gt; map = <span class="hl-keyword">new</span> <span class="hl-type">HashMap</span>&lt;&gt;();
+map.put(<span class="hl-string">"Apple"</span>, <span class="hl-number">100</span>);
+map.put(<span class="hl-string">"Banana"</span>, <span class="hl-number">200</span>);
+map.put(<span class="hl-string">"Cherry"</span>, <span class="hl-number">300</span>);
+
+<span class="hl-type">Integer</span> value = map.get(<span class="hl-string">"Banana"</span>);  <span class="hl-comment">// 200</span>
+<span class="hl-keyword">boolean</span> exists = map.containsKey(<span class="hl-string">"Apple"</span>);  <span class="hl-comment">// true</span>
+map.remove(<span class="hl-string">"Cherry"</span>);</code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> <code>HashMap</code> is not thread-safe. If multiple threads access a <code>HashMap</code> concurrently and at least one modifies it structurally, you'll get <code>ConcurrentModificationException</code>. Use <code>ConcurrentHashMap</code> for thread-safe scenarios.
+    </div>
+  </div>
+
+  <!-- Q35 -->
+  <div class="qa-block">
+    <div class="qa-number">Q35</div>
+    <div class="qa-title">How is HashMap implemented?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><code>HashMap</code> is implemented as an <strong>array of linked lists</strong> (or trees for high collision) called <strong>buckets</strong>. Each bucket stores entries that have the same hash code. In Java 8+, when a bucket exceeds 8 entries, it's converted to a <strong>balanced tree</strong> (TreeNode) for better performance.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Internal structure:</strong></p>
+      <pre><code>HashMap (Java 8+)
+┌─────────────────────────────────────────────────────────────┐
+│ Node[] table = new Node[16];  // Array of buckets          │
+│                                                             │
+│  [0] → null                                                 │
+│  [1] → Node(key=Bob, val=25) → Node(key=Alice, val=30)    │
+│  [2] → null                                                 │
+│  [3] → Node(key=Charlie, val=40)                           │
+│  ...                                                       │
+│  [15]→ null                                                 │
+│                                                             │
+│ Node structure:                                             │
+│ ┌──────────────┐                                           │
+│ │ int hash     │                                           │
+│ │ K key        │                                           │
+│ │ V value      │                                           │
+│ │ Node next    │ → next node (linked list)                 │
+│ └──────────────┘                                           │
+└─────────────────────────────────────────────────────────────┘</code></pre>
+
+      <p><strong>HashMap implementation details:</strong></p>
+      <ul>
+        <li><strong>Entry (Node):</strong> Stores key, value, hash, and next pointer</li>
+        <li><strong>Buckets:</strong> Array where each index is a bucket</li>
+        <li><strong>Collision handling:</strong> Linked list (or tree) within each bucket</li>
+        <li><strong>Tree threshold:</strong> If a bucket has ≥ 8 nodes, it becomes a tree (TREEIFY_THRESHOLD = 8)</li>
+        <li><strong>Untreeify threshold:</strong> If a bucket has ≤ 6 nodes, it becomes a linked list (UNTREEIFY_THRESHOLD = 6)</li>
+        <li><strong>Minimum tree capacity:</strong> 64 (MIN_TREEIFY_CAPACITY)</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Simplified HashMap put logic</span>
+<span class="hl-keyword">public</span> <span class="hl-type">V</span> <span class="hl-method">put</span>(<span class="hl-type">K</span> key, <span class="hl-type">V</span> value) {
+    <span class="hl-type">int</span> hash = hash(key);
+    <span class="hl-type">int</span> index = (n - <span class="hl-number">1</span>) &amp; hash;  <span class="hl-comment">// n = table.length</span>
+    
+    <span class="hl-type">Node</span> node = table[index];
+    <span class="hl-keyword">if</span> (node == <span class="hl-keyword">null</span>) {
+        table[index] = <span class="hl-keyword">new</span> <span class="hl-type">Node</span>(hash, key, value, <span class="hl-keyword">null</span>);
+    } <span class="hl-keyword">else</span> {
+        <span class="hl-comment">// Traverse linked list or tree</span>
+        <span class="hl-keyword">while</span> (node != <span class="hl-keyword">null</span>) {
+            <span class="hl-keyword">if</span> (node.hash == hash &amp;&amp; node.key.equals(key)) {
+                <span class="hl-type">V</span> oldValue = node.value;
+                node.value = value;
+                <span class="hl-keyword">return</span> oldValue;
+            }
+            node = node.next;
+        }
+        <span class="hl-comment">// Add new node to bucket</span>
+    }
+}</code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Since Java 8, when a bucket has many collisions, it uses a <strong>tree</strong> (balanced red-black tree) instead of a linked list. This improves worst-case performance from O(n) to O(log n). This is why <code>HashMap</code> is so efficient even with many collisions.
+    </div>
+  </div>
+
+  <!-- Q36 -->
+  <div class="qa-block">
+    <div class="qa-number">Q36</div>
+    <div class="qa-title">What is a hash code?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>A <strong>hash code</strong> is an <code>int</code> value returned by the <code>hashCode()</code> method. It is used to efficiently locate objects in hash-based collections like <code>HashMap</code>, <code>HashSet</code>, and <code>Hashtable</code>.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>hashCode() contract:</strong></p>
+      <ol>
+        <li><strong>Consistency:</strong> During one execution, the same object must consistently return the same hash code (unless modified)</li>
+        <li><strong>Equals consistency:</strong> If two objects are equal (<code>equals()</code> returns <code>true</code>), they must have the <strong>same</strong> hash code</li>
+        <li><strong>Different objects:</strong> Can have the same hash code (collision), but better distribution improves performance</li>
+      </ol>
+
+      <pre><code><span class="hl-comment">// String.hashCode() implementation</span>
+<span class="hl-keyword">public</span> <span class="hl-type">int</span> <span class="hl-method">hashCode</span>() {
+    <span class="hl-type">int</span> h = hash;
+    <span class="hl-keyword">if</span> (h == <span class="hl-number">0</span> &amp;&amp; value.length &gt; <span class="hl-number">0</span>) {
+        <span class="hl-keyword">char</span> val[] = value;
+        <span class="hl-keyword">for</span> (<span class="hl-type">int</span> i = <span class="hl-number">0</span>; i &lt; value.length; i++) {
+            h = <span class="hl-number">31</span> * h + val[i];  <span class="hl-comment">// Polynomial hash</span>
+        }
+        hash = h;
+    }
+    <span class="hl-keyword">return</span> h;
+}
+
+<span class="hl-comment">// Good practice: override both hashCode() and equals()</span>
+<span class="hl-annotation">@Override</span>
+<span class="hl-keyword">public</span> <span class="hl-type">int</span> <span class="hl-method">hashCode</span>() {
+    <span class="hl-keyword">return</span> <span class="hl-type">Objects</span>.hash(field1, field2, field3);
+}
+
+<span class="hl-annotation">@Override</span>
+<span class="hl-keyword">public</span> <span class="hl-keyword">boolean</span> <span class="hl-method">equals</span>(<span class="hl-type">Object</span> obj) {
+    <span class="hl-keyword">if</span> (<span class="hl-keyword">this</span> == obj) <span class="hl-keyword">return</span> <span class="hl-keyword">true</span>;
+    <span class="hl-keyword">if</span> (obj == <span class="hl-keyword">null</span> || getClass() != obj.getClass()) <span class="hl-keyword">return</span> <span class="hl-keyword">false</span>;
+    <span class="hl-type">MyClass</span> other = (<span class="hl-type">MyClass</span>) obj;
+    <span class="hl-keyword">return</span> <span class="hl-type">Objects</span>.equals(field1, other.field1) &amp;&amp;
+           <span class="hl-type">Objects</span>.equals(field2, other.field2);
+}</code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> <strong>NEVER</strong> override <code>equals()</code> without overriding <code>hashCode()</code>. If you do, your objects will break hash-based collections. The contract says: if <code>a.equals(b)</code> is true, then <code>a.hashCode() == b.hashCode()</code> must also be true.
+    </div>
+  </div>
+
+  <!-- Q37 -->
+  <div class="qa-block">
+    <div class="qa-number">Q37</div>
+    <div class="qa-title">Hash code normalization (spreading / masking the hash)</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>Hash code spreading</strong> improves the distribution of hash codes across buckets. It applies additional transformations to the original hash code to reduce collisions. <strong>Masking</strong> uses the <code>&amp;</code> operator to map the hash to a valid bucket index.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>HashMap's hash() method:</strong></p>
+      <pre><code><span class="hl-comment">// Java 8+ HashMap.hash() implementation</span>
+<span class="hl-keyword">static</span> <span class="hl-keyword">final</span> <span class="hl-type">int</span> <span class="hl-method">hash</span>(<span class="hl-type">Object</span> key) {
+    <span class="hl-type">int</span> h;
+    <span class="hl-keyword">return</span> (key == <span class="hl-keyword">null</span>) ? <span class="hl-number">0</span> : (h = key.hashCode()) ^ (h &gt;&gt;&gt; <span class="hl-number">16</span>);
+}</code></pre>
+
+      <p><strong>Why spread the hash?</strong></p>
+      <ul>
+        <li><strong>Better distribution:</strong> XOR-ing higher bits with lower bits spreads the hash evenly</li>
+        <li><strong>Reduces collisions:</strong> Especially important when the number of buckets is a power of two</li>
+        <li><strong>Masking:</strong> <code>(n - 1) &amp; hash</code> where <code>n</code> is the array size (power of 2)</li>
+      </ul>
+
+      <p><strong>Visual example:</strong></p>
+      <pre><code>Key.hashCode() = 0x12345678  (binary: 0001 0010 0011 0100 0101 0110 0111 1000)
+                                  └──────────────────────────────┘
+                                             XOR with
+h >>> 16         = 0x00001234  (binary: 0000 0000 0000 0000 0001 0010 0011 0100)
+                                  └──────────────────────────────┘
+                                             =
+Hash (spread)    = 0x1234444C  (binary: 0001 0010 0011 0100 0100 0100 0100 1100)
+
+// Bucket index calculation (masking)
+int index = (n - 1) &amp; hash;
+// If n = 16 (buckets), n-1 = 15 (0b1111)
+// index = hash &amp; 0b1111 = last 4 bits</code></pre>
+
+      <p><strong>Why power-of-two array size?</strong></p>
+      <ul>
+        <li>Using <code>2^n</code> size allows using <code>&amp;</code> instead of <code>%</code> (modulo)</li>
+        <li><code>&amp;</code> is much faster than modulo</li>
+        <li>Ensures even distribution when combined with hash spreading</li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> The hash spreading is a clever optimization. Without it, objects with similar hash codes (especially consecutive integers) would collide more often. The spreading ensures that bits from all 32 bits of the hash are used, not just the lower bits.
+    </div>
+  </div>
+
+  <!-- Q38 -->
+  <div class="qa-block">
+    <div class="qa-number">Q38</div>
+    <div class="qa-title">How is hashCode related to equals?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>The relationship between <code>hashCode()</code> and <code>equals()</code> is defined by the contract: if two objects are <strong>equal</strong> according to <code>equals()</code>, they <strong>must</strong> have the <strong>same</strong> hash code. But objects with the same hash code may not be equal.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>The relationship visualized:</strong></p>
+      <pre><code>┌─────────────────────────────────────────────────────────────┐
+│                    Hash Code Buckets                        │
+│                                                             │
+│  Bucket 100: [ObjectA] → [ObjectB] → [ObjectC]            │
+│              │             │             │                 │
+│              └─ hash=100   └─ hash=100   └─ hash=100      │
+│                                                             │
+│  If ObjectA.equals(ObjectB) is true:                       │
+│    → ObjectA.hashCode() MUST equal ObjectB.hashCode()     │
+│    → They are stored in the SAME bucket                    │
+│                                                             │
+│  If ObjectA.hashCode() == ObjectB.hashCode():              │
+│    → They are in the SAME bucket                           │
+│    → But equals() may return false (collision)            │
+└─────────────────────────────────────────────────────────────┘</code></pre>
+
+      <p><strong>HashMap uses both methods:</strong></p>
+      <ol>
+        <li><strong>Find bucket:</strong> <code>hashCode()</code> determines which bucket to search</li>
+        <li><strong>Find element:</strong> <code>equals()</code> finds the exact key within the bucket</li>
+      </ol>
+
+      <pre><code><span class="hl-comment">// HashMap.get() simplified logic</span>
+<span class="hl-keyword">public</span> <span class="hl-type">V</span> <span class="hl-method">get</span>(<span class="hl-type">Object</span> key) {
+    <span class="hl-type">int</span> hash = hash(key);
+    <span class="hl-type">int</span> index = (n - <span class="hl-number">1</span>) &amp; hash;      <span class="hl-comment">// 1. Find bucket using hashCode()</span>
+    
+    <span class="hl-type">Node</span>&lt;<span class="hl-type">K</span>,<span class="hl-type">V</span>&gt; node = table[index];
+    <span class="hl-keyword">while</span> (node != <span class="hl-keyword">null</span>) {
+        <span class="hl-keyword">if</span> (node.hash == hash &amp;&amp; 
+            (node.key == key || key.equals(node.key))) {  <span class="hl-comment">// 2. Find exact key using equals()</span>
+            <span class="hl-keyword">return</span> node.value;
+        }
+        node = node.next;
+    }
+    <span class="hl-keyword">return</span> <span class="hl-keyword">null</span>;
+}</code></pre>
+
+      <p><strong>Common mistakes:</strong></p>
+      <ul>
+        <li>❌ Overriding <code>equals()</code> but not <code>hashCode()</code> → Breaks collections</li>
+        <li>❌ Returning constant hash code → All objects in same bucket (O(n) performance)</li>
+        <li>❌ Using mutable fields in hash calculation → Object becomes "lost" if modified</li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> This is the most common interview question about <code>HashMap</code>. Remember: <strong>equals() implies same hashCode()</strong>, but same hashCode() does NOT imply equals(). The first is a guarantee, the second is just a collision.
+    </div>
+  </div>
+
+  <!-- Q39 -->
+  <div class="qa-block">
+    <div class="qa-number">Q39</div>
+    <div class="qa-title">Why does that matter for a hash map?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><code>HashMap</code> relies on both methods: <code>hashCode()</code> to find the correct bucket efficiently, and <code>equals()</code> to find the exact key within that bucket. If the contract is broken, you'll get unexpected behavior like duplicate keys, lost entries, or performance degradation.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>What happens if you break the contract:</strong></p>
+      <table>
+        <thead><tr><th>Scenario</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td><code>equals()</code> overridden, <code>hashCode()</code> not</td><td>Keys with same logical identity go to different buckets → duplicate keys</td></tr>
+          <tr><td><code>hashCode()</code> returns constant value</td><td>All entries in one bucket → O(n) performance, defeats hash map</td></tr>
+          <tr><td>Using mutable fields in <code>hashCode()</code></td><td>Key can't be found after mutation → memory leak</td></tr>
+        </tbody>
+      </table>
+
+      <pre><code><span class="hl-comment">// ❌ WRONG: equals() but no hashCode()</span>
+<span class="hl-keyword">class</span> <span class="hl-type">BadKey</span> {
+    <span class="hl-keyword">private</span> <span class="hl-type">String</span> id;
+    
+    <span class="hl-annotation">@Override</span>
+    <span class="hl-keyword">public</span> <span class="hl-keyword">boolean</span> <span class="hl-method">equals</span>(<span class="hl-type">Object</span> obj) {
+        <span class="hl-keyword">return</span> <span class="hl-keyword">this</span>.id.equals(((<span class="hl-type">BadKey</span>) obj).id);
+    }
+    <span class="hl-comment">// No hashCode() override → uses Object.hashCode()</span>
+}
+
+<span class="hl-type">Map</span>&lt;<span class="hl-type">BadKey</span>, <span class="hl-type">String</span>&gt; map = <span class="hl-keyword">new</span> <span class="hl-type">HashMap</span>&lt;&gt;();
+<span class="hl-type">BadKey</span> key1 = <span class="hl-keyword">new</span> <span class="hl-type">BadKey</span>(<span class="hl-string">"123"</span>);
+<span class="hl-type">BadKey</span> key2 = <span class="hl-keyword">new</span> <span class="hl-type">BadKey</span>(<span class="hl-string">"123"</span>);  <span class="hl-comment">// Logically equal to key1</span>
+map.put(key1, <span class="hl-string">"Value"</span>);
+map.put(key2, <span class="hl-string">"Duplicate"</span>);
+<span class="hl-comment">// map now has TWO entries with the same logical key!</span>
+<span class="hl-comment">// key1 and key2 are in different buckets because hashCode() differs</span></code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> This is why you should always use <code>Objects.hash()</code> or <code>Objects.hashCode()</code> to implement <code>hashCode()</code> consistently with <code>equals()</code>. Also, <strong>never</strong> use mutable fields in <code>hashCode()</code> or <code>equals()</code> — it will cause keys to be lost forever!
+    </div>
+  </div>
+
+  <!-- Q40 -->
+  <div class="qa-block">
+    <div class="qa-number">Q40</div>
+    <div class="qa-title">Data structure in a bucket when there is a collision</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p>When multiple keys have the same bucket index (hash collision), the bucket stores a <strong>linked list</strong> of entries. In Java 8+, if the list grows to 8 or more entries, it's converted to a <strong>balanced red-black tree</strong> for better performance.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Collision resolution:</strong></p>
+      <pre><code>┌─────────────────────────────────────────────────────────────┐
+│ Bucket (array index 5)                                    │
+│                                                             │
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │ Node (hash=100, key="Alice", val=30)                  │ │
+│ │    │                                                   │ │
+│ │    ▼                                                   │ │
+│ │ Node (hash=100, key="Bob", val=25)                   │ │
+│ │    │                                                   │ │
+│ │    ▼                                                   │ │
+│ │ Node (hash=100, key="Charlie", val=40)               │ │
+│ │    │                                                   │ │
+│ │    ▼                                                   │ │
+│ │ null (end of linked list)                             │ │
+│ └─────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘</code></pre>
+
+      <p><strong>Java 8+ Tree conversion:</strong></p>
+      <table>
+        <thead><tr><th>Condition</th><th>Behavior</th></tr></thead>
+        <tbody>
+          <tr><td>Bucket has 0-7 nodes</td><td>Linked list (O(n) worst-case)</td></tr>
+          <tr><td>Bucket has ≥ 8 nodes</td><td>Convert to red-black tree (O(log n) worst-case)</td></tr>
+          <tr><td>Bucket has ≤ 6 nodes</td><td>Convert back to linked list (UNTREEIFY_THRESHOLD)</td></tr>
+        </tbody>
+      </table>
+
+      <pre><code><span class="hl-comment">// TreeNode (red-black tree node)</span>
+<span class="hl-keyword">static</span> <span class="hl-keyword">final</span> <span class="hl-keyword">class</span> <span class="hl-type">TreeNode</span>&lt;<span class="hl-type">K</span>,<span class="hl-type">V</span>&gt; <span class="hl-keyword">extends</span> <span class="hl-type">Node</span>&lt;<span class="hl-type">K</span>,<span class="hl-type">V</span>&gt; {
+    <span class="hl-type">TreeNode</span>&lt;<span class="hl-type">K</span>,<span class="hl-type">V</span>&gt; parent;   <span class="hl-comment">// red-black tree links</span>
+    <span class="hl-type">TreeNode</span>&lt;<span class="hl-type">K</span>,<span class="hl-type">V</span>&gt; left;
+    <span class="hl-type">TreeNode</span>&lt;<span class="hl-type">K</span>,<span class="hl-type">V</span>&gt; right;
+    <span class="hl-type">TreeNode</span>&lt;<span class="hl-type">K</span>,<span class="hl-type">V</span>&gt; prev;     <span class="hl-comment">// needed to unlink next upon deletion</span>
+    <span class="hl-keyword">boolean</span> red;
+}</code></pre>
+
+      <p><strong>Why tree conversion helps:</strong></p>
+      <ul>
+        <li><strong>Worst-case performance:</strong> O(n) for linked list → O(log n) for tree</li>
+        <li><strong>Protection against DOS attacks:</strong> Malicious keys can cause many collisions</li>
+        <li><strong>Java 8+ improvement:</strong> Makes <code>HashMap</code> more robust</li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> The tree conversion is a Java 8+ optimization. Before Java 8, <code>HashMap</code> always used linked lists, which could lead to O(n) performance in worst-case scenarios. This is why it's important to have good <code>hashCode()</code> implementation.
+    </div>
+  </div>
+
+  <!-- Q41 -->
+  <div class="qa-block">
+    <div class="qa-number">Q41</div>
+    <div class="qa-title">What are capacity and load factor? What is the default load factor?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>Capacity</strong> is the number of buckets in the hash table. <strong>Load factor</strong> is the threshold that determines when to resize. Default load factor is <strong>0.75</strong>, and default initial capacity is <strong>16</strong>.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Load factor formula:</strong></p>
+      <pre><code>Resize threshold = capacity × load factor
+Default: 16 × 0.75 = 12
+
+When the number of entries exceeds 12, HashMap resizes to:
+New capacity = old capacity × 2 = 32</code></pre>
+
+      <table>
+        <thead><tr><th>Setting</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Initial capacity</strong></td><td>16</td><td>Number of buckets when created</td></tr>
+          <tr><td><strong>Load factor</strong></td><td>0.75</td><td>Threshold for resizing (75% full)</td></tr>
+          <tr><td><strong>Resize factor</strong></td><td>2x</td><td>Doubles the capacity on resize</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>Choosing a custom load factor:</strong></p>
+      <ul>
+        <li><strong>Higher (e.g., 0.9):</strong> Less memory, more collisions, slower operations</li>
+        <li><strong>Lower (e.g., 0.5):</strong> More memory, fewer collisions, faster operations</li>
+        <li><strong>Default 0.75:</strong> Good trade-off between time and space</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// Creating with custom settings</span>
+<span class="hl-type">Map</span>&lt;<span class="hl-type">String</span>, <span class="hl-type">Integer</span>&gt; map1 = <span class="hl-keyword">new</span> <span class="hl-type">HashMap</span>&lt;&gt;();  <span class="hl-comment">// capacity=16, load=0.75</span>
+
+<span class="hl-type">Map</span>&lt;<span class="hl-type">String</span>, <span class="hl-type">Integer</span>&gt; map2 = <span class="hl-keyword">new</span> <span class="hl-type">HashMap</span>&lt;&gt;(<span class="hl-number">100</span>);  <span class="hl-comment">// capacity=100, load=0.75</span>
+
+<span class="hl-type">Map</span>&lt;<span class="hl-type">String</span>, <span class="hl-type">Integer</span>&gt; map3 = <span class="hl-keyword">new</span> <span class="hl-type">HashMap</span>&lt;&gt;(<span class="hl-number">100</span>, <span class="hl-number">0.9</span>f);  <span class="hl-comment">// capacity=100, load=0.9</span>
+
+<span class="hl-comment">// If you know the size in advance, set capacity to avoid resizing</span>
+<span class="hl-comment">// capacity = (expected size / load factor) + 1</span>
+<span class="hl-type">int</span> expectedSize = <span class="hl-number">1000</span>;
+<span class="hl-type">int</span> capacity = (<span class="hl-type">int</span>) (expectedSize / <span class="hl-number">0.75</span>f) + <span class="hl-number">1</span>;
+<span class="hl-type">Map</span>&lt;<span class="hl-type">String</span>, <span class="hl-type">Integer</span>&gt; map4 = <span class="hl-keyword">new</span> <span class="hl-type">HashMap</span>&lt;&gt;(capacity);</code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> If you know the approximate size of your map, <strong>set the initial capacity</strong>. Resizing is expensive (rehashes all entries). For example, if you know you'll have 1000 entries, use <code>new HashMap<>(1334)</code> (1000/0.75 + 1) to avoid resizing.
+    </div>
+  </div>
+
+  <!-- Q42 -->
+  <div class="qa-block">
+    <div class="qa-number">Q42</div>
+    <div class="qa-title">Time complexity of lookup and insertion</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>Average case:</strong> O(1) for both <code>put()</code> and <code>get()</code>. <strong>Worst case:</strong> O(log n) (Java 8+, tree) or O(n) (Java 7-, linked list) when many collisions occur.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <table>
+        <thead><tr><th>Operation</th><th>Average Case</th><th>Worst Case (Java 7)</th><th>Worst Case (Java 8+)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>put()</strong></td><td>O(1)</td><td>O(n)</td><td>O(log n)</td></tr>
+          <tr><td><strong>get()</strong></td><td>O(1)</td><td>O(n)</td><td>O(log n)</td></tr>
+          <tr><td><strong>remove()</strong></td><td>O(1)</td><td>O(n)</td><td>O(log n)</td></tr>
+          <tr><td><strong>containsKey()</strong></td><td>O(1)</td><td>O(n)</td><td>O(log n)</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>Why average is O(1):</strong></p>
+      <ul>
+        <li><strong>Good hash distribution:</strong> Keys spread evenly across buckets</li>
+        <li><strong>Low load factor:</strong> Buckets remain mostly empty (0.75)</li>
+        <li><strong>Constant time operations:</strong> Hash → bucket index → find/insert</li>
+      </ul>
+
+      <p><strong>Why worst case happens:</strong></p>
+      <ul>
+        <li><strong>Poor hashCode() implementation:</strong> All keys go to same bucket</li>
+        <li><strong>Malicious input:</strong> Keys designed to cause collisions (DoS attack)</li>
+        <li><strong>High load factor:</strong> Many entries per bucket</li>
+      </ul>
+
+      <pre><code><span class="hl-comment">// How O(1) works:</span>
+<span class="hl-type">HashMap</span>&lt;<span class="hl-type">String</span>, <span class="hl-type">Integer</span>&gt; map = <span class="hl-keyword">new</span> <span class="hl-type">HashMap</span>&lt;&gt;();
+map.put(<span class="hl-string">"key"</span>, <span class="hl-number">42</span>);  <span class="hl-comment">// O(1): compute hash, find bucket, insert</span>
+
+<span class="hl-type">Integer</span> val = map.get(<span class="hl-string">"key"</span>);  <span class="hl-comment">// O(1): compute hash, find bucket, get value</span>
+
+<span class="hl-comment">// If hashCode() is bad:</span>
+<span class="hl-keyword">class</span> <span class="hl-type">BadKey</span> {
+    <span class="hl-annotation">@Override</span>
+    <span class="hl-keyword">public</span> <span class="hl-type">int</span> <span class="hl-method">hashCode</span>() {
+        <span class="hl-keyword">return</span> <span class="hl-number">1</span>;  <span class="hl-comment">// ALL keys go to bucket 1 → O(n)</span>
+    }
+}</code></pre>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> The O(1) is <em>average</em>, not guaranteed. A good <code>hashCode()</code> implementation is critical for performance. In interviews, mention that the worst-case is O(log n) in modern Java due to tree conversion.
+    </div>
+  </div>
+
+  <!-- Q43 -->
+  <div class="qa-block">
+    <div class="qa-number">Q43</div>
+    <div class="qa-title">In what order do you get elements if you iterate the map? Why?</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><code>HashMap</code> does <strong>not guarantee any order</strong>. The iteration order is based on the internal array of buckets, which changes on resizing. If you need predictable order, use <code>LinkedHashMap</code> (insertion order) or <code>TreeMap</code> (natural order).</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <p><strong>Why order is unpredictable:</strong></p>
+      <ul>
+        <li><strong>Bucket order:</strong> Iteration follows the array from index 0 to n-1</li>
+        <li><strong>Collision order:</strong> Within each bucket, it follows the linked list/tree</li>
+        <li><strong>Resizing:</strong> When capacity changes, entries are rehashed to new buckets</li>
+      </ul>
+
+      <pre><code><span class="hl-type">Map</span>&lt;<span class="hl-type">String</span>, <span class="hl-type">Integer</span>&gt; map = <span class="hl-keyword">new</span> <span class="hl-type">HashMap</span>&lt;&gt;();
+map.put(<span class="hl-string">"A"</span>, <span class="hl-number">1</span>);
+map.put(<span class="hl-string">"B"</span>, <span class="hl-number">2</span>);
+map.put(<span class="hl-string">"C"</span>, <span class="hl-number">3</span>);
+map.put(<span class="hl-string">"D"</span>, <span class="hl-number">4</span>);
+
+<span class="hl-comment">// Order might be: [B=2, A=1, D=4, C=3] (depends on hash codes)</span>
+<span class="hl-keyword">for</span> (<span class="hl-type">Map</span>.<span class="hl-type">Entry</span>&lt;<span class="hl-type">String</span>, <span class="hl-type">Integer</span>&gt; entry : map.entrySet()) {
+    System.out.println(entry.getKey() + <span class="hl-string">"="</span> + entry.getValue());
+}
+
+<span class="hl-comment">// If you need ordered map:</span>
+<span class="hl-type">Map</span>&lt;<span class="hl-type">String</span>, <span class="hl-type">Integer</span>&gt; ordered = <span class="hl-keyword">new</span> <span class="hl-type">LinkedHashMap</span>&lt;&gt;();  <span class="hl-comment">// Insertion order</span>
+<span class="hl-type">Map</span>&lt;<span class="hl-type">String</span>, <span class="hl-type">Integer</span>&gt; sorted = <span class="hl-keyword">new</span> <span class="hl-type">TreeMap</span>&lt;&gt;();          <span class="hl-comment">// Natural order</span></code></pre>
+
+      <table>
+        <thead><tr><th>Map Type</th><th>Iteration Order</th></tr></thead>
+        <tbody>
+          <tr><td><code>HashMap</code></td><td>No guaranteed order</td></tr>
+          <tr><td><code>LinkedHashMap</code></td><td>Insertion order</td></tr>
+          <tr><td><code>TreeMap</code></td><td>Natural order (key's Comparable)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> Don't rely on <code>HashMap</code> iteration order. If you need predictable order, use <code>LinkedHashMap</code> or <code>TreeMap</code>. Also note that <code>HashMap</code> is not sorted — keys are not kept in any logical order.
+    </div>
+  </div>
+
+  <!-- Q44 -->
+  <div class="qa-block">
+    <div class="qa-number">Q44</div>
+    <div class="qa-title">Difference between HashMap and TreeMap</div>
+    
+    <div class="qa-section">
+      <h3>Short answer</h3>
+      <p><strong>HashMap</strong> uses a hash table (O(1) average) and does not guarantee order. <strong>TreeMap</strong> uses a red-black tree (O(log n) operations) and maintains <strong>sorted</strong> order based on the natural ordering of keys or a custom comparator.</p>
+    </div>
+
+    <div class="qa-section">
+      <h3>In depth</h3>
+      <table>
+        <thead><tr><th>Feature</th><th>HashMap</th><th>TreeMap</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Implementation</strong></td><td>Array of buckets + trees</td><td>Red-black tree</td></tr>
+          <tr><td><strong>Ordering</strong></td><td>No guaranteed order</td><td>Sorted (natural or comparator)</td></tr>
+          <tr><td><strong>Null key</strong></td><td>Allows one <code>null</code> key</td><td>No <code>null</code> key (throws exception)</td></tr>
+          <tr><td><strong>Performance</strong></td><td>O(1) average, O(log n) worst</td><td>O(log n) always</td></tr>
+          <tr><td><strong>Memory</strong></td><td>Less overhead</td><td>More overhead (tree nodes)</td></tr>
+          <tr><td><strong>When to use</strong></td><td>Fast lookups, no order needed</td><td>Sorted iteration, range queries</td></tr>
+        </tbody>
+      </table>
+
+      <pre><code><span class="hl-comment">// HashMap — fast but unordered</span>
+<span class="hl-type">Map</span>&lt;<span class="hl-type">String</span>, <span class="hl-type">Integer</span>&gt; hashMap = <span class="hl-keyword">new</span> <span class="hl-type">HashMap</span>&lt;&gt;();
+hashMap.put(<span class="hl-string">"Zebra"</span>, <span class="hl-number">10</span>);
+hashMap.put(<span class="hl-string">"Apple"</span>, <span class="hl-number">5</span>);
+hashMap.put(<span class="hl-string">"Banana"</span>, <span class="hl-number">7</span>);
+<span class="hl-comment">// Output order: unpredictable</span>
+
+<span class="hl-comment">// TreeMap — slower but sorted</span>
+<span class="hl-type">Map</span>&lt;<span class="hl-type">String</span>, <span class="hl-type">Integer</span>&gt; treeMap = <span class="hl-keyword">new</span> <span class="hl-type">TreeMap</span>&lt;&gt;();
+treeMap.put(<span class="hl-string">"Zebra"</span>, <span class="hl-number">10</span>);
+treeMap.put(<span class="hl-string">"Apple"</span>, <span class="hl-number">5</span>);
+treeMap.put(<span class="hl-string">"Banana"</span>, <span class="hl-number">7</span>);
+<span class="hl-comment">// Output order: [Apple=5, Banana=7, Zebra=10] (sorted)</span>
+
+<span class="hl-comment">// TreeMap with custom comparator (reverse order)</span>
+<span class="hl-type">Map</span>&lt;<span class="hl-type">String</span>, <span class="hl-type">Integer</span>&gt; reverseMap = <span class="hl-keyword">new</span> <span class="hl-type">TreeMap</span>&lt;&gt;(<span class="hl-type">Comparator</span>.reverseOrder());
+reverseMap.put(<span class="hl-string">"Zebra"</span>, <span class="hl-number">10</span>);
+reverseMap.put(<span class="hl-string">"Apple"</span>, <span class="hl-number">5</span>);
+reverseMap.put(<span class="hl-string">"Banana"</span>, <span class="hl-number">7</span>);
+<span class="hl-comment">// Output: [Zebra=10, Banana=7, Apple=5]</span></code></pre>
+
+      <p><strong>When to use TreeMap:</strong></p>
+      <ul>
+        <li>Need to iterate keys in sorted order</li>
+        <li>Range queries: <code>subMap()</code>, <code>headMap()</code>, <code>tailMap()</code></li>
+        <li>Natural ordering of keys (e.g., strings, numbers)</li>
+      </ul>
+
+      <p><strong>When to use HashMap:</strong></p>
+      <ul>
+        <li>Most common scenarios</li>
+        <li>Performance-critical applications</li>
+        <li>No ordering requirements</li>
+      </ul>
+    </div>
+
+    <div class="junior-note">
+      <strong>// JUNIOR NOTE:</strong> If you need a map with predictable iteration order but don't need sorting, use <code>LinkedHashMap</code> instead of <code>TreeMap</code>. It provides O(1) performance (like <code>HashMap</code>) with insertion-order iteration.</strong>
+    </div>
+  </div>
+
+  <!-- CHEAT SHEET -->
+  <div class="qa-block" style="border-bottom:none;padding-bottom:0;margin-bottom:0">
+    <div class="qa-title" style="font-size:16px;color:var(--cyan)">📋 Quick-reference cheat sheet</div>
+    <div class="qa-section">
+      <pre style="background:var(--bg2);border-color:var(--border2);padding:1.2rem;border-radius:8px;font-size:13px;line-height:1.8"><code>HashMap:
+  - Hash table implementation
+  - O(1) average, O(log n) worst (Java 8+ tree)
+  - No order guarantee
+  - Allows one null key, many null values
+  - Not thread-safe
+
+HashCode & Equals Contract:
+  equal objects → same hashCode (MUST)
+  same hashCode → may or may not be equal (collision)
+  ALWAYS override both together
+
+Collision Handling:
+  Java 7: linked list → O(n) worst
+  Java 8+: linked list until 8 → tree → O(log n)
+
+Capacity & Load Factor:
+  Default capacity: 16
+  Default load factor: 0.75
+  Resize when: entries > capacity * load factor
+
+HashMap vs TreeMap:
+  HashMap  → O(1), unordered
+  TreeMap  → O(log n), sorted (natural/comparator)
+
+Common Mistakes:
+  ❌ Only equals(), no hashCode()
+  ❌ Mutable keys (lost entries)
+  ❌ Using HashMap when order needed
+  ❌ Not considering thread-safety</code></pre>
+    </div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <div style="display:flex;justify-content:space-between;margin-top:2rem;padding-top:1.5rem;border-top:0.5px solid var(--border)">
+    <a href="04-collections-list.html" style="color:var(--text3);font-family:var(--mono);font-size:12px;text-decoration:none">← Previous: Collections — List</a>
+    <a href="index.html" class="back-top">🏠 Back to home</a>
+    <a href="06-streams-lambdas.html" style="color:var(--text3);font-family:var(--mono);font-size:12px;text-decoration:none">Next: Streams & Lambdas →</a>
+  </div>
+
+</div>
+
+<footer>
+  <span class="footer-meta">vbforge · java-interview-prep · Java 21</span>
+  <a class="footer-link" href="https://github.com/vbforge/java-interview-prep">github.com/vbforge/java-interview-prep</a>
+</footer>
+
+</body>
+</html>
