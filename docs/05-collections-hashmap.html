@@ -306,25 +306,78 @@ map.remove(<span class="hl-string">"Cherry"</span>);</code></pre>
     <div class="qa-section">
       <h3>In depth</h3>
       <p><strong>Internal structure:</strong></p>
-      <pre><code>HashMap (Java 8+)
-┌─────────────────────────────────────────────────────────────┐
-│ Node[] table = new Node[16];  // Array of buckets          │
-│                                                             │
-│  [0] → null                                                 │
-│  [1] → Node(key=Bob, val=25) → Node(key=Alice, val=30)    │
-│  [2] → null                                                 │
-│  [3] → Node(key=Charlie, val=40)                           │
-│  ...                                                       │
-│  [15]→ null                                                 │
-│                                                             │
-│ Node structure:                                             │
-│ ┌──────────────┐                                           │
-│ │ int hash     │                                           │
-│ │ K key        │                                           │
-│ │ V value      │                                           │
-│ │ Node next    │ → next node (linked list)                 │
-│ └──────────────┘                                           │
-└─────────────────────────────────────────────────────────────┘</code></pre>
+      <div class="diagram-wrap">
+        <div class="diagram-title">HashMap (Java 8+) — Internal Structure</div>
+        <div class="diagram-body diag-hashmap">
+          <div class="diag-col diag-col-array">
+            <div class="diag-label">Node[] table = new Node[16]</div>
+            <div class="diag-array">
+              <div class="diag-row">
+                <span class="diag-index">[0]</span>
+                <span class="diag-arrow">→</span>
+                <span class="diag-null">null</span>
+              </div>
+              <div class="diag-row diag-row-active">
+                <span class="diag-index">[1]</span>
+                <span class="diag-arrow">→</span>
+                <span class="diag-node">Node<span class="diag-kv">key=Bob, val=25</span></span>
+                <span class="diag-arrow">→</span>
+                <span class="diag-node">Node<span class="diag-kv">key=Alice, val=30</span></span>
+              </div>
+              <div class="diag-row">
+                <span class="diag-index">[2]</span>
+                <span class="diag-arrow">→</span>
+                <span class="diag-null">null</span>
+              </div>
+              <div class="diag-row diag-row-active">
+                <span class="diag-index">[3]</span>
+                <span class="diag-arrow">→</span>
+                <span class="diag-node">Node<span class="diag-kv">key=Charlie, val=40</span></span>
+              </div>
+              <div class="diag-row diag-row-dots">
+                <span class="diag-index">···</span>
+              </div>
+              <div class="diag-row">
+                <span class="diag-index">[15]</span>
+                <span class="diag-arrow">→</span>
+                <span class="diag-null">null</span>
+              </div>
+            </div>
+          </div>
+          <div class="diag-col diag-col-node">
+            <div class="diag-label">Node structure</div>
+            <div class="diag-nodebox">
+              <div class="diag-noderow"><span class="diag-field-type">int</span> <span class="diag-field-name">hash</span></div>
+              <div class="diag-noderow"><span class="diag-field-type">K</span> <span class="diag-field-name">key</span></div>
+              <div class="diag-noderow"><span class="diag-field-type">V</span> <span class="diag-field-name">value</span></div>
+              <div class="diag-noderow diag-noderow-next"><span class="diag-field-type">Node</span> <span class="diag-field-name">next</span> <span class="diag-arrow">→</span> <span class="diag-note">next node</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <style>
+      .diagram-wrap{border:0.5px solid var(--border2);border-radius:8px;overflow:hidden;margin:0.8rem 0;background:var(--bg2)}
+      .diagram-title{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--cyan);background:var(--bg3);padding:0.5rem 1rem;border-bottom:0.5px solid var(--border);letter-spacing:0.05em;text-transform:uppercase}
+      .diagram-body{padding:1rem 1.2rem;display:flex;gap:2rem;flex-wrap:wrap;align-items:flex-start}
+      .diag-col{display:flex;flex-direction:column;gap:0.5rem}
+      .diag-label{font-family:var(--mono);font-size:11px;color:var(--text3);margin-bottom:0.3rem}
+      .diag-array{display:flex;flex-direction:column;gap:4px}
+      .diag-row{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:12px;padding:3px 6px;border-radius:4px;border:0.5px solid transparent}
+      .diag-row-active{background:var(--cyan-dim);border-color:rgba(0,217,255,0.12)}
+      .diag-row-dots{color:var(--text3);justify-content:center;padding:0}
+      .diag-index{color:var(--text3);min-width:32px;text-align:right}
+      .diag-arrow{color:var(--border2)}
+      .diag-null{color:var(--text3);font-style:italic}
+      .diag-node{background:var(--bg3);border:0.5px solid var(--border2);border-radius:4px;padding:2px 8px;color:var(--text);font-size:12px;display:flex;gap:4px;align-items:center}
+      .diag-kv{color:var(--cyan2);font-size:11px}
+      .diag-nodebox{border:0.5px solid var(--border2);border-radius:6px;overflow:hidden;min-width:220px}
+      .diag-noderow{display:flex;align-items:center;gap:8px;padding:6px 12px;border-bottom:0.5px solid var(--border);font-family:var(--mono);font-size:12px}
+      .diag-noderow:last-child{border-bottom:none}
+      .diag-noderow-next{background:var(--green-dim)}
+      .diag-field-type{color:var(--cyan2);min-width:36px}
+      .diag-field-name{color:var(--text)}
+      .diag-note{color:var(--text3);font-size:11px;font-style:italic}
+      </style>
 
       <p><strong>HashMap implementation details:</strong></p>
       <ul>
@@ -444,18 +497,61 @@ map.remove(<span class="hl-string">"Cherry"</span>);</code></pre>
       </ul>
 
       <p><strong>Visual example:</strong></p>
-      <pre><code>Key.hashCode() = 0x12345678  (binary: 0001 0010 0011 0100 0101 0110 0111 1000)
-                                  └──────────────────────────────┘
-                                             XOR with
-h >>> 16         = 0x00001234  (binary: 0000 0000 0000 0000 0001 0010 0011 0100)
-                                  └──────────────────────────────┘
-                                             =
-Hash (spread)    = 0x1234444C  (binary: 0001 0010 0011 0100 0100 0100 0100 1100)
-
-// Bucket index calculation (masking)
-int index = (n - 1) &amp; hash;
-// If n = 16 (buckets), n-1 = 15 (0b1111)
-// index = hash &amp; 0b1111 = last 4 bits</code></pre>
+      <div class="diagram-wrap">
+        <div class="diagram-title">Hash Spreading &amp; Bucket Index Masking</div>
+        <div class="diag-xor-wrap">
+          <div class="diag-xor-row">
+            <span class="diag-xor-label">Key.hashCode()</span>
+            <span class="diag-xor-hex">0x12345678</span>
+            <span class="diag-xor-bits"><span class="diag-bits-hi">0001 0010 0011 0100</span> <span class="diag-bits-lo">0101 0110 0111 1000</span></span>
+          </div>
+          <div class="diag-xor-op-row">
+            <span class="diag-xor-op-label">XOR with (h &gt;&gt;&gt; 16)</span>
+          </div>
+          <div class="diag-xor-row">
+            <span class="diag-xor-label">h &gt;&gt;&gt; 16</span>
+            <span class="diag-xor-hex">0x00001234</span>
+            <span class="diag-xor-bits"><span class="diag-bits-zero">0000 0000 0000 0000</span> <span class="diag-bits-hi">0001 0010 0011 0100</span></span>
+          </div>
+          <div class="diag-xor-divider"></div>
+          <div class="diag-xor-row diag-xor-row-result">
+            <span class="diag-xor-label">Hash (spread)</span>
+            <span class="diag-xor-hex">0x1234444C</span>
+            <span class="diag-xor-bits"><span class="diag-bits-hi">0001 0010 0011 0100</span> <span class="diag-bits-spread">0100 0100 0100 1100</span></span>
+          </div>
+          <div class="diag-mask-section">
+            <div class="diag-mask-title">Bucket index (masking)</div>
+            <div class="diag-mask-row">
+              <code class="diag-mask-code">int index = (n - 1) &amp; hash</code>
+              <span class="diag-mask-comment">// n=16 → n-1=15 → 0b<span class="diag-bits-mask">1111</span></span>
+            </div>
+            <div class="diag-mask-row">
+              <span class="diag-mask-note">Result: last 4 bits of spread hash = bucket index (0–15)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <style>
+      .diag-xor-wrap{padding:1rem 1.2rem;display:flex;flex-direction:column;gap:0;font-family:var(--mono);font-size:12px}
+      .diag-xor-row{display:flex;align-items:center;gap:1rem;padding:6px 0}
+      .diag-xor-row-result{background:var(--cyan-dim);border-radius:5px;padding:6px 8px;margin:0 -8px}
+      .diag-xor-label{min-width:140px;color:var(--text2)}
+      .diag-xor-hex{min-width:100px;color:var(--amber);font-weight:600}
+      .diag-xor-bits{letter-spacing:0.5px}
+      .diag-bits-hi{color:var(--cyan2)}
+      .diag-bits-lo{color:var(--text2)}
+      .diag-bits-zero{color:var(--text3)}
+      .diag-bits-spread{color:var(--green)}
+      .diag-bits-mask{color:var(--green);font-weight:700}
+      .diag-xor-op-row{padding:2px 0 2px 140px;color:var(--text3);font-size:11px;font-style:italic}
+      .diag-xor-divider{height:0.5px;background:var(--border2);margin:2px 0}
+      .diag-mask-section{margin-top:0.8rem;padding-top:0.8rem;border-top:0.5px solid var(--border)}
+      .diag-mask-title{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.4rem}
+      .diag-mask-row{display:flex;align-items:center;gap:1rem;padding:3px 0}
+      .diag-mask-code{background:var(--bg3);border:0.5px solid var(--border);border-radius:3px;padding:2px 8px;color:var(--cyan2);font-size:12px}
+      .diag-mask-comment{color:var(--text3);font-size:11px}
+      .diag-mask-note{color:var(--text2);font-size:12px;font-style:italic}
+      </style>
 
       <p><strong>Why power-of-two array size?</strong></p>
       <ul>
@@ -483,21 +579,67 @@ int index = (n - 1) &amp; hash;
     <div class="qa-section">
       <h3>In depth</h3>
       <p><strong>The relationship visualized:</strong></p>
-      <pre><code>┌─────────────────────────────────────────────────────────────┐
-│                    Hash Code Buckets                        │
-│                                                             │
-│  Bucket 100: [ObjectA] → [ObjectB] → [ObjectC]            │
-│              │             │             │                 │
-│              └─ hash=100   └─ hash=100   └─ hash=100      │
-│                                                             │
-│  If ObjectA.equals(ObjectB) is true:                       │
-│    → ObjectA.hashCode() MUST equal ObjectB.hashCode()     │
-│    → They are stored in the SAME bucket                    │
-│                                                             │
-│  If ObjectA.hashCode() == ObjectB.hashCode():              │
-│    → They are in the SAME bucket                           │
-│    → But equals() may return false (collision)            │
-└─────────────────────────────────────────────────────────────┘</code></pre>
+      <div class="diagram-wrap">
+        <div class="diagram-title">Hash Code Buckets — equals() &amp; hashCode() Contract</div>
+        <div class="diag-contract-wrap">
+          <div class="diag-bucket-row">
+            <span class="diag-bucket-label">Bucket 100</span>
+            <span class="diag-obj diag-obj-a">ObjectA<span class="diag-obj-hash">hash=100</span></span>
+            <span class="diag-chain-arrow">→</span>
+            <span class="diag-obj diag-obj-b">ObjectB<span class="diag-obj-hash">hash=100</span></span>
+            <span class="diag-chain-arrow">→</span>
+            <span class="diag-obj diag-obj-c">ObjectC<span class="diag-obj-hash">hash=100</span></span>
+          </div>
+          <div class="diag-rules">
+            <div class="diag-rule diag-rule-must">
+              <span class="diag-rule-if">if <code>ObjectA.equals(ObjectB)</code> → <code>true</code></span>
+              <div class="diag-rule-then">
+                <span class="diag-rule-arrow">⟹</span>
+                <span class="diag-rule-text"><code>ObjectA.hashCode()</code> <strong>MUST</strong> equal <code>ObjectB.hashCode()</code></span>
+              </div>
+              <div class="diag-rule-then">
+                <span class="diag-rule-arrow">⟹</span>
+                <span class="diag-rule-text">They are stored in the <strong>SAME</strong> bucket</span>
+              </div>
+            </div>
+            <div class="diag-rule diag-rule-collision">
+              <span class="diag-rule-if">if <code>ObjectA.hashCode() == ObjectB.hashCode()</code></span>
+              <div class="diag-rule-then">
+                <span class="diag-rule-arrow">⟹</span>
+                <span class="diag-rule-text">They are in the <strong>SAME</strong> bucket</span>
+              </div>
+              <div class="diag-rule-then">
+                <span class="diag-rule-arrow">⟹</span>
+                <span class="diag-rule-text"><code>equals()</code> may still return <code>false</code> — this is a <strong>collision</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <style>
+      .diag-contract-wrap{padding:1rem 1.2rem;display:flex;flex-direction:column;gap:1rem}
+      .diag-bucket-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-family:var(--mono);font-size:12px}
+      .diag-bucket-label{background:var(--bg3);border:0.5px solid var(--border2);border-radius:4px;padding:4px 10px;color:var(--text2);min-width:90px;text-align:center}
+      .diag-obj{display:flex;flex-direction:column;align-items:center;background:var(--bg3);border:0.5px solid var(--border2);border-radius:5px;padding:5px 10px;font-size:12px;gap:2px}
+      .diag-obj-a{border-color:var(--cyan2);color:var(--cyan)}
+      .diag-obj-b{border-color:rgba(196,132,252,0.5);color:#c084fc}
+      .diag-obj-c{border-color:rgba(244,114,182,0.5);color:#f472b6}
+      .diag-obj-hash{font-size:10px;color:var(--text3)}
+      .diag-chain-arrow{color:var(--border2);font-size:14px}
+      .diag-rules{display:flex;flex-direction:column;gap:0.6rem}
+      .diag-rule{border-radius:6px;padding:0.7rem 0.9rem;border:0.5px solid}
+      .diag-rule-must{background:var(--cyan-dim);border-color:rgba(0,217,255,0.15)}
+      .diag-rule-collision{background:var(--amber-dim);border-color:rgba(245,158,11,0.15)}
+      .diag-rule-if{font-family:var(--mono);font-size:12px;color:var(--text2);display:block;margin-bottom:0.4rem}
+      .diag-rule-if code{color:var(--cyan2)}
+      .diag-rule-then{display:flex;align-items:flex-start;gap:0.5rem;margin-top:3px;font-family:var(--mono);font-size:12px}
+      .diag-rule-arrow{color:var(--text3);min-width:18px;margin-top:1px}
+      .diag-rule-text{color:var(--text2)}
+      .diag-rule-text code{color:var(--cyan2)}
+      .diag-rule-text strong{color:var(--text)}
+      .diag-rule-must .diag-rule-text strong{color:var(--cyan)}
+      .diag-rule-collision .diag-rule-text strong{color:var(--amber)}
+      </style>
 
       <p><strong>HashMap uses both methods:</strong></p>
       <ol>
@@ -594,22 +736,60 @@ map.put(key2, <span class="hl-string">"Duplicate"</span>);
     <div class="qa-section">
       <h3>In depth</h3>
       <p><strong>Collision resolution:</strong></p>
-      <pre><code>┌─────────────────────────────────────────────────────────────┐
-│ Bucket (array index 5)                                    │
-│                                                             │
-│ ┌─────────────────────────────────────────────────────────┐ │
-│ │ Node (hash=100, key="Alice", val=30)                  │ │
-│ │    │                                                   │ │
-│ │    ▼                                                   │ │
-│ │ Node (hash=100, key="Bob", val=25)                   │ │
-│ │    │                                                   │ │
-│ │    ▼                                                   │ │
-│ │ Node (hash=100, key="Charlie", val=40)               │ │
-│ │    │                                                   │ │
-│ │    ▼                                                   │ │
-│ │ null (end of linked list)                             │ │
-│ └─────────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────┘</code></pre>
+      <div class="diagram-wrap">
+        <div class="diagram-title">Bucket (array index 5) — Collision Linked List</div>
+        <div class="diag-bucket-list-wrap">
+          <div class="diag-ll-node">
+            <div class="diag-ll-fields">
+              <span class="diag-ll-field"><span class="diag-field-type">hash</span> = <span class="diag-field-val">100</span></span>
+              <span class="diag-ll-sep"></span>
+              <span class="diag-ll-field"><span class="diag-field-type">key</span> = <span class="diag-field-str">"Alice"</span></span>
+              <span class="diag-ll-sep"></span>
+              <span class="diag-ll-field"><span class="diag-field-type">val</span> = <span class="diag-field-val">30</span></span>
+              <span class="diag-ll-sep"></span>
+              <span class="diag-ll-field diag-ll-next"><span class="diag-field-type">next</span> <span class="diag-arrow">↓</span></span>
+            </div>
+          </div>
+          <div class="diag-ll-connector">↓</div>
+          <div class="diag-ll-node">
+            <div class="diag-ll-fields">
+              <span class="diag-ll-field"><span class="diag-field-type">hash</span> = <span class="diag-field-val">100</span></span>
+              <span class="diag-ll-sep"></span>
+              <span class="diag-ll-field"><span class="diag-field-type">key</span> = <span class="diag-field-str">"Bob"</span></span>
+              <span class="diag-ll-sep"></span>
+              <span class="diag-ll-field"><span class="diag-field-type">val</span> = <span class="diag-field-val">25</span></span>
+              <span class="diag-ll-sep"></span>
+              <span class="diag-ll-field diag-ll-next"><span class="diag-field-type">next</span> <span class="diag-arrow">↓</span></span>
+            </div>
+          </div>
+          <div class="diag-ll-connector">↓</div>
+          <div class="diag-ll-node">
+            <div class="diag-ll-fields">
+              <span class="diag-ll-field"><span class="diag-field-type">hash</span> = <span class="diag-field-val">100</span></span>
+              <span class="diag-ll-sep"></span>
+              <span class="diag-ll-field"><span class="diag-field-type">key</span> = <span class="diag-field-str">"Charlie"</span></span>
+              <span class="diag-ll-sep"></span>
+              <span class="diag-ll-field"><span class="diag-field-type">val</span> = <span class="diag-field-val">40</span></span>
+              <span class="diag-ll-sep"></span>
+              <span class="diag-ll-field diag-ll-next"><span class="diag-field-type">next</span> <span class="diag-arrow">↓</span></span>
+            </div>
+          </div>
+          <div class="diag-ll-connector">↓</div>
+          <div class="diag-ll-null">null — end of linked list</div>
+        </div>
+      </div>
+      <style>
+      .diag-bucket-list-wrap{padding:1rem 1.4rem;display:flex;flex-direction:column;align-items:flex-start;gap:0}
+      .diag-ll-node{background:var(--bg3);border:0.5px solid var(--border2);border-radius:6px;padding:0;overflow:hidden;min-width:300px}
+      .diag-ll-fields{display:flex;align-items:stretch;font-family:var(--mono);font-size:12px}
+      .diag-ll-field{padding:7px 12px;display:flex;align-items:center;gap:5px;white-space:nowrap}
+      .diag-ll-sep{width:0.5px;background:var(--border)}
+      .diag-ll-next{background:var(--cyan-dim);color:var(--cyan2)}
+      .diag-field-str{color:#a3e635}
+      .diag-field-val{color:var(--amber)}
+      .diag-ll-connector{font-size:16px;color:var(--border2);padding:2px 0 2px 20px;line-height:1}
+      .diag-ll-null{font-family:var(--mono);font-size:12px;color:var(--text3);font-style:italic;padding:6px 12px;background:var(--bg2);border:0.5px dashed var(--border);border-radius:4px;min-width:300px;text-align:center}
+      </style>
 
       <p><strong>Java 8+ Tree conversion:</strong></p>
       <table>
