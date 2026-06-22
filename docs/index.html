@@ -48,6 +48,15 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 1
 .nav-link:hover{color:var(--text);border-color:var(--border2);background:var(--bg3)}
 .nav-link.active{color:var(--cyan);border-color:var(--border2)}
 
+.nav-brand-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav-brand-link:hover .nav-title {
+  color: #00d9ff;
+}
+
 /* ── HERO ── */
 .hero{padding:3rem 0 2.5rem;border-bottom:0.5px solid var(--border);margin-bottom:2.5rem}
 .hero-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:1.25rem}
@@ -150,13 +159,13 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 1
 .ring-total{font-size:14px;color:var(--text3)}
 .progress-bars{flex:1}
 .pbar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.pbar-label{font-family:var(--mono);font-size:11px;color:var(--text3);width:120px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pbar-label{font-family:var(--mono);font-size:11px;color:var(--text3);width:180px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pbar-track{flex:1;height:3px;background:var(--bg4);border-radius:2px}
 .pbar-fill{height:3px;border-radius:2px;transition:width .3s}
 .pbar-count{font-family:var(--mono);font-size:10px;color:var(--text3);min-width:32px;text-align:right}
 
 /* ── FOOTER ── */
-footer{padding:2rem 1.5rem 1.5rem;border-top:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:gap}
+footer{padding:2rem 1.5rem 1.5rem;border-top:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
 .footer-left{display:flex;align-items:center;gap:10px}
 .footer-logo{width:24px;height:24px}
 .footer-meta{font-family:var(--mono);font-size:11px;color:var(--text3)}
@@ -168,7 +177,7 @@ footer{padding:2rem 1.5rem 1.5rem;border-top:0.5px solid var(--border);display:f
 #section-theory,#section-demos,#section-tracker,#section-scorecard{scroll-margin-top:60px}
 
 /* scrollbar */
-::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 </style>
@@ -176,28 +185,44 @@ footer{padding:2rem 1.5rem 1.5rem;border-top:0.5px solid var(--border);display:f
 <body>
 
 <nav>
-  <div class="nav-brand">
-    <svg class="nav-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:#0f172a"/>
-          <stop offset="100%" style="stop-color:#1e293b"/>
-        </linearGradient>
-      </defs>
-      <circle cx="100" cy="100" r="70" fill="url(#g1)" stroke="#64748b" stroke-width="1"/>
-      <text x="92" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="end" fill="#e2e8f0" letter-spacing="1px">VBF</text>
-      <circle cx="100" cy="99" r="8" fill="none" stroke="#00d9ff" stroke-width="2"/>
-      <path d="M 96 99 L 99 102 L 104 95" fill="none" stroke="#00d9ff" stroke-width="2.5" stroke-linecap="round"/>
-      <text x="108" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="start" fill="#e2e8f0" letter-spacing="1px">RGE</text>
-    </svg>
-    <span class="nav-title">vbforge / <span>java-interview-prep</span></span>
-  </div>
+  <a class="nav-brand-link"
+     href="https://github.com/vbforge/java-interview-prep"
+     target="_blank"
+     rel="noopener noreferrer">
+
+    <div class="nav-brand">
+      <svg class="nav-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#0f172a"/>
+            <stop offset="100%" style="stop-color:#1e293b"/>
+          </linearGradient>
+        </defs>
+        <circle cx="100" cy="100" r="70" fill="url(#g1)" stroke="#64748b" stroke-width="1"/>
+        <text x="92" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600"
+              text-anchor="end" fill="#e2e8f0" letter-spacing="1px">VBF</text>
+        <circle cx="100" cy="99" r="8" fill="none" stroke="#00d9ff" stroke-width="2"/>
+        <path d="M 96 99 L 99 102 L 104 95"
+              fill="none" stroke="#00d9ff" stroke-width="2.5" stroke-linecap="round"/>
+        <text x="108" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600"
+              text-anchor="start" fill="#e2e8f0" letter-spacing="1px">RGE</text>
+      </svg>
+
+      <span class="nav-title">
+            vbforge / <span>java-interview-prep</span>
+        </span>
+    </div>
+
+  </a>
+
   <div class="nav-links">
-    <a class="nav-link active" href="#section-theory">theory</a>
+    <a class="nav-link" href="#section-theory">theory</a>
     <a class="nav-link" href="#section-demos">demos</a>
     <a class="nav-link" href="#section-tracker">tracker</a>
     <a class="nav-link" href="#section-scorecard">scorecard</a>
     <a class="nav-link" href="#section-resources">resources</a>
+    <a class="nav-link" href="numbering-questions.html">questions</a>
+    <a class="nav-link" href="assets/first-round-interview-recruitment-agency-questions.pdf">questions-pdf</a>
     <a class="nav-link" href="https://github.com/vbforge/java-interview-prep" target="_blank">github ↗</a>
   </div>
 </nav>
@@ -241,18 +266,40 @@ footer{padding:2rem 1.5rem 1.5rem;border-top:0.5px solid var(--border);display:f
   </div>
 
   <!-- PROGRESS -->
+<!--  <div class="progress-section">-->
+<!--    <div class="ring-wrap">-->
+<!--      <svg width="80" height="80" viewBox="0 0 80 80">-->
+<!--        <circle cx="40" cy="40" r="34" fill="none" stroke="#1a2540" stroke-width="6"/>-->
+<!--        <circle id="ring-arc" cx="40" cy="40" r="34" fill="none" stroke="#00d9ff" stroke-width="6"-->
+<!--          stroke-dasharray="213.6" stroke-dashoffset="213.6"-->
+<!--          stroke-linecap="round" transform="rotate(-90 40 40)"-->
+<!--          style="transition:stroke-dashoffset .4s ease"/>-->
+<!--        <text x="40" y="37" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="16" font-weight="600" fill="#00d9ff" id="ring-pct">0%</text>-->
+<!--        <text x="40" y="51" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#4a5a7a">done</text>-->
+<!--      </svg>-->
+<!--    </div>-->
+<!--    <div class="progress-bars" id="progress-bars"></div>-->
+<!--  </div>-->
+
   <div class="progress-section">
     <div class="ring-wrap">
       <svg width="80" height="80" viewBox="0 0 80 80">
         <circle cx="40" cy="40" r="34" fill="none" stroke="#1a2540" stroke-width="6"/>
         <circle id="ring-arc" cx="40" cy="40" r="34" fill="none" stroke="#00d9ff" stroke-width="6"
-          stroke-dasharray="213.6" stroke-dashoffset="213.6"
-          stroke-linecap="round" transform="rotate(-90 40 40)"
-          style="transition:stroke-dashoffset .4s ease"/>
-        <text x="40" y="37" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="16" font-weight="600" fill="#00d9ff" id="ring-pct">0%</text>
-        <text x="40" y="51" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#4a5a7a">done</text>
+                stroke-dasharray="213.6" stroke-dashoffset="213.6"
+                stroke-linecap="round" transform="rotate(-90 40 40)"
+                style="transition:stroke-dashoffset .4s ease"/>
+        <text x="40" y="37" text-anchor="middle"
+              font-family="JetBrains Mono,monospace"
+              font-size="16" font-weight="600"
+              fill="#00d9ff" id="ring-pct">0%</text>
+
+        <text x="40" y="51" text-anchor="middle"
+              font-family="JetBrains Mono,monospace"
+              font-size="9" fill="#4a5a7a">done</text>
       </svg>
     </div>
+
     <div class="progress-bars" id="progress-bars"></div>
   </div>
 
@@ -381,7 +428,7 @@ const THEORY = [
   {num:'01',title:'JVM Memory',qs:'Q1–Q8',qStart:1,qEnd:8,file:'01-jvm-memory.html',demo:'demo-01-jvm-memory'},
   {num:'02',title:'Data types & Strings',qs:'Q9–Q17',qStart:9,qEnd:17,file:'02-data-types-strings.html',demo:null},
   {num:'03',title:'OOP, Inheritance & Generics',qs:'Q18–Q27',qStart:18,qEnd:27,file:'03-oop-generics.html',demo:null},
-  {num:'04',title:'Collections — List',qs:'Q28–Q33',qStart:28,qEnd:33,file:'04-collections-list.html',demo:'demo-02-collections'},
+  {num:'04',title:'Collections — General',qs:'Q28–Q33',qStart:28,qEnd:33,file:'04-collections-list.html',demo:'demo-02-collections'},
   {num:'05',title:'Collections — HashMap',qs:'Q34–Q44',qStart:34,qEnd:44,file:'05-collections-hashmap.html',demo:'demo-02-collections'},
   {num:'06',title:'Streams & Lambdas',qs:'Q45–Q52',qStart:45,qEnd:52,file:'06-streams-lambdas.html',demo:'demo-03-streams'},
   {num:'07',title:'Concurrency',qs:'Q53–Q63',qStart:53,qEnd:63,file:'07-concurrency.html',demo:'demo-04-concurrency'},
@@ -403,22 +450,24 @@ const DEMOS = [
 const GROUPS = [
   {id:'g0',label:'JVM Memory — Q1–Q8',total:8,color:'#00d9ff',
     qs:[{n:1,t:'What kinds of memory exist in Java?'},{n:2,t:'What is the stack for, what is stored in it?'},{n:3,t:'What regions is the heap divided into?'},{n:4,t:'Explain garbage collection in Java.'},{n:5,t:'Which garbage collectors do you know?'},{n:6,t:'How does the collector know an object has become garbage?'},{n:7,t:'Do primitives need to be collected?'},{n:8,t:'How does G1 work?'}]},
-  {id:'g1',label:'Data types & Strings — Q9–Q17',total:9,color:'#818cf8',
+  {id:'g1',label:'Data types & Strings — Q9–Q17',total:9,color:'#0b1fe1',
     qs:[{n:9,t:'The two main groups of data types'},{n:10,t:'How to compare primitives and objects'},{n:11,t:'Passing method arguments by value vs by reference'},{n:12,t:'Object o = new Object() — what is stored in o?'},{n:13,t:'Boxing / unboxing'},{n:14,t:'String s1 = "string" vs new String("string")'},{n:15,t:'s1 == s2 vs s1.equals(s2)'},{n:16,t:'String.intern()'},{n:17,t:'Are String objects mutable or immutable?'}]},
-  {id:'g2',label:'OOP, Inheritance & Generics — Q18–Q27',total:10,color:'#c084fc',
+  {id:'g2',label:'OOP, Inheritance & Generics — Q18–Q27',total:10,color:'#720b3f',
     qs:[{n:18,t:'What are generics, and what are they for?'},{n:19,t:'Examples of generics in Java'},{n:20,t:'extends / super in wildcards'},{n:21,t:'Difference between abstract class and interface'},{n:22,t:'How many supertypes can you extend / implement?'},{n:23,t:'Presence of a constructor'},{n:24,t:'Default access modifiers of abstract class and interface'},{n:25,t:'Multiple inheritance with interfaces'},{n:26,t:'What if two interface methods overlap?'},{n:27,t:'What if two default methods conflict?'}]},
-  {id:'g3',label:'Collections — Q28–Q44',total:17,color:'#34d399',
-    qs:[{n:28,t:'What kinds of collections exist in Java?'},{n:29,t:'Describe List'},{n:30,t:'Time complexity of insertion and read/access'},{n:31,t:'When is array-based list better vs linked list?'},{n:32,t:'How does a list differ from a plain array?'},{n:33,t:'What is an iterator?'},{n:34,t:'Describe HashMap'},{n:35,t:'How is HashMap implemented?'},{n:36,t:'What is a hash code?'},{n:37,t:'Hash code normalization / spreading'},{n:38,t:'How is hashCode related to equals?'},{n:39,t:'Why does that matter for a hash map?'},{n:40,t:'Data structure in a bucket on collision'},{n:41,t:'Capacity, load factor, default load factor'},{n:42,t:'Time complexity of lookup and insertion'},{n:43,t:'In what order do you iterate a map?'},{n:44,t:'HashMap vs TreeMap'}]},
-  {id:'g4',label:'Streams & Lambdas — Q45–Q52',total:8,color:'#38bdf8',
+  {id:'g3',label:'Collections (General) — Q28–Q33',total:17,color:'#34d399',
+    qs:[{n:28,t:'What kinds of collections exist in Java?'},{n:29,t:'Describe List'},{n:30,t:'Time complexity of insertion and read/access'},{n:31,t:'When is array-based list better vs linked list?'},{n:32,t:'How does a list differ from a plain array?'},{n:33,t:'What is an iterator?'}]},
+  {id:'g4',label:'Collections (HashMap) — Q34–Q44',total:17,color:'#d37134',
+    qs:[{n:34,t:'Describe HashMap'},{n:35,t:'How is HashMap implemented?'},{n:36,t:'What is a hash code?'},{n:37,t:'Hash code normalization / spreading'},{n:38,t:'How is hashCode related to equals?'},{n:39,t:'Why does that matter for a hash map?'},{n:40,t:'Data structure in a bucket on collision'},{n:41,t:'Capacity, load factor, default load factor'},{n:42,t:'Time complexity of lookup and insertion'},{n:43,t:'In what order do you iterate a map?'},{n:44,t:'HashMap vs TreeMap'}]},
+  {id:'g5',label:'Streams & Lambdas — Q45–Q52',total:8,color:'#38bdf8',
     qs:[{n:45,t:'What is a Stream in Java?'},{n:46,t:'Intermediate vs terminal operations'},{n:47,t:'Can you run two terminal ops on one Stream?'},{n:48,t:'Optional — one-shot container vs stream?'},{n:49,t:'Primitive-specialized stream types'},{n:50,t:'Difference between map and flatMap'},{n:51,t:'What is a lambda? What is it compiled to?'},{n:52,t:'Standard functional interfaces'}]},
-  {id:'g5',label:'Concurrency — Q53–Q63',total:11,color:'#fb923c',
+  {id:'g6',label:'Concurrency — Q53–Q63',total:11,color:'#015001',
     qs:[{n:53,t:'How to safely share mutable state across threads?'},{n:54,t:'What goes wrong without coordination?'},{n:55,t:'What is a data race?'},{n:56,t:'Why doesn\'t volatile make i++ atomic?'},{n:57,t:'CAS in AtomicInteger vs i++ under synchronized'},{n:58,t:'When to prefer atomics vs locks?'},{n:59,t:'ReentrantLock — what does reentrant mean?'},{n:60,t:'Why must unlock run in finally?'},{n:61,t:'What do synchronized and ReentrantLock share?'},{n:62,t:'What can ReentrantLock do that synchronized cannot?'},{n:63,t:'Can same thread re-enter synchronized on same monitor?'}]},
-  {id:'g6',label:'Spring core & web — Q64–Q77',total:14,color:'#f472b6',
+  {id:'g7',label:'Spring core & web — Q64–Q77',total:14,color:'#41b02d',
     qs:[{n:64,t:'What is a Spring bean?'},{n:65,t:'Where are beans stored, how to retrieve them?'},{n:66,t:'Ways to inject dependencies'},{n:67,t:'Which bean scopes do you know?'},{n:68,t:'What is @PostConstruct used for?'},{n:69,t:'What is @Qualifier used for?'},{n:70,t:'What is @Primary used for?'},{n:71,t:'What is @Order used for?'},{n:72,t:'Can Spring run code after app has started?'},{n:73,t:'Circular dependency — what is it and how to resolve?'},{n:74,t:'Which HTTP methods do you know?'},{n:75,t:'Cookies, HTTP headers, HTTP session'},{n:76,t:'What is CORS?'},{n:77,t:'What is idempotency?'}]},
-  {id:'g7',label:'JPA & databases — Q78–Q87',total:10,color:'#a3e635',
-    qs:[{n:78,t:'Hibernate fetch types — EAGER and LAZY'},{n:79,t:'@OneToOne, @OneToMany, @ManyToMany'},{n:80,t:'N+1 problem'},{n:81,t:'What is optimistic locking?'},{n:82,t:'What is pessimistic locking?'},{n:83,t:'Which locking type to prefer and when?'},{n:84,t:'What is a DB index?'},{n:85,t:'Purpose, pros and cons of indexes'},{n:86,t:'How does a B-tree index work?'},{n:87,t:'Why not index all field combinations?'}]},
-  {id:'g8',label:'Design patterns — Q87–Q89',total:3,color:'#e879f9',
-    qs:[{n:'87b',t:'Name the three main groups of design patterns'},{n:88,t:'Name one pattern from each group'},{n:89,t:'Which three patterns do you most often see in Spring?'}]},
+  {id:'g8',label:'JPA & databases — Q78–Q86',total:10,color:'#c8f87a',
+    qs:[{n:78,t:'Hibernate fetch types — EAGER and LAZY'},{n:79,t:'@OneToOne, @OneToMany, @ManyToMany'},{n:80,t:'N+1 problem'},{n:81,t:'What is optimistic locking?'},{n:82,t:'What is pessimistic locking?'},{n:83,t:'Which locking type to prefer and when?'},{n:84,t:'What is a DB index?'},{n:85,t:'Purpose, pros and cons of indexes? Why not index all field combinations?'},{n:86,t:'How does a B-tree index work?'}]},
+  {id:'g9',label:'Design patterns — Q87–Q89',total:3,color:'#eb080f',
+    qs:[{n:87,t:'Name the three main groups of design patterns'},{n:88,t:'Name one pattern from each group'},{n:89,t:'Which three patterns do you most often see in Spring?'}]},
 ];
 
 const SC_TOPICS = ['Java memory model','Data types & Strings','OOP, Inheritance, Generics','Collections','Streams & Lambdas','Concurrency','Spring core & web','JPA & databases','Design patterns'];
