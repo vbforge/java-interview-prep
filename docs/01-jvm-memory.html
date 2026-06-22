@@ -181,6 +181,133 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0.8rem
 }
 .qa-section tr:nth-child(even){background:var(--bg2)}
 
+
+/* ─── HEAP DIAGRAM ─── */
+.heap-diagram {
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+  margin: 0.8rem 0;
+  overflow-x: auto;
+}
+
+.heap-row {
+  display: flex;
+  gap: 3px;
+  padding: 0.4rem 0;
+  justify-content: center;
+  flex-wrap: nowrap;
+  min-width: fit-content;
+}
+
+.heap-region {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0.3rem 0.5rem;
+  border-radius: 3px;
+  text-align: center;
+  min-width: 28px;
+  transition: all 0.15s;
+  cursor: default;
+}
+.heap-region:hover {
+  transform: scale(1.1);
+  z-index: 1;
+}
+
+.heap-region.eden {
+  background: rgba(34, 197, 94, 0.2);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #22c55e;
+}
+.heap-region.eden:hover {
+  background: rgba(34, 197, 94, 0.35);
+}
+
+.heap-region.survivor {
+  background: rgba(96, 165, 250, 0.2);
+  border: 1px solid rgba(96, 165, 250, 0.3);
+  color: #60a5fa;
+}
+.heap-region.survivor:hover {
+  background: rgba(96, 165, 250, 0.35);
+}
+
+.heap-region.old {
+  background: rgba(245, 158, 11, 0.2);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #f59e0b;
+}
+.heap-region.old:hover {
+  background: rgba(245, 158, 11, 0.35);
+}
+
+.heap-region.humongous {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+.heap-region.humongous:hover {
+  background: rgba(239, 68, 68, 0.35);
+}
+
+.heap-region.ellipsis {
+  background: transparent;
+  border: 0.5px solid var(--border);
+  color: var(--text3);
+  min-width: 24px;
+  font-size: 14px;
+}
+.heap-region.ellipsis:hover {
+  transform: none;
+}
+
+.heap-legend {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 0.5px solid var(--border);
+  flex-wrap: wrap;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text2);
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.color-box {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 0.5px solid rgba(255,255,255,0.1);
+}
+.color-box.eden {
+  background: rgba(34, 197, 94, 0.4);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+.color-box.survivor {
+  background: rgba(96, 165, 250, 0.4);
+  border-color: rgba(96, 165, 250, 0.3);
+}
+.color-box.old {
+  background: rgba(245, 158, 11, 0.4);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+.color-box.humongous {
+  background: rgba(239, 68, 68, 0.4);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+
 /* ── JUNIOR NOTE ── */
 .junior-note{
   background:var(--cyan-dim);
@@ -244,9 +371,9 @@ footer{padding:1.5rem 1.5rem;border-top:0.5px solid var(--border);display:flex;a
     <span class="nav-title">vbforge / <span>java-interview-prep</span></span>
   </div>
   <div class="nav-links">
-    <a class="nav-link" href="../index.html">home</a>
-    <a class="nav-link active" href="#">theory</a>
-    <a class="nav-link" href="../index.html#section-demos">demos</a>
+    <a class="nav-link" href="index.html">home</a>
+    <a class="nav-link" href="index.html#section-theory">theory</a>
+    <a class="nav-link" href="index.html#section-demos">demos</a>
     <a class="nav-link" href="https://github.com/vbforge/java-interview-prep" target="_blank">github ↗</a>
   </div>
 </nav>
@@ -516,11 +643,45 @@ b = <span class="hl-keyword">null</span>;
     <div class="qa-section">
       <h3>In depth</h3>
       <p><strong>Region layout:</strong></p>
-      <pre><code>Heap (e.g. 4 GB)
-┌────┬────┬────┬────┬────┬────┬────┬────┬────┐
-│ E  │ E  │ S  │ O  │ O  │ H  │ E  │ O  │ ...  (2048 regions total)
-└────┴────┴────┴────┴────┴────┴────┴────┴────┘
-  E = Eden   S = Survivor   O = Old   H = Humongous (large objects)</code></pre>
+<!--      <pre><code>Heap (e.g. 4 GB)-->
+<!--┌────┬────┬────┬────┬────┬────┬────┬────┬────┐-->
+<!--│ E  │ E  │ S  │ O  │ O  │ H  │ E  │ O  │ ...  (2048 regions total)-->
+<!--└────┴────┴────┴────┴────┴────┴────┴────┴────┘-->
+<!--  E = Eden   S = Survivor   O = Old   H = Humongous (large objects)</code></pre>-->
+
+      <!-- Heap Layout Diagram -->
+      <div class="heap-diagram">
+        <div style="text-align:center;color:var(--text);font-size:13px;font-weight:500;margin-bottom:0.8rem;font-family:var(--mono)">
+          G1 Heap Layout — 4 GB Heap, ~2048 Regions
+        </div>
+
+        <div class="heap-row">
+          <div class="heap-region eden">E</div>
+          <div class="heap-region eden">E</div>
+          <div class="heap-region survivor">S</div>
+          <div class="heap-region old">O</div>
+          <div class="heap-region old">O</div>
+          <div class="heap-region humongous">H</div>
+          <div class="heap-region eden">E</div>
+          <div class="heap-region old">O</div>
+          <div class="heap-region eden">E</div>
+          <div class="heap-region survivor">S</div>
+          <div class="heap-region old">O</div>
+          <div class="heap-region eden">E</div>
+          <div class="heap-region humongous">H</div>
+          <div class="heap-region old">O</div>
+          <div class="heap-region eden">E</div>
+          <div class="heap-region ellipsis">…</div>
+        </div>
+
+        <div class="heap-legend">
+          <span class="legend-item"><span class="color-box eden"></span> Eden</span>
+          <span class="legend-item"><span class="color-box survivor"></span> Survivor</span>
+          <span class="legend-item"><span class="color-box old"></span> Old</span>
+          <span class="legend-item"><span class="color-box humongous"></span> Humongous</span>
+          <span class="legend-item" style="color:var(--text3)">(2048 regions total)</span>
+        </div>
+      </div>
 
       <p>Regions are dynamically assigned roles — a region that was Old can become Eden after collection. There are no fixed generational boundaries in the heap layout.</p>
 
@@ -577,7 +738,7 @@ G1 key ideas:
   <!-- NAVIGATION -->
   <div style="display:flex;justify-content:space-between;margin-top:2rem;padding-top:1.5rem;border-top:0.5px solid var(--border)">
     <a href="index.html" class="back-top">🏠 Back to home</a>
-    <a href="02-data-types-strings.html" style="color:var(--text3);font-family:var(--mono);font-size:12px;text-decoration:none">Next →</a>
+    <a href="02-data-types-strings.html" style="color:var(--text3);font-family:var(--mono);font-size:12px;text-decoration:none">Next: Data types & Strings →</a>
   </div>
 
 
