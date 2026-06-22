@@ -177,6 +177,209 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0.8rem
 }
 .qa-section tr:nth-child(even){background:var(--bg2)}
 
+
+/* ─── DESIGN PATTERNS DIAGRAM ─── */
+.patterns-diagram {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem 1.5rem;
+    margin: 0.8rem 0;
+    overflow-x: auto;
+}
+
+.patterns-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.8rem;
+}
+
+.pattern-category {
+    background: var(--bg3);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 0.5px solid var(--border);
+    transition: all 0.15s;
+}
+.pattern-category:hover {
+    transform: translateY(-2px);
+    border-color: var(--border2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.pattern-header {
+    padding: 0.5rem 0.8rem;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    border-bottom: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+.pattern-header.creational {
+    background: rgba(52, 211, 153, 0.12);
+    color: #34d399;
+    border-color: rgba(52, 211, 153, 0.2);
+}
+
+.pattern-header.structural {
+    background: rgba(96, 165, 250, 0.12);
+    color: #60a5fa;
+    border-color: rgba(96, 165, 250, 0.2);
+}
+
+.pattern-header.behavioral {
+    background: rgba(251, 146, 60, 0.12);
+    color: #fb923c;
+    border-color: rgba(251, 146, 60, 0.2);
+}
+
+.pattern-icon {
+    font-size: 16px;
+}
+
+.pattern-sub {
+    font-size: 10px;
+    font-weight: 400;
+    opacity: 0.6;
+}
+
+.pattern-list {
+    display: flex;
+    flex-direction: column;
+    padding: 0.4rem 0.6rem;
+    gap: 0.1rem;
+}
+
+.pattern-item {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text2);
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    transition: all 0.1s;
+    cursor: default;
+}
+.pattern-item:hover {
+    background: var(--bg4);
+    color: var(--text);
+    padding-left: 0.6rem;
+}
+
+/* Count Summary */
+.patterns-summary {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.8rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--bg3);
+    border-radius: 6px;
+    border: 0.5px solid var(--border);
+    flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 11px;
+}
+
+.count-item {
+    padding: 0.15rem 0.6rem;
+    border-radius: 3px;
+    font-weight: 500;
+}
+.count-item.creational-count {
+    color: #34d399;
+    background: rgba(52, 211, 153, 0.08);
+}
+.count-item.structural-count {
+    color: #60a5fa;
+    background: rgba(96, 165, 250, 0.08);
+}
+.count-item.behavioral-count {
+    color: #fb923c;
+    background: rgba(251, 146, 60, 0.08);
+}
+.count-item.total-count {
+    color: var(--cyan);
+    background: var(--cyan-dim);
+    font-weight: 600;
+}
+
+.patterns-legend {
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+    margin-top: 0.8rem;
+    padding-top: 0.6rem;
+    border-top: 0.5px solid var(--border);
+    flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text2);
+}
+
+.patterns-legend .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.patterns-legend .color-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+}
+.patterns-legend .creational-dot {
+    background: rgba(52, 211, 153, 0.4);
+    border: 1px solid rgba(52, 211, 153, 0.3);
+}
+.patterns-legend .structural-dot {
+    background: rgba(96, 165, 250, 0.4);
+    border: 1px solid rgba(96, 165, 250, 0.3);
+}
+.patterns-legend .behavioral-dot {
+    background: rgba(251, 146, 60, 0.4);
+    border: 1px solid rgba(251, 146, 60, 0.3);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 700px) {
+    .patterns-container {
+        grid-template-columns: 1fr;
+        gap: 0.6rem;
+    }
+    .pattern-header {
+        font-size: 12px;
+    }
+    .pattern-item {
+        font-size: 10px;
+    }
+    .patterns-summary {
+        font-size: 10px;
+        gap: 0.5rem;
+        padding: 0.3rem 0.5rem;
+    }
+}
+
+@media (min-width: 701px) and (max-width: 900px) {
+    .patterns-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem;
+    }
+    .pattern-header {
+        font-size: 11px;
+        padding: 0.3rem 0.4rem;
+    }
+    .pattern-item {
+        font-size: 10px;
+    }
+}
+
 .junior-note{
   background:var(--cyan-dim);
   border:0.5px solid rgba(0,217,255,0.15);
@@ -291,24 +494,86 @@ footer{padding:1.5rem 1.5rem;border-top:0.5px solid var(--border);display:flex;a
         <li><strong>Examples:</strong> Chain of Responsibility, Command, Interpreter, Iterator, Mediator, Memento, Observer, State, Strategy, Template Method, Visitor</li>
       </ul>
 
-      <pre><code>GoF Design Pattern Categories:
+        <!-- GoF Design Pattern Categories (Full List) -->
+        <div class="patterns-diagram">
+            <div style="text-align:center;color:var(--text);font-size:14px;font-weight:600;margin-bottom:1rem;font-family:var(--mono)">
+                GoF Design Pattern Categories — 23 Patterns
+            </div>
 
-┌─────────────────────────────────────────────────────────────┐
-│                    Design Patterns                           │
-│                                                             │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐       │
-│  │  Creational │  │ Structural  │  │ Behavioral  │       │
-│  │   Patterns  │  │  Patterns   │  │  Patterns   │       │
-│  ├─────────────┤  ├─────────────┤  ├─────────────┤       │
-│  │ Factory     │  │ Adapter     │  │ Chain of    │       │
-│  │ Abstract    │  │ Bridge      │  │  Response.  │       │
-│  │  Factory    │  │ Composite   │  │ Command     │       │
-│  │ Singleton   │  │ Decorator   │  │ Iterator    │       │
-│  │ Builder     │  │ Facade      │  │ Observer    │       │
-│  │ Prototype   │  │ Proxy       │  │ Strategy    │       │
-│  └─────────────┘  └─────────────┘  └─────────────┘       │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘</code></pre>
+            <div class="patterns-container">
+                <!-- Creational (5) -->
+                <div class="pattern-category">
+                    <div class="pattern-header creational">
+                        <span class="pattern-icon">🏗️</span>
+                        Creational
+                        <span class="pattern-sub">(5)</span>
+                    </div>
+                    <div class="pattern-list">
+                        <span class="pattern-item">Abstract Factory</span>
+                        <span class="pattern-item">Builder</span>
+                        <span class="pattern-item">Factory Method</span>
+                        <span class="pattern-item">Prototype</span>
+                        <span class="pattern-item">Singleton</span>
+                    </div>
+                </div>
+
+                <!-- Structural (7) -->
+                <div class="pattern-category">
+                    <div class="pattern-header structural">
+                        <span class="pattern-icon">🏛️</span>
+                        Structural
+                        <span class="pattern-sub">(7)</span>
+                    </div>
+                    <div class="pattern-list">
+                        <span class="pattern-item">Adapter</span>
+                        <span class="pattern-item">Bridge</span>
+                        <span class="pattern-item">Composite</span>
+                        <span class="pattern-item">Decorator</span>
+                        <span class="pattern-item">Facade</span>
+                        <span class="pattern-item">Flyweight</span>
+                        <span class="pattern-item">Proxy</span>
+                    </div>
+                </div>
+
+                <!-- Behavioral (11) -->
+                <div class="pattern-category">
+                    <div class="pattern-header behavioral">
+                        <span class="pattern-icon">🔄</span>
+                        Behavioral
+                        <span class="pattern-sub">(11)</span>
+                    </div>
+                    <div class="pattern-list">
+                        <span class="pattern-item">Chain of Responsibility</span>
+                        <span class="pattern-item">Command</span>
+                        <span class="pattern-item">Interpreter</span>
+                        <span class="pattern-item">Iterator</span>
+                        <span class="pattern-item">Mediator</span>
+                        <span class="pattern-item">Memento</span>
+                        <span class="pattern-item">Observer</span>
+                        <span class="pattern-item">State</span>
+                        <span class="pattern-item">Strategy</span>
+                        <span class="pattern-item">Template Method</span>
+                        <span class="pattern-item">Visitor</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Count Summary -->
+            <div class="patterns-summary">
+                <span class="count-item creational-count">5 Creational</span>
+                <span class="count-item structural-count">7 Structural</span>
+                <span class="count-item behavioral-count">11 Behavioral</span>
+                <span class="count-item total-count">= 23 Total GoF Patterns</span>
+            </div>
+
+            <!-- Legend -->
+            <div class="patterns-legend">
+                <span class="legend-item"><span class="color-dot creational-dot"></span> Creational</span>
+                <span class="legend-item"><span class="color-dot structural-dot"></span> Structural</span>
+                <span class="legend-item"><span class="color-dot behavioral-dot"></span> Behavioral</span>
+            </div>
+        </div>
+
     </div>
 
     <div class="junior-note">
