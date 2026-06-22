@@ -198,6 +198,175 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0.8rem
 .hl-number{color:#f59e0b}
 .hl-annotation{color:#f472b6}
 
+
+/* ─── COLLECTIONS HIERARCHY DIAGRAM ─── */
+.collections-diagram {
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+  margin: 0.8rem 0;
+  overflow-x: auto;
+  font-family: var(--mono);
+}
+
+.col-level {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 0.15rem 0;
+  flex-wrap: wrap;
+}
+
+.col-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.15rem 0;
+  flex-wrap: wrap;
+}
+
+.col-box {
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.15s;
+  cursor: default;
+  min-width: 50px;
+  white-space: nowrap;
+}
+.col-box:hover {
+  transform: scale(1.05);
+  z-index: 1;
+}
+
+.col-box.interface {
+  background: rgba(0, 217, 255, 0.08);
+  border: 1px solid rgba(0, 217, 255, 0.3);
+  color: var(--cyan);
+}
+.col-box.interface:hover {
+  background: rgba(0, 217, 255, 0.18);
+}
+
+.col-box.class {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text2);
+}
+.col-box.class:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+.col-box.map {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: var(--amber);
+}
+.col-box.map:hover {
+  background: rgba(245, 158, 11, 0.18);
+}
+
+.col-connector {
+  text-align: center;
+  color: var(--text3);
+  font-size: 14px;
+  line-height: 0.6;
+  padding: 0.1rem 0;
+}
+
+.col-connector-multi {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  color: var(--text3);
+  font-size: 12px;
+  padding: 0.1rem 0;
+  line-height: 0.6;
+}
+
+.col-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0 0.4rem 0;
+  color: var(--text3);
+  font-size: 11px;
+  font-family: var(--mono);
+}
+.col-divider span:first-child,
+.col-divider span:last-child {
+  color: var(--border);
+}
+
+.col-legend {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-top: 0.8rem;
+  padding-top: 0.6rem;
+  border-top: 0.5px solid var(--border);
+  flex-wrap: wrap;
+  font-size: 11px;
+  color: var(--text2);
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.color-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+.color-dot.interface-dot {
+  border: 1.5px solid var(--cyan);
+  background: rgba(0, 217, 255, 0.15);
+}
+.color-dot.class-dot {
+  border: 1px solid var(--border2);
+  background: var(--bg3);
+}
+.color-dot.map-dot {
+  border: 1.5px solid var(--amber);
+  background: rgba(245, 158, 11, 0.15);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 600px) {
+  .collections-diagram {
+    padding: 0.8rem 0.6rem;
+  }
+  .col-level {
+    gap: 0.5rem;
+  }
+  .col-connector-multi {
+    gap: 0.5rem;
+  }
+  .col-box {
+    font-size: 10px;
+    padding: 0.2rem 0.4rem;
+    min-width: 36px;
+  }
+  .col-divider {
+    font-size: 9px;
+    flex-wrap: wrap;
+  }
+  .col-legend {
+    gap: 0.6rem;
+    font-size: 10px;
+  }
+}
+
+
 footer{padding:1.5rem 1.5rem;border-top:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem}
 .footer-meta{font-family:var(--mono);font-size:11px;color:var(--text3)}
 .footer-link{font-family:var(--mono);font-size:11px;color:var(--text3);text-decoration:none}
@@ -238,7 +407,7 @@ footer{padding:1.5rem 1.5rem;border-top:0.5px solid var(--border);display:flex;a
   </div>
   <div class="nav-links">
     <a class="nav-link" href="index.html">home</a>
-    <a class="nav-link active" href="#">theory</a>
+    <a class="nav-link" href="index.html#section-theory">theory</a>
     <a class="nav-link" href="index.html#section-demos">demos</a>
     <a class="nav-link" href="https://github.com/vbforge/java-interview-prep" target="_blank">github ↗</a>
   </div>
@@ -267,24 +436,69 @@ footer{padding:1.5rem 1.5rem;border-top:0.5px solid var(--border);display:flex;a
 
     <div class="qa-section">
       <h3>In depth</h3>
-      <pre><code>Java Collections Framework Hierarchy:
+      <!-- Collections Hierarchy Diagram -->
+      <div class="collections-diagram">
+        <div style="text-align:center;color:var(--text);font-size:13px;font-weight:500;margin-bottom:1rem;font-family:var(--mono)">
+          Java Collections Framework Hierarchy
+        </div>
 
-        --------------------------------------------------------
-        │               Iterable                               |
-        │                  |                                   |
-        │             Collection                               |
-        │          /       |      \                            |
-        │        List     Set      Queue                       |
-        │         |        |           |                       |
-        │    ArrayList    HashSet     LinkedList               |
-        │    LinkedList   TreeSet     PriorityQueue            |
-        │    Vector       LinkedHashSet                        |
-        │                                                      |
-        │              Map (separate hierarchy)                |
-        │            /           |                \            |
-        │   HashMap            TreeMap          LinkedHashMap  |
-        │   Hashtable          ConcurrentHashMap               |
-        --------------------------------------------------------</code></pre>
+        <!-- Iterable -->
+        <div class="col-level">
+          <div class="col-box interface">Iterable</div>
+        </div>
+
+        <!-- Collection -->
+        <div class="col-level">
+          <div class="col-box interface">Collection</div>
+        </div>
+
+        <!-- List, Set, Queue -->
+        <div class="col-level">
+          <div class="col-box interface">List</div>
+          <div class="col-box interface">Set</div>
+          <div class="col-box interface">Queue</div>
+        </div>
+
+        <!-- Implementations Row 1 -->
+        <div class="col-row">
+          <div class="col-box class">ArrayList</div>
+          <div class="col-box class">LinkedList</div>
+          <div class="col-box class">Vector</div>
+          <div class="col-box class">HashSet</div>
+          <div class="col-box class">TreeSet</div>
+          <div class="col-box class">LinkedHashSet</div>
+          <div class="col-box class">LinkedList</div>
+          <div class="col-box class">PriorityQueue</div>
+        </div>
+
+        <!-- Divider -->
+        <div class="col-divider">
+          <span>═════════</span>
+          <span>Map (separate hierarchy — does NOT extend Collection)</span>
+          <span>═════════</span>
+        </div>
+
+        <!-- Map -->
+        <div class="col-level">
+          <div class="col-box map">Map</div>
+        </div>
+
+        <!-- Map Implementations -->
+        <div class="col-row">
+          <div class="col-box map">HashMap</div>
+          <div class="col-box map">TreeMap</div>
+          <div class="col-box map">LinkedHashMap</div>
+          <div class="col-box map">Hashtable</div>
+          <div class="col-box map">ConcurrentHashMap</div>
+        </div>
+
+        <!-- Legend -->
+        <div class="col-legend">
+          <span class="legend-item"><span class="color-dot interface-dot"></span> Interface</span>
+          <span class="legend-item"><span class="color-dot class-dot"></span> Class</span>
+          <span class="legend-item"><span class="color-dot map-dot"></span> Map (not Collection)</span>
+        </div>
+      </div>
 
       <table>
         <thead><tr><th>Interface</th><th>Characteristics</th><th>Common Implementations</th></tr></thead>
