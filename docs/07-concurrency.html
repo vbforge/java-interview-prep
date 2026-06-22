@@ -218,6 +218,49 @@ footer{padding:1.5rem 1.5rem;border-top:0.5px solid var(--border);display:flex;a
 }
 .back-top:hover{color:var(--cyan);border-color:var(--cyan)}
 
+
+
+ .diag-race-wrap{padding:1rem 1.2rem;display:flex;flex-direction:column;gap:1rem;font-family:var(--mono);font-size:12px}
+
+/* summary row */
+.diag-race-summary{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.diag-race-summary-item{display:flex;flex-direction:column;align-items:center;border-radius:6px;padding:6px 18px;border:0.5px solid}
+.diag-race-expected{background:var(--green-dim);border-color:rgba(34,197,94,0.2)}
+.diag-race-actual{background:var(--red-dim);border-color:rgba(239,68,68,0.2)}
+.diag-race-summary-label{font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3)}
+.diag-race-expected .diag-race-summary-val{color:var(--green);font-size:20px;font-weight:700;line-height:1.2}
+.diag-race-actual .diag-race-summary-val{color:var(--red);font-size:20px;font-weight:700;line-height:1.2}
+.diag-race-summary-note{color:var(--text2);font-size:12px;line-height:1.5;font-family:var(--mono)}
+.diag-race-summary-note code{background:var(--bg3);border:0.5px solid var(--border);border-radius:3px;padding:0 4px;color:var(--cyan2)}
+
+/* table */
+.diag-race-table{display:flex;flex-direction:column;gap:0;border:0.5px solid var(--border2);border-radius:6px;overflow:hidden}
+.diag-race-thead{display:flex;background:var(--bg3);border-bottom:0.5px solid var(--border2);font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em}
+.diag-race-row{display:flex;align-items:stretch;border-bottom:0.5px solid var(--border)}
+.diag-race-row:last-child{border-bottom:none}
+.diag-race-row-bad{background:var(--red-dim)}
+
+/* columns */
+.diag-race-col-time{min-width:44px;max-width:44px;padding:6px 10px;display:flex;align-items:center;justify-content:center;border-right:0.5px solid var(--border)}
+.diag-race-col-t1{flex:1;padding:6px 10px;display:flex;align-items:center;border-right:0.5px solid var(--border)}
+.diag-race-col-t2{flex:1;padding:6px 10px;display:flex;align-items:center;border-right:0.5px solid var(--border)}
+.diag-race-col-cnt{min-width:90px;max-width:90px;padding:6px 10px;display:flex;align-items:center;justify-content:center}
+
+/* cell content */
+.diag-t-label{color:var(--text3);font-size:11px}
+.diag-op{font-size:12px}
+.diag-op-idle{color:var(--text3)}
+.diag-op-read{color:var(--cyan2)}
+.diag-op-modify{color:var(--amber)}
+.diag-op-write{color:#c084fc}
+.diag-op strong{font-weight:700}
+.diag-op-read strong{color:var(--cyan)}
+.diag-op-write strong{color:#e879f9}
+.diag-cnt{color:var(--text2);font-weight:600;font-size:13px}
+.diag-cnt-ok{color:var(--green)}
+.diag-cnt-bad{color:var(--red)}
+
+
 ::-webkit-scrollbar{width:6px;height:6px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
@@ -310,41 +353,90 @@ map.compute(<span class="hl-string">"key"</span>, (k, v) -> v == <span class="hl
     </div>
   </div>
 
-  <!-- Q54 -->
-  <div class="qa-block">
-    <div class="qa-number">Q54</div>
-    <div class="qa-title">What goes wrong if two threads read-modify-write a shared variable without coordination?</div>
-    
-    <div class="qa-section">
-      <h3>Short answer</h3>
-      <p>You get a <strong>race condition</strong>. The result becomes unpredictable because operations interleave unpredictably. The classic example is the <strong>lost update</strong> problem where increments are lost.</p>
-    </div>
+    <!-- Q54 -->
+    <div class="qa-block">
+        <div class="qa-number">Q54</div>
+        <div class="qa-title">What goes wrong if two threads read-modify-write a shared variable without coordination?</div>
 
-    <div class="qa-section">
-      <h3>In depth</h3>
-      <p><strong>The lost update problem:</strong></p>
-      <pre><code>Thread 1: read count (0) → increment → write count (1)
-Thread 2: read count (0) → increment → write count (1)
+        <div class="qa-section">
+            <h3>Short answer</h3>
+            <p>You get a <strong>race condition</strong>. The result becomes unpredictable because operations interleave unpredictably. The classic example is the <strong>lost update</strong> problem where increments are lost.</p>
+        </div>
 
-Expected: 2
-Actual: 1 (one increment was lost!)
+        <div class="qa-section">
+            <h3>In depth</h3>
+            <p><strong>The lost update problem:</strong></p>
 
-Timeline:
-┌─────────────────────────────────────────────────────────────┐
-│ Time  │ Thread 1         │ Thread 2         │ count       │
-│───────┼──────────────────┼──────────────────┼─────────────│
-│ t1    │ read count (0)   │                  │ 0           │
-│ t2    │                  │ read count (0)   │ 0           │
-│ t3    │ increment        │                  │ 0           │
-│ t4    │                  │ increment        │ 0           │
-│ t5    │ write count (1)  │                  │ 1           │
-│ t6    │                  │ write count (1)  │ 1           │
-└─────────────────────────────────────────────────────────────┘</code></pre>
+            <div class="diagram-wrap">
+                <div class="diagram-title">Race Condition — Lost Update Timeline</div>
+                <div class="diag-race-wrap">
 
-      <pre><code><span class="hl-comment">// Classic race condition example</span>
+                    <!-- expected vs actual -->
+                    <div class="diag-race-summary">
+                        <div class="diag-race-summary-item diag-race-expected">
+                            <span class="diag-race-summary-label">Expected</span>
+                            <span class="diag-race-summary-val">2</span>
+                        </div>
+                        <div class="diag-race-summary-item diag-race-actual">
+                            <span class="diag-race-summary-label">Actual</span>
+                            <span class="diag-race-summary-val">1</span>
+                        </div>
+                        <div class="diag-race-summary-note">One increment was lost — threads both read <code>0</code> before either wrote back</div>
+                    </div>
+
+                    <!-- timeline table -->
+                    <div class="diag-race-table">
+                        <div class="diag-race-thead">
+                            <span class="diag-race-col-time">Time</span>
+                            <span class="diag-race-col-t1">Thread 1</span>
+                            <span class="diag-race-col-t2">Thread 2</span>
+                            <span class="diag-race-col-cnt">count</span>
+                        </div>
+                        <div class="diag-race-row">
+                            <span class="diag-race-col-time diag-t-label">t1</span>
+                            <span class="diag-race-col-t1 diag-op diag-op-read">read count → <strong>0</strong></span>
+                            <span class="diag-race-col-t2 diag-op diag-op-idle">—</span>
+                            <span class="diag-race-col-cnt diag-cnt">0</span>
+                        </div>
+                        <div class="diag-race-row">
+                            <span class="diag-race-col-time diag-t-label">t2</span>
+                            <span class="diag-race-col-t1 diag-op diag-op-idle">—</span>
+                            <span class="diag-race-col-t2 diag-op diag-op-read">read count → <strong>0</strong></span>
+                            <span class="diag-race-col-cnt diag-cnt">0</span>
+                        </div>
+                        <div class="diag-race-row">
+                            <span class="diag-race-col-time diag-t-label">t3</span>
+                            <span class="diag-race-col-t1 diag-op diag-op-modify">increment (local)</span>
+                            <span class="diag-race-col-t2 diag-op diag-op-idle">—</span>
+                            <span class="diag-race-col-cnt diag-cnt">0</span>
+                        </div>
+                        <div class="diag-race-row">
+                            <span class="diag-race-col-time diag-t-label">t4</span>
+                            <span class="diag-race-col-t1 diag-op diag-op-idle">—</span>
+                            <span class="diag-race-col-t2 diag-op diag-op-modify">increment (local)</span>
+                            <span class="diag-race-col-cnt diag-cnt">0</span>
+                        </div>
+                        <div class="diag-race-row">
+                            <span class="diag-race-col-time diag-t-label">t5</span>
+                            <span class="diag-race-col-t1 diag-op diag-op-write">write count → <strong>1</strong></span>
+                            <span class="diag-race-col-t2 diag-op diag-op-idle">—</span>
+                            <span class="diag-race-col-cnt diag-cnt diag-cnt-ok">1</span>
+                        </div>
+                        <div class="diag-race-row diag-race-row-bad">
+                            <span class="diag-race-col-time diag-t-label">t6</span>
+                            <span class="diag-race-col-t1 diag-op diag-op-idle">—</span>
+                            <span class="diag-race-col-t2 diag-op diag-op-write">write count → <strong>1</strong></span>
+                            <span class="diag-race-col-cnt diag-cnt diag-cnt-bad">1 ⚠ lost!</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <pre><code><span class="hl-comment">// Classic race condition example</span>
 <span class="hl-keyword">class</span> <span class="hl-type">Counter</span> {
     <span class="hl-keyword">private</span> <span class="hl-type">int</span> count = <span class="hl-number">0</span>;
-    
+
     <span class="hl-keyword">public</span> <span class="hl-keyword">void</span> <span class="hl-method">increment</span>() {
         count++;  <span class="hl-comment">// Read-modify-write: NOT atomic!</span>
     }
@@ -358,12 +450,12 @@ Timeline:
 <span class="hl-comment">// 1. Invalid state — inconsistent object state</span>
 <span class="hl-comment">// 2. Infinite loops — stale values in while loops</span>
 <span class="hl-comment">// 3. Memory consistency errors — missing updates</span></code></pre>
-    </div>
+        </div>
 
-    <div class="junior-note">
-      <strong>// JUNIOR NOTE:</strong> The lost update problem is the classic concurrency bug. Even if you run the code 1000 times and it works, it can fail on the 1001st run. This is why concurrency bugs are so hard to find — they're non-deterministic.
+        <div class="junior-note">
+            <strong>// JUNIOR NOTE:</strong> The lost update problem is the classic concurrency bug. Even if you run the code 1000 times and it works, it can fail on the 1001st run. This is why concurrency bugs are so hard to find — they're non-deterministic.
+        </div>
     </div>
-  </div>
 
   <!-- Q55 -->
   <div class="qa-block">
