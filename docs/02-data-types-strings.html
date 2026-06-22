@@ -191,6 +191,210 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0.8rem
 }
 .qa-section tr:nth-child(even){background:var(--bg2)}
 
+
+/* ─── STACK VS HEAP DIAGRAM ─── */
+.memory-diagram {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem 1.5rem;
+    margin: 0.8rem 0;
+    overflow-x: auto;
+}
+
+.mem-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 280px;
+}
+
+.mem-section {
+    width: 100%;
+    max-width: 520px;
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    border: 0.5px solid var(--border);
+}
+
+.stack-section {
+    background: rgba(96, 165, 250, 0.05);
+    border-color: rgba(96, 165, 250, 0.2);
+}
+
+.heap-section {
+    background: rgba(52, 211, 153, 0.05);
+    border-color: rgba(52, 211, 153, 0.2);
+}
+
+.mem-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding-bottom: 0.4rem;
+    border-bottom: 0.5px solid var(--border);
+    margin-bottom: 0.6rem;
+    color: var(--text2);
+}
+.stack-section .mem-label { color: #60a5fa; }
+.heap-section .mem-label { color: #34d399; }
+
+.mem-frame {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.mem-row {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.15rem 0;
+    font-family: var(--mono);
+    font-size: 13px;
+}
+
+.mem-arrow {
+    color: var(--text3);
+    font-size: 10px;
+    width: 16px;
+}
+
+.mem-var {
+    color: var(--cyan2);
+    font-weight: 500;
+    min-width: 36px;
+}
+
+.mem-equals {
+    color: var(--text3);
+}
+
+.mem-address {
+    color: #f472b6;
+    font-weight: 500;
+}
+
+.mem-value {
+    color: #f59e0b;
+    font-weight: 500;
+}
+
+.mem-reference {
+    color: var(--text3);
+    font-size: 11px;
+    margin-left: 0.2rem;
+}
+
+.mem-primitive {
+    color: var(--text3);
+    font-size: 11px;
+    margin-left: 0.2rem;
+}
+
+.mem-arrow-down {
+    display: flex;
+    justify-content: center;
+    padding: 0.1rem 0;
+    color: var(--cyan);
+}
+
+.mem-note {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    text-align: center;
+    padding-top: 0.4rem;
+    border-top: 0.5px solid var(--border);
+    margin-top: 0.4rem;
+}
+
+/* Object inside heap */
+.mem-object {
+    border: 1px solid rgba(96, 165, 250, 0.15);
+    border-radius: 6px;
+    background: var(--bg3);
+    margin: 0.2rem 0;
+    overflow: hidden;
+}
+
+.mem-object-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.2rem 0.6rem;
+    background: var(--bg4);
+    border-bottom: 0.5px solid var(--border);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--cyan2);
+}
+
+.mem-object-address {
+    font-weight: 500;
+    color: #f472b6;
+}
+
+.mem-object-type {
+    color: var(--cyan2);
+    font-weight: 500;
+}
+
+.mem-object-body {
+    padding: 0.2rem 0.6rem;
+}
+
+.mem-object-field {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.1rem 0;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text2);
+    border-bottom: 0.5px solid rgba(255,255,255,0.04);
+}
+.mem-object-field:last-child {
+    border-bottom: none;
+}
+
+.mem-field-label {
+    min-width: 70px;
+    color: var(--text3);
+}
+
+.mem-field-value {
+    color: #f59e0b;
+    font-weight: 500;
+    min-width: 60px;
+}
+
+.mem-field-desc {
+    color: var(--text3);
+    font-size: 10px;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 600px) {
+    .mem-section {
+        max-width: 100%;
+        padding: 0.6rem;
+    }
+    .mem-row {
+        font-size: 11px;
+        flex-wrap: wrap;
+    }
+    .mem-field-label {
+        min-width: 50px;
+    }
+    .mem-object-field {
+        font-size: 10px;
+        flex-wrap: wrap;
+    }
+}
+
 /* ── JUNIOR NOTE ── */
 .junior-note{
   background:var(--cyan-dim);
@@ -243,23 +447,42 @@ footer{padding:1.5rem 1.5rem;border-top:0.5px solid var(--border);display:flex;a
 </head>
 <body>
 
+<!--<nav>-->
+<!--  <div class="nav-brand">-->
+<!--    <svg class="nav-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">-->
+<!--      <circle cx="100" cy="100" r="70" fill="#0f172a" stroke="#64748b" stroke-width="1"/>-->
+<!--      <text x="92" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="end" fill="#e2e8f0" letter-spacing="1px">VBF</text>-->
+<!--      <circle cx="100" cy="99" r="8" fill="none" stroke="#00d9ff" stroke-width="2"/>-->
+<!--      <path d="M 96 99 L 99 102 L 104 95" fill="none" stroke="#00d9ff" stroke-width="2.5" stroke-linecap="round"/>-->
+<!--      <text x="108" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="start" fill="#e2e8f0" letter-spacing="1px">RGE</text>-->
+<!--    </svg>-->
+<!--    <span class="nav-title">vbforge / <span>java-interview-prep</span></span>-->
+<!--  </div>-->
+<!--  <div class="nav-links">-->
+<!--    <a class="nav-link" href="index.html">home</a>-->
+<!--    <a class="nav-link active" href="#">theory</a>-->
+<!--    <a class="nav-link" href="index.html#section-demos">demos</a>-->
+<!--    <a class="nav-link" href="https://github.com/vbforge/java-interview-prep" target="_blank">github ↗</a>-->
+<!--  </div>-->
+<!--</nav>-->
+
 <nav>
-  <div class="nav-brand">
-    <svg class="nav-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="100" cy="100" r="70" fill="#0f172a" stroke="#64748b" stroke-width="1"/>
-      <text x="92" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="end" fill="#e2e8f0" letter-spacing="1px">VBF</text>
-      <circle cx="100" cy="99" r="8" fill="none" stroke="#00d9ff" stroke-width="2"/>
-      <path d="M 96 99 L 99 102 L 104 95" fill="none" stroke="#00d9ff" stroke-width="2.5" stroke-linecap="round"/>
-      <text x="108" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="start" fill="#e2e8f0" letter-spacing="1px">RGE</text>
-    </svg>
-    <span class="nav-title">vbforge / <span>java-interview-prep</span></span>
-  </div>
-  <div class="nav-links">
-    <a class="nav-link" href="index.html">home</a>
-    <a class="nav-link active" href="#">theory</a>
-    <a class="nav-link" href="index.html#section-demos">demos</a>
-    <a class="nav-link" href="https://github.com/vbforge/java-interview-prep" target="_blank">github ↗</a>
-  </div>
+    <div class="nav-brand">
+        <svg class="nav-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="70" fill="#0f172a" stroke="#64748b" stroke-width="1"/>
+            <text x="92" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="end" fill="#e2e8f0" letter-spacing="1px">VBF</text>
+            <circle cx="100" cy="99" r="8" fill="none" stroke="#00d9ff" stroke-width="2"/>
+            <path d="M 96 99 L 99 102 L 104 95" fill="none" stroke="#00d9ff" stroke-width="2.5" stroke-linecap="round"/>
+            <text x="108" y="105" font-family="system-ui,sans-serif" font-size="18" font-weight="600" text-anchor="start" fill="#e2e8f0" letter-spacing="1px">RGE</text>
+        </svg>
+        <span class="nav-title">vbforge / <span>java-interview-prep</span></span>
+    </div>
+    <div class="nav-links">
+        <a class="nav-link" href="index.html">home</a>
+        <a class="nav-link" href="index.html#section-theory">theory</a>
+        <a class="nav-link" href="index.html#section-demos">demos</a>
+        <a class="nav-link" href="https://github.com/vbforge/java-interview-prep" target="_blank">github ↗</a>
+    </div>
 </nav>
 
 <div class="page">
@@ -407,22 +630,117 @@ footer{padding:1.5rem 1.5rem;border-top:0.5px solid var(--border);display:flex;a
         <li><strong>On the stack:</strong> The reference variable <code>o</code> is stored on the stack (if it's a local variable) and holds the memory address of that heap object.</li>
       </ol>
 
-        <pre><code>
-   Stack (current method frame)
+<!--        <pre><code>-->
+<!--   Stack (current method frame)-->
 
-   -----------------------------------------------
-   |       o → 0x7f3c2a1b4c (reference)          |
-   -----------------------------------------------
-                    │
-                    ▼
-   Heap
+<!--   -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+<!--   |       o → 0x7f3c2a1b4c (reference)          |-->
+<!--   -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+<!--                    │-->
+<!--                    ▼-->
+<!--   Heap-->
 
-   ------------------------------------------------
-   |       Object @ 0x7f3c2a1b4c                  |
-   |        • header (mark word, class ptr)       |
-   |        • no fields (empty object)            |
-   ------------------------------------------------
-</code></pre>
+<!--   &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+<!--   |       Object @ 0x7f3c2a1b4c                  |-->
+<!--   |        • header (mark word, class ptr)       |-->
+<!--   |        • no fields (empty object)            |-->
+<!--   &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+<!--</code></pre>-->
+
+        <!-- Stack & Heap Diagram -->
+        <div class="memory-diagram">
+            <div style="text-align:center;color:var(--text);font-size:13px;font-weight:500;margin-bottom:1rem;font-family:var(--mono)">
+                Stack vs Heap — Object Reference
+            </div>
+
+            <div class="mem-container">
+                <!-- Stack Section -->
+                <div class="mem-section stack-section">
+                    <div class="mem-label">Stack</div>
+                    <div class="mem-frame">
+                        <div class="mem-row">
+                            <span class="mem-arrow">▶</span>
+                            <span class="mem-var">o</span>
+                            <span class="mem-equals">=</span>
+                            <span class="mem-address">0x7f3c2a1b4c</span>
+                            <span class="mem-reference">(reference)</span>
+                        </div>
+                        <div class="mem-row">
+                            <span class="mem-arrow">▶</span>
+                            <span class="mem-var">x</span>
+                            <span class="mem-equals">=</span>
+                            <span class="mem-value">42</span>
+                            <span class="mem-primitive">(primitive)</span>
+                        </div>
+                        <div class="mem-row">
+                            <span class="mem-arrow">▶</span>
+                            <span class="mem-var">flag</span>
+                            <span class="mem-equals">=</span>
+                            <span class="mem-value">true</span>
+                            <span class="mem-primitive">(primitive)</span>
+                        </div>
+                    </div>
+                    <div class="mem-note">⬆ Per-thread · Method call frames · Local variables</div>
+                </div>
+
+                <!-- Arrow pointing down -->
+                <div class="mem-arrow-down">
+                    <svg width="24" height="40" viewBox="0 0 24 40">
+                        <line x1="12" y1="0" x2="12" y2="30" stroke="var(--cyan)" stroke-width="1.5" stroke-dasharray="4,4"/>
+                        <polygon points="12,38 6,28 18,28" fill="var(--cyan)"/>
+                    </svg>
+                </div>
+
+                <!-- Heap Section -->
+                <div class="mem-section heap-section">
+                    <div class="mem-label">Heap</div>
+                    <div class="mem-frame">
+                        <div class="mem-object">
+                            <div class="mem-object-header">
+                                <span class="mem-object-address">0x7f3c2a1b4c</span>
+                                <span class="mem-object-type">Object</span>
+                            </div>
+                            <div class="mem-object-body">
+                                <div class="mem-object-field">
+                                    <span class="mem-field-label">mark word</span>
+                                    <span class="mem-field-value">0x00000001</span>
+                                    <span class="mem-field-desc">(header — GC info)</span>
+                                </div>
+                                <div class="mem-object-field">
+                                    <span class="mem-field-label">class ptr</span>
+                                    <span class="mem-field-value">0x0000abcd</span>
+                                    <span class="mem-field-desc">(header — class metadata)</span>
+                                </div>
+                                <div class="mem-object-field">
+                                    <span class="mem-field-label">(empty object)</span>
+                                    <span class="mem-field-value">—</span>
+                                    <span class="mem-field-desc">no fields</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mem-object" style="border-color:rgba(34,197,94,0.3);background:rgba(34,197,94,0.08)">
+                            <div class="mem-object-header" style="color:var(--green)">
+                                <span class="mem-object-address" style="color:var(--green)">0x7f3c2a1b5d</span>
+                                <span class="mem-object-type" style="color:var(--green)">String</span>
+                            </div>
+                            <div class="mem-object-body">
+                                <div class="mem-object-field">
+                                    <span class="mem-field-label">value</span>
+                                    <span class="mem-field-value">char[]</span>
+                                    <span class="mem-field-desc">@ 0x7f3c2a1b6e</span>
+                                </div>
+                                <div class="mem-object-field">
+                                    <span class="mem-field-label">hash</span>
+                                    <span class="mem-field-value">0</span>
+                                    <span class="mem-field-desc">(cached)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mem-note">⬇ Shared across threads · All objects live here · Garbage collected</div>
+                </div>
+            </div>
+        </div>
 
 
       <p><strong>If <code>o</code> is a field</strong> (instance variable), the reference is stored inside the containing object on the heap, not on the stack.</p>
