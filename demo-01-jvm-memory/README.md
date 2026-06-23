@@ -1,6 +1,6 @@
 # demo-01 — JVM Memory
 
-> **Theory file:** [theory/01-jvm-memory.md](../../theory/01-jvm-memory.md)
+> **Theory file:** [theory: 01-jvm-memory](01-jvm-memory.md)
 > **Questions covered:** Q1–Q8
 > **Port:** 8081
 
@@ -23,15 +23,9 @@ HTTP responses, and live Actuator metrics.
 
 ```bash
 cd demos/demo-01-jvm-memory
-
-mvn spring-boot:run -Dspring-boot.run.jvmArguments="
-  -Xms64m
-  -Xmx256m
-  -XX:+UseG1GC
-  -XX:MaxGCPauseMillis=200
-  -Xlog:gc*:file=logs/gc.log:time,uptime,level,tags:filecount=3,filesize=5m
-  -XX:+HeapDumpOnOutOfMemoryError
-  -XX:HeapDumpPath=logs/heap-dump.hprof"
+ 
+mvn spring-boot:run "-Dspring-boot.run.jvmArguments=-Xms64m -Xmx256m -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Xlog:gc*:file=logs/gc.log:time,uptime,level,tags:filecount=3,filesize=5m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=logs/heap-dump.hprof"
+  
 ```
 
 ### Recommended JVM flags (copy-paste block)
@@ -46,15 +40,15 @@ mvn spring-boot:run -Dspring-boot.run.jvmArguments="
 -XX:HeapDumpPath=logs/heap-dump.hprof
 ```
 
-| Flag | Purpose |
-|------|---------|
-| `-Xms64m` | Initial heap size — JVM starts with 64 MB |
-| `-Xmx256m` | Max heap — kept small so GC fires quickly and you can observe it |
-| `-XX:+UseG1GC` | Explicit G1 (it's the default on Java 9+, but explicit is clearer) |
-| `-XX:MaxGCPauseMillis=200` | G1 pause-time target — G1 tries to stay under 200 ms |
-| `-Xlog:gc*:file=logs/gc.log` | Unified GC logging to file (Java 9+ syntax) |
-| `-XX:+HeapDumpOnOutOfMemoryError` | Write heap dump on OOM — needed for `/demo/oom` |
-| `-XX:HeapDumpPath=logs/` | Where to write the dump |
+| Flag                              | Purpose                                                            |
+|-----------------------------------|--------------------------------------------------------------------|
+| `-Xms64m`                         | Initial heap size — JVM starts with 64 MB                          |
+| `-Xmx256m`                        | Max heap — kept small so GC fires quickly and you can observe it   |
+| `-XX:+UseG1GC`                    | Explicit G1 (it's the default on Java 9+, but explicit is clearer) |
+| `-XX:MaxGCPauseMillis=200`        | G1 pause-time target — G1 tries to stay under 200 ms               |
+| `-Xlog:gc*:file=logs/gc.log`      | Unified GC logging to file (Java 9+ syntax)                        |
+| `-XX:+HeapDumpOnOutOfMemoryError` | Write heap dump on OOM — needed for `/demo/oom`                    |
+| `-XX:HeapDumpPath=logs/`          | Where to write the dump                                            |
 
 Make sure `logs/` exists before running:
 
@@ -72,21 +66,21 @@ After startup, the index is at:
 GET http://localhost:8081/demo
 ```
 
-| Endpoint | Theory Q | What to observe |
-|----------|----------|-----------------|
-| `GET /demo/stack/call-chain` | Q2 | Log output shows frame depth and local variable lifecycle |
-| `GET /demo/stack/overflow` | Q2 | `StackOverflowError` caught and returned — not an OOM |
-| `GET /demo/stack/pass-by-value` | Q2 | Primitive unchanged, array element mutated — proves pass-by-value |
-| `GET /demo/heap/short-lived?rounds=500` | Q3, Q7 | Eden fills up → Minor GC fires → heap shrinks back |
-| `GET /demo/heap/long-lived?chunks=20` | Q3 | Objects promoted to Old Gen — heap stays high |
-| `GET /demo/heap/clear` | Q3 | Old Gen released — watch heap drop in gc.log |
-| `GET /demo/heap/humongous` | Q3, Q8 | 4 MB object bypasses Eden, goes to Humongous region |
-| `GET /demo/heap/primitive-vs-boxed` | Q7 | Primitive loop: no GC; boxed loop: GC pressure visible |
-| `GET /demo/gc/reachability` | Q6 | Cyclic reference collected correctly — no leak |
-| `GET /demo/gc/references` | Q6 | Weak ref cleared after GC hint; Soft ref survives |
-| `GET /demo/gc/pressure?mb=100` | Q4 | 100 MB allocated and released — several Minor GCs in gc.log |
-| `GET /demo/metaspace/stats` | Q3 | Live Metaspace usage, class counts, heap vs non-heap |
-| `GET /demo/oom` | Q1 | `OutOfMemoryError: Java heap space` — check `logs/` for dump |
+| Endpoint                                | Theory Q | What to observe                                                   |
+|-----------------------------------------|----------|-------------------------------------------------------------------|
+| `GET /demo/stack/call-chain`            | Q2       | Log output shows frame depth and local variable lifecycle         |
+| `GET /demo/stack/overflow`              | Q2       | `StackOverflowError` caught and returned — not an OOM             |
+| `GET /demo/stack/pass-by-value`         | Q2       | Primitive unchanged, array element mutated — proves pass-by-value |
+| `GET /demo/heap/short-lived?rounds=500` | Q3, Q7   | Eden fills up → Minor GC fires → heap shrinks back                |
+| `GET /demo/heap/long-lived?chunks=20`   | Q3       | Objects promoted to Old Gen — heap stays high                     |
+| `GET /demo/heap/clear`                  | Q3       | Old Gen released — watch heap drop in gc.log                      |
+| `GET /demo/heap/humongous`              | Q3, Q8   | 4 MB object bypasses Eden, goes to Humongous region               |
+| `GET /demo/heap/primitive-vs-boxed`     | Q7       | Primitive loop: no GC; boxed loop: GC pressure visible            |
+| `GET /demo/gc/reachability`             | Q6       | Cyclic reference collected correctly — no leak                    |
+| `GET /demo/gc/references`               | Q6       | Weak ref cleared after GC hint; Soft ref survives                 |
+| `GET /demo/gc/pressure?mb=100`          | Q4       | 100 MB allocated and released — several Minor GCs in gc.log       |
+| `GET /demo/metaspace/stats`             | Q3       | Live Metaspace usage, class counts, heap vs non-heap              |
+| `GET /demo/oom`                         | Q1       | `OutOfMemoryError: Java heap space` — check `logs/` for dump      |
 
 ---
 
@@ -99,14 +93,14 @@ A typical G1 Minor GC line looks like:
 [1.234s][info][gc] GC(5) Pause Young (Normal) (G1 Evacuation Pause) 78M->21M(256M) 3.456ms
 ```
 
-| Part | Meaning |
-|------|---------|
-| `1.234s` | JVM uptime when GC started |
-| `GC(5)` | 5th GC event |
-| `Pause Young` | Only Young Generation collected (Minor GC) |
+| Part                  | Meaning                                                      |
+|-----------------------|--------------------------------------------------------------|
+| `1.234s`              | JVM uptime when GC started                                   |
+| `GC(5)`               | 5th GC event                                                 |
+| `Pause Young`         | Only Young Generation collected (Minor GC)                   |
 | `G1 Evacuation Pause` | G1 moved live objects out of Eden/Survivor into Survivor/Old |
-| `78M->21M(256M)` | Heap used before → after (total heap capacity) |
-| `3.456ms` | Stop-the-world pause — all threads paused for this duration |
+| `78M->21M(256M)`      | Heap used before → after (total heap capacity)               |
+| `3.456ms`             | Stop-the-world pause — all threads paused for this duration  |
 
 A Mixed GC (Old Generation also collected) looks like:
 
@@ -140,7 +134,7 @@ Or open `/actuator/metrics` in a browser to see all available metric names.
 
 ## Suggested learning sequence
 
-1. Read `theory/01-jvm-memory.md` Q1–Q8 first.
+1. Read `theory: 01-jvm-memory.md` Q1–Q8 first.
 2. Run the app with GC logging flags.
 3. Hit each endpoint in theory-file order (stack → heap → gc → metaspace).
 4. For each endpoint: read the response, check the logs, map back to the theory answer.

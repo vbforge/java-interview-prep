@@ -50,7 +50,7 @@ public class GcDemo {
         obj = null;
         // 'obj' no longer holds a reference → the Object on the heap is unreachable
         // → it is now ELIGIBLE for GC (not necessarily collected immediately)
-        log.debug("obj set to null — original Object is now unreachable (eligible for GC)");
+        log.debug("obj set to null - original Object is now unreachable (eligible for GC)");
 
         // ── cyclic reference case ────────────────────────────────────────────
         // JUNIOR NOTE: In reference-counting languages (Python, Swift) this would
@@ -61,16 +61,16 @@ public class GcDemo {
         a.next = b;
         b.next = a;   // cycle: A → B → A
 
-        log.debug("Before nulling: A={}, B={} — both reachable via local vars (GC roots)", a.name, b.name);
+        log.debug("Before nulling: A={}, B={} - both reachable via local vars (GC roots)", a.name, b.name);
 
         a = null;
         b = null;
         // Both local references nulled → neither node is reachable from any GC root
         // → the cycle is NOT a problem — GC collects both
-        log.debug("After nulling: both nodes unreachable despite cycle — GC handles correctly");
+        log.debug("After nulling: both nodes unreachable despite cycle - GC handles correctly");
 
         System.gc(); // hint only — may or may not run immediately
-        return "Reachability demo complete — see logs. Cyclic references do NOT leak in Java.";
+        return "Reachability demo complete - see logs. Cyclic references do NOT leak in Java.";
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -90,7 +90,7 @@ public class GcDemo {
 
         // ── Strong reference ─────────────────────────────────────────────────
         byte[] strongData = new byte[1024 * 1024]; // 1 MB
-        log.debug("Strong ref: strongData={} — will NOT be collected while this reference exists",
+        log.debug("Strong ref: strongData={} - will NOT be collected while this reference exists",
             strongData.length + " bytes");
 
         // ── Soft reference ───────────────────────────────────────────────────
@@ -98,7 +98,7 @@ public class GcDemo {
         // throw OutOfMemoryError. Perfect for in-memory caches: the cache
         // survives under normal conditions but gives up memory under pressure.
         SoftReference<byte[]> softRef = new SoftReference<>(new byte[1024 * 1024]);
-        log.debug("Soft ref: get()={} — cleared only under memory pressure",
+        log.debug("Soft ref: get()={} - cleared only under memory pressure",
             softRef.get() != null ? "alive" : "cleared");
 
         // ── Weak reference ───────────────────────────────────────────────────
@@ -142,7 +142,7 @@ public class GcDemo {
      *    4.123ms                   → stop-the-world pause duration
      */
     public String runGcPressureDemo(int allocationMb) {
-        log.debug("=== GC DEMO: pressure — allocating {}MB of short-lived objects ===", allocationMb);
+        log.debug("=== GC DEMO: pressure -> allocating {}MB of short-lived objects ===", allocationMb);
 
         long before = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         List<byte[]> temp = new ArrayList<>();
@@ -150,7 +150,7 @@ public class GcDemo {
         for (int i = 0; i < allocationMb; i++) {
             temp.add(new byte[1024 * 1024]); // 1 MB per iteration
         }
-        log.debug("Allocated {}MB — now releasing all references", allocationMb);
+        log.debug("Allocated {}MB -> now releasing all references", allocationMb);
         temp.clear(); // all objects become unreachable
 
         long after = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();

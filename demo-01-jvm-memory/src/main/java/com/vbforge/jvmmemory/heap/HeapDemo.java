@@ -65,7 +65,7 @@ public class HeapDemo {
         long after = usedHeapMb();
         String msg = String.format(
             "Short-lived allocation done. heap before=%dMB after=%dMB " +
-            "(GC likely ran — check gc.log for 'Pause Young')", before, after);
+            "(GC likely ran - check gc.log for 'Pause Young')", before, after);
         log.debug(msg);
         return msg;
     }

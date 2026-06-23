@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 /**
  * Q2 — What is the stack for, and what is stored in it?
  *
@@ -79,7 +81,7 @@ public class StackDemo {
             recurse(0);
             return "Should never reach here";
         } catch (StackOverflowError e) {
-            String msg = "StackOverflowError caught after deep recursion — stack exhausted";
+            String msg = "StackOverflowError caught after deep recursion -> stack exhausted";
             log.warn(msg);
             return msg;
         }
@@ -107,7 +109,7 @@ public class StackDemo {
         // Primitive — passing a COPY of the value
         int x = 5;
         tryToModifyPrimitive(x);
-        log.debug("After tryToModifyPrimitive(x): x={} (unchanged — copy was passed)", x);
+        log.debug("After tryToModifyPrimitive(x): x={} (unchanged -> copy was passed)", x);
 
         // Object reference — passing a COPY of the REFERENCE (address)
         // The method CAN mutate the object because both caller and callee
@@ -117,7 +119,9 @@ public class StackDemo {
         tryToModifyArray(arr);
         log.debug("After tryToModifyArray(arr): arr[0]={} (mutated via shared reference)", arr[0]);
 
-        return String.format("x=%d (unchanged), arr[0]=%d (mutated via reference)", x, arr[0]);
+        System.out.println("arr = " + Arrays.toString(arr)); //[99, 2, 3]
+
+        return String.format("x=%d (unchanged), arr[0]=%d (mutated via reference) arr now: [arr[0]=%d, arr[1]=%d, arr[2]=%d]", x, arr[0], arr[0], arr[1], arr[2]);
     }
 
     private void tryToModifyPrimitive(int value) {
@@ -132,6 +136,6 @@ public class StackDemo {
         // ref[0] = 99 follows the address to the heap and mutates the object there.
         // The caller holds the same address, so it sees the mutation.
         ref[0] = 99;
-        log.debug("[tryToModifyArray] mutated ref[0]={} — same heap object", ref[0]);
+        log.debug("[tryToModifyArray] mutated ref[0]={} -> same heap object", ref[0]);
     }
 }

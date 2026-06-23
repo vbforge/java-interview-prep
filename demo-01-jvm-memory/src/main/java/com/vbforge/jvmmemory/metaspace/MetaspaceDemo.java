@@ -33,7 +33,7 @@ public class MetaspaceDemo {
     // JUNIOR NOTE: This static field lives in Metaspace (as part of this class's
     // metadata). However, the String OBJECT it refers to lives on the heap (string pool).
     // Metaspace holds the REFERENCE (pointer), not the object itself.
-    private static final String STATIC_CONSTANT = "I am a static field reference — I live in Metaspace";
+    private static final String STATIC_CONSTANT = "I am a static field reference - I live in Metaspace";
 
     /**
      * Prints a snapshot of Metaspace usage and class loading stats using

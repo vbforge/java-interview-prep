@@ -1,7 +1,7 @@
 # 01 — JVM Memory
 
 > **Questions covered:** Q1–Q8
-> **Demo:** [demo-01-jvm-memory](../demos/demo-01-jvm-memory)
+> **Demo:** [demo-01-jvm-memory](README.md)
 > **Sections that can't be skipped** per recruiter screen ✓
 
 ---
@@ -10,17 +10,20 @@
 
 **Short answer**
 
-The JVM divides memory into two main areas: the **stack** and the **heap**. The stack holds method call frames and local variables; the heap holds all objects. Beyond those two, the JVM also uses **Metaspace** (class metadata), the **Code Cache** (JIT-compiled native code), and **native/off-heap memory** (used by NIO buffers, for example).
+The JVM divides memory into two main areas: the **stack** and the **heap**. 
+The stack holds method call frames and local variables; the heap holds all objects. 
+Beyond those two, the JVM also uses **Metaspace** (class metadata), the **Code Cache** (JIT-compiled native code), 
+and **native/off-heap memory** (used by NIO buffers, for example).
 
 **In depth**
 
-| Area | What lives there | Lifecycle |
-|------|-----------------|-----------|
-| Stack | Primitive local variables, references (not the objects they point to), method call frames | Created per thread; a frame is pushed on each method call and popped on return |
-| Heap | All objects created with `new`, their instance fields | From `new` until the GC determines no references remain |
-| Metaspace (Java 8+) | Class definitions, method bytecode, static fields | Lives as long as the ClassLoader that loaded the class |
-| Code Cache | Machine code produced by the JIT compiler | Managed by the JVM; old code is evicted when the cache is full |
-| Off-heap | `ByteBuffer.allocateDirect()`, memory-mapped files | Managed manually or via `Cleaner`; not subject to GC pauses |
+| Area                | What lives there                                                                          | Lifecycle                                                                      |
+|---------------------|-------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|
+| Stack               | Primitive local variables, references (not the objects they point to), method call frames | Created per thread; a frame is pushed on each method call and popped on return |
+| Heap                | All objects created with `new`, their instance fields                                     | From `new` until the GC determines no references remain                        |
+| Metaspace (Java 8+) | Class definitions, method bytecode, static fields                                         | Lives as long as the ClassLoader that loaded the class                         |
+| Code Cache          | Machine code produced by the JIT compiler                                                 | Managed by the JVM; old code is evicted when the cache is full                 |
+| Off-heap            | `ByteBuffer.allocateDirect()`, memory-mapped files                                        | Managed manually or via `Cleaner`; not subject to GC pauses                    |
 
 > **// JUNIOR NOTE:** A common mistake is thinking the *object* lives on the stack because the *variable* is declared inside a method. The variable (a reference — just an address) lives on the stack. The object it points to always lives on the heap. The only exception is scalar replacement by the JIT after escape analysis, but that is a JVM optimisation, not something you control.
 
@@ -267,4 +270,66 @@ G1 key ideas:
 
 ---
 
-*Next: [02-data-types-strings.md](../docs/02-data-types-strings.html) — Q9–Q17*
+## Bonus Q & A 
+
+**Q1: What's the difference between Stack and Heap?**
+Stack is a memory space for references for objects, it is a space where primitives data are located. Heap is a memory space where objects itself are located. That is the main difference.
+
+**Q2: Why does `int x = 5` behave differently than `int[] arr = {1,2,3}` when passed to a method?**
+Because x is a primitive data type and during method execution it located in a stack belong to the section of this executing method frame runtime, 
+it will disappear when method end. So it does not affect since in Java we always pass by value not by reference.  
+With the arr is different, because it is an Object (since arr[] - is an Object), and objects are located in the heap. 
+So if we pass this arr into the method it does affect into the original because the reference will bypass to the same object in the heap.
+
+**Q3: What is a Minor GC vs Full GC?**
+Minor GC is a collector that can collect from the young memory and the Full GC is a much more expensive operation which is collect from Old memory and compact it.  
+
+**Q4: What happens when you call `System.gc()`?**
+It is a hint. Does not guarantee that System will be clearing from garbage. 
+
+**Q5: Which reference type should you use for a cache that can be recreated?**
+soft reference
+
+**Q6: Why did humongous objects (242MB) cause OOM even though Full GC tried to collect them?**
+Because GC can happen and do it job too late. When the memory is already out of.
+Humongous objects were strongly referenced by the leak list. GC couldn't collect them because they were reachable from GC roots. 
+The list held references to all 10MB arrays, so no matter how many times GC ran, they stayed alive.
+
+**Q7: In our OOM demo, why did GC(46) free 242MB but the JVM still crashed?**
+The JVM crashed after GC(46) because:
+1. The OOM was already in progress when GC(46) ran
+2. The allocation that triggered OOM failed before GC could finish
+3. By the time GC freed memory, it was too late — the OOM was already thrown
+Real-world implication: OOM can happen even if memory exists — if the allocation request arrives before GC completes.
+
+**Q8: What's the difference between:**
+```java
+Long sum = 0L;
+for (int i = 0; i < 1_000_000; i++) {
+    sum += i;
+}
+```
+and
+```java
+long sum = 0;
+for (int i = 0; i < 1_000_000; i++) {
+    sum += i;
+}
+```
+First method heavier, since it will creat a huge number of objects in heap, but the second used a primitive, so 0 objects created, only frame in the stack while method executed. 
+
+**Q9: In our GC log, we saw: `GC(46) Humongous regions: 242→0` but also `Old regions: 14→14`. Why did humongous regions get collected but Old Gen stayed?**
+Old regions: 14→14  ← 14MB of STRONG references still alive
+Humongous: 242→0    ← All 242MB of humongous objects were FREED
+Why Old Gen stayed: Those 14MB were legitimate live objects (Spring beans, class metadata, etc.) that couldn't be collected. 
+The humongous objects were freed because they were no longer reachable.
+
+**Q10: You're debugging a production app with high GC pauses. List 3 things you'd check based on what we learned.**
+1) Check GC log — look for frequent Full GCs, pause times
+2) Check heap usage — /actuator/metrics/jvm.memory.used → is Old Gen growing?
+3) Check humongous allocations — are objects > 50% of region size?
+4) Check reference types — are caches using strong refs instead of soft/weak?
+5) Check GC roots — use heap dump to see what's holding references
+
+---
+

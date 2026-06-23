@@ -7,7 +7,7 @@ Built as a junior→middle transition reference.
 
 > Based on a real first-round recruitment agency screen covering all required sections:
 > Java memory model · Collections · Concurrency · Spring · JPA · Databases.
-- **[original questions file (pdf)](docs/assets/first-round-interview-recruitment-agency-questions.pdf)**
+- **[original questions file (pdf)](docs/assets/interview-agency-questions.pdf)**
 - **[numbering questions file (md)](docs/assets/numbering-questions-readme.md)**
 
 ---
@@ -17,25 +17,25 @@ Built as a junior→middle transition reference.
 ```
 java-interview-prep/
 │
-├── README.md                                                               # this file
-├── docs/                                                                   # GitHub Pages source (Q&A reference - answers)
+├── README.md                                          # this file
+├── docs/                                              # GitHub Pages source (Q&A reference - answers)
 │   ├── assets
-│   │    ├── numbering-questions-readme.md                                  # Questions list readme
-│   │    └── first-round-interview-recruitment-agency-questions.pdf         # Original document with questions list
-│   ├── 01-jvm-memory.html                                                  # Q1–Q8
-│   ├── 02-data-types-strings.html                                          # Q9–Q17
-│   ├── 03-oop-generics.html                                                # Q18–Q27
-│   ├── 04-collections-list.html                                            # Q28–Q33
-│   ├── 05-collections-hashmap.html                                         # Q34–Q44
-│   ├── 06-streams-lambdas.html                                             # Q45–Q52
-│   ├── 07-concurrency.html                                                 # Q53–Q63
-│   ├── 08-spring-core-web.html                                             # Q64–Q77
-│   ├── 09-jpa-databases.html                                               # Q78–Q86
-│   ├── 10-design-patterns.html                                             # Q87–Q89
-│   ├── index.html                                                          # Start / Home page 
-│   └── numbering-questions.html                                            # Questions list
+│   │   ├── numbering-questions-readme.md              # Questions list readme
+│   │   └── interview-agency-questions.pdf             # Original document with questions list
+│   ├── 01-jvm-memory.html                             # Q1–Q8
+│   ├── 02-data-types-strings.html                     # Q9–Q17
+│   ├── 03-oop-generics.html                           # Q18–Q27
+│   ├── 04-collections-list.html                       # Q28–Q33
+│   ├── 05-collections-hashmap.html                    # Q34–Q44
+│   ├── 06-streams-lambdas.html                        # Q45–Q52
+│   ├── 07-concurrency.html                            # Q53–Q63
+│   ├── 08-spring-core-web.html                        # Q64–Q77
+│   ├── 09-jpa-databases.html                          # Q78–Q86
+│   ├── 10-design-patterns.html                        # Q87–Q89
+│   ├── index.html                                     # Start / Home page 
+│   └── numbering-questions.html                       # Questions list
 │                   
-├── demo-01-jvm-memory/                                                     # Runnable Spring Boot / Java projects
+├── demo-01-jvm-memory/                                # Runnable Spring Boot / Java projects
 ├── demo-02-collections/
 ├── demo-03-streams/
 ├── demo-04-concurrency/
