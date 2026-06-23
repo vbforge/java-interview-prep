@@ -8,7 +8,7 @@ Built as a junior→middle transition reference.
 > Based on a real first-round recruitment agency screen covering all required sections:
 > Java memory model · Collections · Concurrency · Spring · JPA · Databases.
 - **[original questions file (pdf)](docs/assets/first-round-interview-recruitment-agency-questions.pdf)**
-- **[numbering questions file (md)](helpers-files/numbering-questions-readme.md)**
+- **[numbering questions file (md)](docs/assets/numbering-questions-readme.md)**
 
 ---
 
@@ -17,84 +17,49 @@ Built as a junior→middle transition reference.
 ```
 java-interview-prep/
 │
-├── README.md
-├── docs/                              # GitHub Pages source
-│   └── index.md
-│
-├── theory/                            # Pure Q&A reference — no code, just answers
-│   ├── 01-jvm-memory.md               # Q1–Q8
-│   ├── 02-data-types-strings.md       # Q9–Q17
-│   ├── 03-oop-generics.md             # Q18–Q27
-│   ├── 04-collections-list.md         # Q28–Q33
-│   ├── 05-collections-hashmap.md      # Q34–Q44
-│   ├── 06-streams-lambdas.md          # Q45–Q52
-│   ├── 07-concurrency.md              # Q53–Q63
-│   ├── 08-spring-core-web.md          # Q64–Q77
-│   ├── 09-jpa-databases.md            # Q78–Q86
-│   └── 10-design-patterns.md          # Q87–Q89
+├── README.md                                                               # this file
+├── docs/                                                                   # GitHub Pages source (Q&A reference - answers)
+│   ├── assets
+│   │    ├── numbering-questions-readme.md                                  # Questions list readme
+│   │    └── first-round-interview-recruitment-agency-questions.pdf         # Original document with questions list
+│   ├── 01-jvm-memory.html                                                  # Q1–Q8
+│   ├── 02-data-types-strings.html                                          # Q9–Q17
+│   ├── 03-oop-generics.html                                                # Q18–Q27
+│   ├── 04-collections-list.html                                            # Q28–Q33
+│   ├── 05-collections-hashmap.html                                         # Q34–Q44
+│   ├── 06-streams-lambdas.html                                             # Q45–Q52
+│   ├── 07-concurrency.html                                                 # Q53–Q63
+│   ├── 08-spring-core-web.html                                             # Q64–Q77
+│   ├── 09-jpa-databases.html                                               # Q78–Q86
+│   ├── 10-design-patterns.html                                             # Q87–Q89
+│   ├── index.html                                                          # Start / Home page 
+│   └── numbering-questions.html                                            # Questions list
 │                   
-├── demo-01-jvm-memory/                        # Runnable Spring Boot / Java projects
+├── demo-01-jvm-memory/                                                     # Runnable Spring Boot / Java projects
 ├── demo-02-collections/
 ├── demo-03-streams/
 ├── demo-04-concurrency/
 ├── demo-05-spring-core/
 ├── demo-06-spring-data/
-├── demo-07-patterns/
-│
-└── interview-scorecard/
-    └── scorecard-template.md          # 1–5 rating sheet from the original screen
-```
+└── demo-07-patterns/
 
-**Two separate concerns, two separate folders:**
-- `theory/` — 10 flat markdown files. Open one 10 minutes before an interview and read answers fast.
-- `demos/` — runnable Spring Boot modules. One module per topic, fully self-contained.
-
----
-
-## Theory files
-
-| File | Topic | Questions |
-|------|-------|-----------|
-| [01-jvm-memory.md](helpers-files/theory/01-jvm-memory.md) | JVM memory, GC, G1 | Q1–Q8     |
-| [02-data-types-strings.md](docs/02-data-types-strings.html) | Primitives, boxing, String pool | Q9–Q17    |
-| [03-oop-generics.md](docs/03-oop-generics.html) | Inheritance, interfaces, generics | Q18–Q27   |
-| [04-collections-list.md](docs/04-collections-list.html) | List, ArrayList, LinkedList, Iterator | Q28–Q33   |
-| [05-collections-hashmap.md](docs/05-collections-hashmap.html) | HashMap internals, TreeMap | Q34–Q44   |
-| [06-streams-lambdas.md](docs/06-streams-lambdas.html) | Streams, Optional, lambdas, functional interfaces | Q45–Q52   |
-| [07-concurrency.md](docs/07-concurrency.html) | Threads, volatile, CAS, ReentrantLock | Q53–Q63   |
-| [08-spring-core-web.md](docs/08-spring-core-web.html) | Beans, DI, scopes, HTTP, CORS | Q64–Q77   |
-| [09-jpa-databases.md](docs/09-jpa-databases.html) | JPA, N+1, locking, indexes | Q78–Q86   |
-| [10-design-patterns.md](docs/10-design-patterns.html) | GoF groups, Spring patterns | Q87–Q89   |
-
-Each theory file follows the same structure:
-
-```markdown
-## Qn — Question text
-
-**Short answer** (2–3 sentences, interview-ready)
-
-**In depth** (explanation with code snippet where useful)
-
-**// JUNIOR NOTE:** common mistake or trap to avoid
-
----
 ```
 
 ---
 
-## Demos
+## Projects across this repo
 
 Each demo is a standalone Maven module — no shared parent, no cross-module dependencies. Copy any one folder and it runs on its own.
 
-| Module | Covers | Stack |
-|--------|--------|-------|
-| [demo-01-jvm-memory](demos/demo-01-jvm-memory) | GC logging, heap regions, object lifecycle | Java 21, G1GC flags |
-| [demo-02-collections](demos/demo-02-collections) | HashMap collision, TreeMap ordering, Iterator | Java 21 |
-| [demo-03-streams](demos/demo-03-streams) | Stream pipelines, flatMap, collectors, lazy eval | Java 21 |
-| [demo-04-concurrency](demos/demo-04-concurrency) | Race condition demo, CAS vs synchronized, ReentrantLock | Java 21 |
-| [demo-05-spring-core](demos/demo-05-spring-core) | Bean scopes, lifecycle hooks, DI types, circular dep | Spring Boot 3, port 8085 |
-| [demo-06-spring-data](demos/demo-06-spring-data) | EAGER/LAZY fetch, N+1 fix, optimistic/pessimistic lock, index | Spring Boot 3, PostgreSQL, port 8086 |
-| [demo-07-patterns](demos/demo-07-patterns) | Singleton, Factory, Proxy, Strategy in Spring context | Spring Boot 3, port 8087 |
+| Module                                     | Covers                                                        | Stack                                |
+|--------------------------------------------|---------------------------------------------------------------|--------------------------------------|
+| [demo-01-jvm-memory](demo-01-jvm-memory)   | GC logging, heap regions, object lifecycle                    | Java 21, G1GC flags                  |
+| [demo-02-collections](demo-02-collections) | HashMap collision, TreeMap ordering, Iterator                 | Java 21                              |
+| [demo-03-streams](demo-03-streams)         | Stream pipelines, flatMap, collectors, lazy eval              | Java 21                              |
+| [demo-04-concurrency](demo-04-concurrency) | Race condition demo, CAS vs synchronized, ReentrantLock       | Java 21                              |
+| [demo-05-spring-core](demo-05-spring-core) | Bean scopes, lifecycle hooks, DI types, circular dep          | Spring Boot 3, port 8085             |
+| [demo-06-spring-data](demo-06-spring-data) | EAGER/LAZY fetch, N+1 fix, optimistic/pessimistic lock, index | Spring Boot 3, PostgreSQL, port 8086 |
+| [demo-07-patterns](demo-07-patterns)       | Singleton, Factory, Proxy, Strategy in Spring context         | Spring Boot 3, port 8087             |
 
 ### Running a demo
 
@@ -128,35 +93,14 @@ demo-0N-topic/
 
 - Package namespace: `com.vbforge`
 - No Spring Boot autoconfiguration for infrastructure beans — everything wired manually so the intent is visible
-- `// JUNIOR NOTE:` inline comments throughout, same style as the Kafka series
-
----
-
-## Interview scorecard
-
-The file [interview-scorecard/scorecard-template.md](helpers-files/scorecard-template.md) is a markdown version of the original recruiter screen. Use it to:
-
-- self-assess after each theory pass (rate yourself 1–5 per section)
-- mock-interview with a peer (fill in as the "interviewer")
-- track progress over time by saving dated copies
-
-Rating scale from the original screen:
-
-| Score | Meaning |
-|-------|---------|
-| 5 | Absolute star |
-| 4 | Excellent overall |
-| 3 | Meets requirement |
-| 2 | Doesn't meet requirement, but has bright spots |
-| 1 | Not good enough |
+- `// JUNIOR NOTE:` inline comments throughout
 
 ---
 
 ## Progress tracking
 
-The [GitHub Pages site](https://vbforge.github.io/java-interview-prep) has a live question tracker with checkboxes for all 89 questions, per-section progress bars, and the interactive scorecard.
-
-For local tracking, copy `interview-scorecard/scorecard-template.md` to `scorecard-YYYY-MM-DD.md` and fill it in after each full pass.
+The **[GitHub Page](https://vbforge.github.io/java-interview-prep)** has a live [question tracker with checkboxes](https://vbforge.github.io/java-interview-prep/#section-tracker) for all 89 questions, 
+per-section progress bars, and the [interactive scorecard](https://vbforge.github.io/java-interview-prep/#section-scorecard).
 
 ---
 
@@ -172,15 +116,3 @@ For local tracking, copy `interview-scorecard/scorecard-template.md` to `scoreca
 
 ---
 
-## Related repos
-
-| Repo | What it covers |
-|------|---------------|
-| [spring-mastery](https://github.com/vbforge/spring-mastery) | Structured Spring learning with GitHub Pages index |
-| [java-vbforge-core-deep-dive](https://github.com/vbforge/java-vbforge-core-deep-dive) | Java core modules 01–18: JVM, concurrency, reflection, testing |
-
----
-
-## License
-
-MIT
