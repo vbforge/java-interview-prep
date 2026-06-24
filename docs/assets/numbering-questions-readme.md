@@ -121,17 +121,18 @@
 
 ---
 
-## Project Grouping Strategy (**7 cohesive projects**)
+## Project Grouping Strategy (**8 cohesive projects**)
 
-| Module                                           | Covers                                                        | Stack                                |
-|--------------------------------------------------|---------------------------------------------------------------|--------------------------------------|
-| [demo-01-jvm-memory](../../demo-01-jvm-memory)   | GC logging, heap regions, object lifecycle                    | Java 21, G1GC flags                  |
-| [demo-02-collections](../../demo-02-collections) | HashMap collision, TreeMap ordering, Iterator                 | Java 21                              |
-| [demo-03-streams](../../demo-03-streams)         | Stream pipelines, flatMap, collectors, lazy eval              | Java 21                              |
-| [demo-04-concurrency](../../demo-04-concurrency) | Race condition demo, CAS vs synchronized, ReentrantLock       | Java 21                              |
-| [demo-05-spring-core](../../demo-05-spring-core) | Bean scopes, lifecycle hooks, DI types, circular dep          | Spring Boot 3, port 8085             |
-| [demo-06-spring-data](../../demo-06-spring-data) | EAGER/LAZY fetch, N+1 fix, optimistic/pessimistic lock, index | Spring Boot 3, PostgreSQL, port 8086 |
-| [demo-07-patterns](../../demo-07-patterns)       | Singleton, Factory, Proxy, Strategy in Spring context         | Spring Boot 3, port 8087             |
+| Module                                                                                 | Covers                                                        | Stack                                         |
+|----------------------------------------------------------------------------------------|---------------------------------------------------------------|-----------------------------------------------|
+| [demo-01-jvm-memory](../../demo-01-jvm-memory)                                         | GC logging, heap regions, object lifecycle                    | Spring Boot 3, Java 21, G1GC flags, port 8081 |
+| [demo-02-data-type-strings-oop-generics](../../demo-02-data-type-strings-oop-generics) | Data types & Strings, OOP & Generics                          | Spring Boot 3, Java 21, port 8082             |
+| [demo-03-collections](../../demo-03-collections)                                       | HashMap collision, TreeMap ordering, Iterator                 | Spring Boot 3, Java 21, port 8083             |
+| [demo-04-streams](../../demo-04-streams)                                               | Stream pipelines, flatMap, collectors, lazy eval              | Spring Boot 3, Java 21, port 8084             |
+| [demo-05-concurrency](../../demo-05-concurrency)                                       | Race condition demo, CAS vs synchronized, ReentrantLock       | Spring Boot 3, Java 21, port 8085             |
+| [demo-06-spring-core](../../demo-06-spring-core)                                       | Bean scopes, lifecycle hooks, DI types, circular dep          | Spring Boot 3, port 8086                      |
+| [demo-07-spring-data](../../demo-07-spring-data)                                       | EAGER/LAZY fetch, N+1 fix, optimistic/pessimistic lock, index | Spring Boot 3, PostgreSQL, port 8087          |
+| [demo-08-patterns](../../demo-08-patterns)                                             | Singleton, Factory, Proxy, Strategy in Spring context         | Spring Boot 3, port 8088                      |
 
 
 ---

@@ -1,8 +1,8 @@
 # 01 — JVM Memory
 
-> **Questions covered:** Q1–Q8
-> **Demo:** [demo-01-jvm-memory](README.md)
-> **Sections that can't be skipped** per recruiter screen ✓
+- > **Questions covered:** Q1–Q8
+- > **Demo:** [demo-01-jvm-memory](README.md)
+- > **Sections that can't be skipped** per recruiter screen ✓
 
 ---
 

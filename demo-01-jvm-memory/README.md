@@ -1,8 +1,10 @@
 # demo-01 — JVM Memory
 
-> **Theory file:** [theory: 01-jvm-memory](01-jvm-memory.md)
-> **Questions covered:** Q1–Q8
-> **Port:** 8081
+- > **Theory file:** [01-jvm-memory.md](01-jvm-memory.md)
+- > **Return to root README:** [java-interview-prep README](../README.md)
+- > **[GitHub Pages site](https://vbforge.github.io/java-interview-prep)**
+- > **Questions covered:** Q1–Q8
+- > **Port:** 8081
 
 This is a standalone Spring Boot application. No database, no Docker required.
 Its only job is to make the JVM memory model **visible** — through log output,

@@ -216,6 +216,7 @@ footer{padding:2rem 1.5rem 1.5rem;border-top:0.5px solid var(--border);display:f
   </a>
 
   <div class="nav-links">
+    <a class="nav-link" href="index.html">home</a>
     <a class="nav-link" href="#section-theory">theory</a>
     <a class="nav-link" href="#section-demos">demos</a>
     <a class="nav-link" href="#section-tracker">tracker</a>
@@ -382,6 +383,7 @@ footer{padding:2rem 1.5rem 1.5rem;border-top:0.5px solid var(--border);display:f
     <span class="footer-meta">vbforge · java-interview-prep · Java 21 · Spring Boot 3</span>
   </div>
   <div class="footer-links">
+    <a class="nav-link" href="index.html">home</a>
     <a class="footer-link" href="https://github.com/vbforge">github.com/vbforge</a>
     <a class="footer-link" href="https://github.com/vbforge/java-interview-prep">repo ↗</a>
   </div>
@@ -411,25 +413,34 @@ function buildUrl(path) {
 
 const THEORY = [
   {num:'01',title:'JVM Memory',qs:'Q1–Q8',qStart:1,qEnd:8,file:'01-jvm-memory.html',demo:'demo-01-jvm-memory'},
-  {num:'02',title:'Data types & Strings',qs:'Q9–Q17',qStart:9,qEnd:17,file:'02-data-types-strings.html',demo:null},
-  {num:'03',title:'OOP, Inheritance & Generics',qs:'Q18–Q27',qStart:18,qEnd:27,file:'03-oop-generics.html',demo:null},
-  {num:'04',title:'Collections — General',qs:'Q28–Q33',qStart:28,qEnd:33,file:'04-collections-list.html',demo:'demo-02-collections'},
-  {num:'05',title:'Collections — HashMap',qs:'Q34–Q44',qStart:34,qEnd:44,file:'05-collections-hashmap.html',demo:'demo-02-collections'},
-  {num:'06',title:'Streams & Lambdas',qs:'Q45–Q52',qStart:45,qEnd:52,file:'06-streams-lambdas.html',demo:'demo-03-streams'},
-  {num:'07',title:'Concurrency',qs:'Q53–Q63',qStart:53,qEnd:63,file:'07-concurrency.html',demo:'demo-04-concurrency'},
-  {num:'08',title:'Spring core & web',qs:'Q64–Q77',qStart:64,qEnd:77,file:'08-spring-core-web.html',demo:'demo-05-spring-core'},
-  {num:'09',title:'JPA & databases',qs:'Q78–Q87',qStart:78,qEnd:87,file:'09-jpa-databases.html',demo:'demo-06-spring-data'},
-  {num:'10',title:'Design patterns',qs:'Q87–Q89',qStart:88,qEnd:89,file:'10-design-patterns.html',demo:'demo-07-patterns'},
+  {num:'02',title:'Data types & Strings',qs:'Q9–Q17',qStart:9,qEnd:17,file:'02-data-types-strings.html',demo:'demo-02-data-type-strings-oop-generics'},
+  {num:'03',title:'OOP, Inheritance & Generics',qs:'Q18–Q27',qStart:18,qEnd:27,file:'03-oop-generics.html',demo:'demo-02-data-type-strings-oop-generics'},
+  {num:'04',title:'Collections — General',qs:'Q28–Q33',qStart:28,qEnd:33,file:'04-collections-list.html',demo:'demo-03-collections'},
+  {num:'05',title:'Collections — HashMap',qs:'Q34–Q44',qStart:34,qEnd:44,file:'05-collections-hashmap.html',demo:'demo-03-collections'},
+  {num:'06',title:'Streams & Lambdas',qs:'Q45–Q52',qStart:45,qEnd:52,file:'06-streams-lambdas.html',demo:'demo-04-streams'},
+  {num:'07',title:'Concurrency',qs:'Q53–Q63',qStart:53,qEnd:63,file:'07-concurrency.html',demo:'demo-05-concurrency'},
+  {num:'08',title:'Spring core & web',qs:'Q64–Q77',qStart:64,qEnd:77,file:'08-spring-core-web.html',demo:'demo-06-spring-core'},
+  {num:'09',title:'JPA & databases',qs:'Q78–Q87',qStart:78,qEnd:87,file:'09-jpa-databases.html',demo:'demo-07-spring-data'},
+  {num:'10',title:'Design patterns',qs:'Q87–Q89',qStart:88,qEnd:89,file:'10-design-patterns.html',demo:'demo-08-patterns'},
 ];
 
 const DEMOS = [
-  {id:'demo-01-jvm-memory',icon:'01',title:'JVM memory',port:'8081',desc:'GC logging, heap region inspection, object lifecycle, humongous allocations.',tags:['spring-boot','G1GC','jvm','actuator']},
-  {id:'demo-02-collections',icon:'02',title:'Collections',port:'8082',desc:'HashMap collision demo, TreeMap ordering, iterator patterns, load factor.',tags:['java21','hashmap','treemap']},
-  {id:'demo-03-streams',icon:'03',title:'Streams & Lambdas',port:'8083',desc:'Stream pipelines, flatMap, collectors, lazy evaluation, functional interfaces.',tags:['java21','streams','lambdas']},
-  {id:'demo-04-concurrency',icon:'04',title:'Concurrency',port:'8084',desc:'Race condition demo, CAS vs synchronized, ReentrantLock patterns.',tags:['java21','threads','locks','CAS']},
-  {id:'demo-05-spring-core',icon:'05',title:'Spring core',port:'8085',desc:'Bean scopes, lifecycle hooks, DI types, circular dependency resolution.',tags:['spring-boot','beans','DI']},
-  {id:'demo-06-spring-data',icon:'06',title:'Spring data / JPA',port:'8086',desc:'EAGER/LAZY fetch, N+1 fix, optimistic & pessimistic locking, index demo.',tags:['spring-boot','jpa','postgres']},
-  {id:'demo-07-patterns',icon:'07',title:'Design patterns',port:'8087',desc:'Singleton, Factory, Proxy, Strategy in a Spring Boot context.',tags:['spring-boot','GoF','patterns']},
+  {id:'demo-01-jvm-memory',icon:'01',title:'JVM memory',port:'8081',
+    desc:'GC logging, heap region inspection, object lifecycle, humongous allocations.',tags:['spring-boot', 'java21', 'G1GC','jvm','actuator']},
+  {id:'demo-02-data-type-strings-oop-generics',icon:'02',title:'Data types & Strings, OOP & Generics',port:'8082',
+    desc:'Data Types, Strings, OOP Basics, Generics',tags:['spring-boot', 'java21','strings','oop', 'generics']},
+  {id:'demo-03-collections',icon:'03',title:'Collections',port:'8083',
+    desc:'HashMap collision demo, TreeMap ordering, iterator patterns, load factor.',tags:['spring-boot', 'java21','collections', 'hashmap','treemap']},
+  {id:'demo-04-streams',icon:'04',title:'Streams & Lambdas',port:'8084',
+    desc:'Stream pipelines, flatMap, collectors, lazy evaluation, functional interfaces.',tags:['spring-boot', 'java21','streams','lambdas']},
+  {id:'demo-05-concurrency',icon:'05',title:'Concurrency',port:'8085',
+    desc:'Race condition demo, CAS vs synchronized, ReentrantLock patterns.',tags:['java21','threads','locks','CAS']},
+  {id:'demo-06-spring-core',icon:'06',title:'Spring core',port:'8086',
+    desc:'Bean scopes, lifecycle hooks, DI types, circular dependency resolution.',tags:['spring-boot','beans','DI']},
+  {id:'demo-07-spring-data',icon:'07',title:'Spring data / JPA',port:'8087',
+    desc:'EAGER/LAZY fetch, N+1 fix, optimistic & pessimistic locking, index demo.',tags:['spring-boot','jpa','postgres']},
+  {id:'demo-08-patterns',icon:'08',title:'Design patterns',port:'8088',
+    desc:'Singleton, Factory, Proxy, Strategy in a Spring Boot context.',tags:['spring-boot','GoF','patterns']},
 ];
 
 const GROUPS = [
