@@ -67,14 +67,14 @@ Each demo is a standalone Maven module — no shared parent, no cross-module dep
 ### Running a demo
 
 ```bash
-cd demos/demo-05-spring-core
+cd demos/demo-05-concurrency
 mvn spring-boot:run
 ```
 
 Demos that need a database ship with a `docker-compose.yml`:
 
 ```bash
-cd demos/demo-06-spring-data
+cd demos/demo-07-spring-data
 docker compose up -d
 mvn spring-boot:run
 ```
