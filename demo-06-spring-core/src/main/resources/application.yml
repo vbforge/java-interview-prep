@@ -1,0 +1,22 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: demo-06-spring-core
+  mvc:
+    cors:
+      mappings:
+        /demo/web/cors-endpoint:
+          allowed-origins: "https://trusted-frontend.com"
+          allowed-methods: "GET,POST"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+logging:
+  level:
+    com.vbforge: DEBUG
